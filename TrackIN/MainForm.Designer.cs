@@ -36,7 +36,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.zedGraphControl_IIT = new ZedGraph.ZedGraphControl();
             this.zedGraphControl_PrecursorMZ = new ZedGraph.ZedGraphControl();
-            this.zedGraphControl2 = new ZedGraph.ZedGraphControl();
+            this.zedGraphControlTest = new ZedGraph.ZedGraphControl();
             this.button3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -119,19 +119,19 @@
             this.zedGraphControl_PrecursorMZ.Size = new System.Drawing.Size(762, 317);
             this.zedGraphControl_PrecursorMZ.TabIndex = 6;
             // 
-            // zedGraphControl2
+            // zedGraphControlTest
             // 
-            this.zedGraphControl2.Location = new System.Drawing.Point(792, 446);
-            this.zedGraphControl2.Name = "zedGraphControl2";
-            this.zedGraphControl2.ScrollGrace = 0D;
-            this.zedGraphControl2.ScrollMaxX = 0D;
-            this.zedGraphControl2.ScrollMaxY = 0D;
-            this.zedGraphControl2.ScrollMaxY2 = 0D;
-            this.zedGraphControl2.ScrollMinX = 0D;
-            this.zedGraphControl2.ScrollMinY = 0D;
-            this.zedGraphControl2.ScrollMinY2 = 0D;
-            this.zedGraphControl2.Size = new System.Drawing.Size(762, 316);
-            this.zedGraphControl2.TabIndex = 7;
+            this.zedGraphControlTest.Location = new System.Drawing.Point(792, 446);
+            this.zedGraphControlTest.Name = "zedGraphControlTest";
+            this.zedGraphControlTest.ScrollGrace = 0D;
+            this.zedGraphControlTest.ScrollMaxX = 0D;
+            this.zedGraphControlTest.ScrollMaxY = 0D;
+            this.zedGraphControlTest.ScrollMaxY2 = 0D;
+            this.zedGraphControlTest.ScrollMinX = 0D;
+            this.zedGraphControlTest.ScrollMinY = 0D;
+            this.zedGraphControlTest.ScrollMinY2 = 0D;
+            this.zedGraphControlTest.Size = new System.Drawing.Size(762, 316);
+            this.zedGraphControlTest.TabIndex = 7;
             // 
             // button3
             // 
@@ -149,7 +149,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1559, 774);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.zedGraphControl2);
+            this.Controls.Add(this.zedGraphControlTest);
             this.Controls.Add(this.zedGraphControl_PrecursorMZ);
             this.Controls.Add(this.zedGraphControl_IIT);
             this.Controls.Add(this.textBox1);
@@ -173,7 +173,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private ZedGraph.ZedGraphControl zedGraphControl_IIT;
         private ZedGraph.ZedGraphControl zedGraphControl_PrecursorMZ;
-        private ZedGraph.ZedGraphControl zedGraphControl2;
+        private ZedGraph.ZedGraphControl zedGraphControlTest;
         private System.Windows.Forms.Button button3;
     }
 }

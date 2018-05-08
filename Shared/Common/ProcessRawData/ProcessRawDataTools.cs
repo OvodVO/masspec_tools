@@ -103,9 +103,14 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
 
         public static double[] AggIonCounts(double[] MZs, double[] Intensities, List<double> expectedMzList, double tolerance)
         {
-            var result = (from pair in PairMzIntensity(MZs, Intensities)
-                          group pair by InMZTolerance(pair.mz, expectedMzList, tolerance) into gr
-                          select new { IsTarget = gr.Key, TotIntensity = gr.Sum(i => i.intensity) }).OrderBy(x => x.IsTarget).Select(y => y.TotIntensity).ToArray();
+            double[] result = new double[2];
+            var groupresult = (from pair in PairMzIntensity(MZs, Intensities)
+                               group pair by InMZTolerance(pair.mz, expectedMzList, tolerance) into gr
+                               select new { IsTarget = gr.Key, TotIntensity = gr.Sum(i => i.intensity) });
+
+            result[0] = groupresult.Where(w => w.IsTarget == true ).Sum(s => s.TotIntensity);
+            result[1] = groupresult.Where(w => w.IsTarget == false).Sum(s => s.TotIntensity);
+
             return result;
         }
 

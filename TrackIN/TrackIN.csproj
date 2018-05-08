@@ -53,7 +53,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ProcessRawData">
-      <HintPath>..\Shared\Common\ProcessRawData\bin\Debug\ProcessRawData.dll</HintPath>
+      <HintPath>..\Shared\Common\ProcessRawData\bin\x64\Debug\ProcessRawData.dll</HintPath>
     </Reference>
     <Reference Include="ProteowizardWrapper">
       <HintPath>..\..\..\pwiz\pwiz_tools\Shared\ProteowizardWrapper\bin\x64\Debug\ProteowizardWrapper.dll</HintPath>
