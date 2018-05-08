@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WashU.BatemanLab.MassSpec.Tools.ProcessRawData;
+using WashU.BatemanLab.MassSpec.Tools.TargetAnalysis;
 
 namespace TrackIN
 {
@@ -19,6 +20,7 @@ namespace TrackIN
             InitializeComponent();
         }
 
+        WashU.BatemanLab.MassSpec.Tools.ProcessRawData.ProcessRawDataTools.
         MsDataFileImplExtAgg _msdatafile;
 
         
@@ -92,7 +94,7 @@ namespace TrackIN
             double[] negEICs;// = new double[];
             double[] AllMzs; 
 
-            byte[] msLevels; double Toleranse = 0.05;
+            byte[] msLevels; double Toleranse = 0.1;
 
             if (_openDlg.ShowDialog() == DialogResult.OK)
             {
@@ -116,8 +118,8 @@ namespace TrackIN
 
                 var pepList = ProcessRawDataTools.GetTestMzTargets();
 
-                var targ = from t in pepList.FirstOrDefault().mzTargetsList
-                           select new { Ms1 = t.parentMZ, MSMSList = t.productMZList };
+                var targ = from t in pepList.FirstOrDefault().Precursors
+                           select new { Ms1 = t.PrecursorMZ, MSMSList = t.Products };
 
                 foreach (var item in targ)
                 {

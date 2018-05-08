@@ -5,44 +5,19 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using pwiz.ProteowizardWrapper;
+using WashU.BatemanLab.MassSpec.Tools.TargetAnalysis;
 
 namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
 {
-    public class MzIntensityPair
-    {
-        public MzIntensityPair()
-        { }
+    
 
-        public MzIntensityPair(double Mz, double Intensity)
-        {
-            mz = Mz;
-            intensity = Intensity;
-        }
-               
-        public double intensity { get; set; }
+  
+  
 
-        public double mz { get; set; }
-    }
-
-    public class MzTarget
-    {
-        public MzTarget()
-        { }
-        
-        public double parentMZ { get; set; }
-
-        public List<double> productMZList { get; set; }
-    }
-
-    public class Peptide
-    {
-        public string sequence;
-        public List<MzTarget>  mzTargetsList { get; set; }
-
-    }
-
+    
     public class ProcessRawDataTools
     {
+        // for test only
         public static List<Peptide> GetTestMzTargets()
         {
             var result = new List<Peptide>();
@@ -52,8 +27,8 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
 
             var peptide = new Peptide()
             {
-                sequence = "KGAIIGLMVGGVVIA",
-                mzTargetsList = new List<MzTarget> { new MzTarget() { parentMZ = 699.896296, productMZList = productMZ_42N14 } }
+                Sequence = "KGAIIGLMVGGVVIA",
+                Precursors = new List<Precursor> { new Precursor() { PrecursorMZ = 699.896296, Products = productMZ_42N14 } }
             };
 
             result.Add(peptide);
@@ -239,35 +214,19 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
         
     }
 
-    public class MsDataFileImplExtInh : MsDataFileImpl 
+    public class MzIntensityPair
     {
-
-        public MsDataFileImplExtInh(string path, int sampleIndex = 0, LockMassParameters lockmassParameters = null, bool simAsSpectra = false,
-            bool srmAsSpectra = false, bool acceptZeroLengthSpectra = true, bool requireVendorCentroidedMS1 = false, bool requireVendorCentroidedMS2 = false,
-            bool ignoreZeroIntensityPoints = false) 
-            : base(path, sampleIndex = 0, lockmassParameters = null, simAsSpectra = false, srmAsSpectra = false, acceptZeroLengthSpectra = true, 
-             requireVendorCentroidedMS1 = false, requireVendorCentroidedMS2 = false, ignoreZeroIntensityPoints = false)
-        { }
+        public MzIntensityPair() { }
+        public double intensity { get; set; }
+        public double mz { get; set; }
+        public MzIntensityPair(double Mz, double Intensity)
+        {
+            mz = Mz;
+            intensity = Intensity;
+        }
     }
 
-    public class MsDataFileImplExtAgg
-    {
-        private MsDataFileImpl _msDataFileImpl;
+    
 
-        public MsDataFileImpl MsDataFile
-        {
-            get { return _msDataFileImpl; }
-        }
-
-        public MsDataFileImplExtAgg(string path)
-        {
-            _msDataFileImpl = new MsDataFileImpl(path);
-        }
-
-        public void test()
-        {
-            // _msDataFileImpl.GetSpectrumsInfo();
-        }
-
-    }
+   
 }
