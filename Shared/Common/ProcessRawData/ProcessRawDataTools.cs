@@ -23,8 +23,43 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
 
         public double mz { get; set; }
     }
-        public class ProcessRawDataTools
+
+    public class MzTarget
     {
+        public MzTarget()
+        { }
+        
+        public double parentMZ { get; set; }
+
+        public List<double> productMZList { get; set; }
+    }
+
+    public class Peptide
+    {
+        public string sequence;
+        public List<MzTarget>  mzTargetsList { get; set; }
+
+    }
+
+    public class ProcessRawDataTools
+    {
+        public static List<Peptide> GetTestMzTargets()
+        {
+            var result = new List<Peptide>();
+
+            List<double> productMZ_42N14 = new List<double>() { 883.543371, 940.564835, 997.586298, 1096.654712, 1195.723126 };
+            List<double> productMZ_42N15 = new List<double>() { 893.513721, 951.53222, 1009.550718, 1109.616167, 1209.681616 };
+
+            var peptide = new Peptide()
+            {
+                sequence = "KGAIIGLMVGGVVIA",
+                mzTargetsList = new List<MzTarget> { new MzTarget() { parentMZ = 699.896296, productMZList = productMZ_42N14 } }
+            };
+
+            result.Add(peptide);
+            return result;
+        }
+
         public static bool InMZTolerance(double mz, double expectedMz, double tolerance)
         {
             if (mz >= (expectedMz - tolerance) && mz <= (expectedMz + tolerance)) return true;
@@ -51,12 +86,29 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
             return _result;
         }
 
-        public static MzIntensityPair[] test(double[] MZs, double[] Intensities)
+        public static MzIntensityPair[] PairMzIntensity(double[] MZs, double[] Intensities)
         {
-            var mzintensitiesPairs = MZs.Zip(Intensities, (m, i) => new MzIntensityPair { mz = m,  intensity = i });
+            var result = MZs.Zip(Intensities, (m, i) => new MzIntensityPair { mz = m,  intensity = i });
 
-            return mzintensitiesPairs.ToArray();
+            return result.ToArray();
         }
+
+        public static double[] AggIonCountsTest (MzIntensityPair[] mzIntensityPairs, List<double> expectedMzList, double tolerance)
+        {
+            var result = (from pair in mzIntensityPairs
+                          group pair by InMZTolerance(pair.mz, expectedMzList, tolerance) into gr
+                          select new {IsTarget = gr.Key, TotIntensity = gr.Sum(i => i.intensity)}).OrderBy(x => x.IsTarget).Select(y=>y.TotIntensity).ToArray();
+            return result;
+        }
+
+        public static double[] AggIonCounts(double[] MZs, double[] Intensities, List<double> expectedMzList, double tolerance)
+        {
+            var result = (from pair in PairMzIntensity(MZs, Intensities)
+                          group pair by InMZTolerance(pair.mz, expectedMzList, tolerance) into gr
+                          select new { IsTarget = gr.Key, TotIntensity = gr.Sum(i => i.intensity) }).OrderBy(x => x.IsTarget).Select(y => y.TotIntensity).ToArray();
+            return result;
+        }
+
 
         public static string testOpen(string path)
         {

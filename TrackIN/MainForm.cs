@@ -104,9 +104,14 @@ namespace TrackIN
 
                 List<double> massList = new List<double>() { 707.84, 699.89, 508.64 };
 
+                List<double> productMZ_42N14 = new List<double>() { 883.543371, 940.564835, 997.586298, 1096.654712, 1195.723126 };
+                List<double> productMZ_42N15 = new List<double>() { 893.513721, 951.53222, 1009.550718, 1109.616167, 1209.681616 };
+
                 var Chrom = from mzspectrum in _msdatafile.MsDataFile.MsDataSpectrumAray
                             where ProcessRawDataTools.InMZTolerance(mzspectrum.PrecursorMZ.GetValueOrDefault(0), massList, 0.3) == true
-                            select new { mzspectrum.RetentionTime, mzspectrum.IonIT, mzspectrum.TIC };
+                            select new { mzspectrum.RetentionTime, mzspectrum.IonIT, mzspectrum.TIC, ProcessRawDataTools .AggIonCountsTest(mzspectrum[]  };
+
+                //ProcessRawDataTools.
 
                 //double[] Chrom.ToArray
 
