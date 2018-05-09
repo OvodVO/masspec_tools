@@ -8,9 +8,16 @@ using pwiz.ProteowizardWrapper;
 namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
 {
     #region MsDataFileImplExtAgg definition
-    class MsDataFileImplExtAgg
+    public class MsDataFileImplExtAgg
     {
         private MsDataFileImpl _msDataFileImpl;
+        private bool _HasMzDataSpectrums = false;
+        private bool _HasChromatograms = false;
+        private bool _HasBeenRead = false;
+
+        public bool HasMzDataSpectrums { get { return _HasMzDataSpectrums; } }
+        public bool HasChromatograms { get { return _HasChromatograms; } }
+        public bool HasBeenRead { get { return _HasBeenRead; } }
 
         public MsDataFileImpl MsDataFile
         {
@@ -19,7 +26,26 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
 
         public MsDataFileImplExtAgg(string path)
         {
-            _msDataFileImpl = new MsDataFileImpl(path);
+            try
+            {
+                _msDataFileImpl = new MsDataFileImpl(path);
+            }
+            catch (Exception e)
+            { }
+
+            _HasBeenRead = true;
+        }
+
+        public void GetMsDataSpectrum()
+        {
+            try
+            {
+                _msDataFileImpl.GetMsDataSpectrums();
+            }
+            catch (Exception e)
+            { }
+
+            _HasMzDataSpectrums = true;
         }
     }
     #endregion
