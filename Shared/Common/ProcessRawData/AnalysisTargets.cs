@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using pwiz.ProteowizardWrapper;
 
-namespace WashU.BatemanLab.MassSpec.Tools.TargetAnalysis
+namespace WashU.BatemanLab.MassSpec.Tools.AnalysisTargets
 {
-    public class TargetAnalysis
+    public class AnalysisTargets
     {
         public string TargetAnalysisType { get; set; }
         public List<Protein> Proteins { get; set; }
@@ -86,5 +86,19 @@ namespace WashU.BatemanLab.MassSpec.Tools.TargetAnalysis
         public string IsotopeLabelType;
         public double PrecursorMZ { get; set; }
         public List<double> Products { get; set; }
+    }
+
+    public class Chromatogram
+    {
+        public string Protein { get; set; }
+        public string Peptide { get; set; }
+        public string IsotopeLabelType { get; set; }
+        public double PrecursorMZ { get; set; }
+        public double[] RetentionTimes { get; set; }
+        public double[] IonInjectionTimes { get; set; }
+        public double[] TotalIonCurrents { get; set; }
+        public double[] SumOfIntensities { get; set; }
+        public double[] SumOfPositiveMatch { get; set; }
+        public double[] SumOfNegativeMatch { get; set; }
     }
 }

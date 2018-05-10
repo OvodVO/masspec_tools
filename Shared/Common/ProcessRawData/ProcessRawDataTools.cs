@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using pwiz.ProteowizardWrapper;
-using WashU.BatemanLab.MassSpec.Tools.TargetAnalysis;
+using WashU.BatemanLab.MassSpec.Tools.AnalysisTargets;
 
 namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
         
@@ -15,6 +15,12 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
         public static bool InMZTolerance(double mz, double expectedMz, double tolerance)
         {
             if (mz >= (expectedMz - tolerance) && mz <= (expectedMz + tolerance)) return true;
+            else return false;
+        }
+
+        public static bool InMZTolerance(double? mz, double expectedMz, double tolerance)
+        {
+            if (mz.HasValue) return InMZTolerance(mz.Value, expectedMz, tolerance);
             else return false;
         }
 
@@ -38,14 +44,24 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
             return result;
         }
 
-        public static MzIntensityPair[] PairMzIntensity(double[] MZs, double[] Intensities)
+        public static MzIntensityPair[] PairMzIntensityByLINQ(double[] MZs, double[] Intensities)
         {
             var result = MZs.Zip(Intensities, (m, i) => new MzIntensityPair { mz = m,  intensity = i });
 
             return result.ToArray();
         }
-        
-        public static double[] AggIonCounts(double[] MZs, double[] Intensities, List<double> expectedMzList, double tolerance)
+
+        public static MzIntensityPair[] PairMzIntensity(double[] MZs, double[] Intensities)
+        {
+            MzIntensityPair[] result = new MzIntensityPair[MZs.Length];
+            for (int i = 0; i <= MZs.Length; i++)
+            {
+                result[i] = new MzIntensityPair() { mz = MZs[i], intensity = Intensities[i] };
+            }
+            return result;
+        }
+
+        public static double[] AggIonCountsByLINQ(double[] MZs, double[] Intensities, List<double> expectedMzList, double tolerance)
         {
             double[] result = new double[2];
             var groupresult = (from pair in PairMzIntensity(MZs, Intensities)
@@ -55,6 +71,28 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
             result[0] = groupresult.Where(w => w.IsTarget == true ).Sum(s => s.TotIntensity);
             result[1] = groupresult.Where(w => w.IsTarget == false).Sum(s => s.TotIntensity);
 
+            return result;
+        }
+
+        public static double[] AggIonCounts(double[] MZs, double[] Intensities, List<double> expectedMzList, double tolerance)
+        {
+            double[] result = new double[2];
+            double posMatchSum = 0;
+            double negMatchSum = 0;
+                        
+            for (int i = 0; i < MZs.Length; i++)
+            {
+                if (InMZTolerance(MZs[i], expectedMzList, tolerance))
+                {
+                    posMatchSum += Intensities[i]; 
+                }
+                else
+                {
+                    negMatchSum += Intensities[i];
+                }
+            }
+            result[0] = posMatchSum;
+            result[1] = negMatchSum;
             return result;
         }
     }
