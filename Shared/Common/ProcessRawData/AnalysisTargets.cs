@@ -9,6 +9,7 @@ namespace WashU.BatemanLab.MassSpec.Tools.AnalysisTargets
 {
     public class AnalysisTargets
     {
+        public static readonly double MS1Tolerance = 0.1;
         public string TargetAnalysisType { get; set; }
         public List<Protein> Proteins { get; set; }
         public static List<Protein> GetDefaultProteins()

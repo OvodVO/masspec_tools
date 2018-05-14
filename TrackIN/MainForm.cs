@@ -91,7 +91,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 _analysisResults.PerformAnalysis();
             }
 
-            PlotChromatograms();
+            PlotChromatograms(zedGraphControlTest);
 
         }
     }

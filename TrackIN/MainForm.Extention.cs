@@ -12,20 +12,20 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
     {
         private AnalysisResults _analysisResults;
 
-        private void PlotChromatograms()
+        private void PlotChromatograms(ZedGraph.ZedGraphControl graph)
         {
             foreach (var msrun in _analysisResults.Results)
             foreach (var chromatogram in msrun.Chromatograms)
             {
-                var ChromLine = zedGraphControlTest.GraphPane.AddCurve(String.Format("{0} ({1}): [{2}] - {3}", chromatogram.Peptide, chromatogram.IsotopeLabelType, chromatogram.PrecursorMZ, "PosMatch"),
+                var ChromLine = graph.GraphPane.AddCurve(String.Format("{0} ({1}): [{2}] - {3}", chromatogram.Peptide, chromatogram.IsotopeLabelType, chromatogram.PrecursorMZ, "PosMatch"),
                                                                        chromatogram.RetentionTimes,
                                                                        chromatogram.SumOfPositiveMatch,
                                                                        Color.Green);
                 ChromLine.Symbol.IsVisible = false;
             }
 
-            zedGraphControlTest.AxisChange();
-            zedGraphControlTest.Refresh();
+            graph.AxisChange();
+            graph.Refresh();
         }
 
     }
