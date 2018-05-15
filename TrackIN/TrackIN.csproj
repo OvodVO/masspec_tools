@@ -11,6 +11,25 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>\\nas-4\Software\Washington University\TrackIN\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Unc</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>false</MapFileExtensions>
+    <TargetCulture>en-US</TargetCulture>
+    <ProductName>TrackIN</ProductName>
+    <PublisherName>Bateman Lab</PublisherName>
+    <ApplicationRevision>22</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>true</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -51,6 +70,22 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>WashU.BatemanLab.MassSpec.TrackIN.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>467FC5844925142863C4736685B94B0E2E7C6CB7</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>TrackIN_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="ProcessRawData">
       <HintPath>..\Shared\Common\ProcessRawData\bin\x64\Debug\ProcessRawData.dll</HintPath>
@@ -98,6 +133,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Content Include="..\..\..\pwiz\pwiz_tools\Shared\ProteowizardWrapper\MSFileReader.XRawfile2.SxS.manifest">
+      <Link>MSFileReader.XRawfile2.SxS.manifest</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -107,9 +146,333 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="TrackIN_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC100.CRT\x64\msvcp100.dll">
+      <Link>msvcp100.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC100.CRT\x64\msvcr100.dll">
+      <Link>msvcr100.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC100.MFC\x64\mfc100u.dll">
+      <Link>mfc100u.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC110.CRT\x64\msvcp110.dll">
+      <Link>msvcp110.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC110.CRT\x64\msvcr110.dll">
+      <Link>msvcr110.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC110.OPENMP\x64\vcomp110.dll">
+      <Link>vcomp110.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC120.CRT\x64\msvcp120.dll">
+      <Link>msvcp120.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC120.CRT\x64\msvcr120.dll">
+      <Link>msvcr120.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-console-l1-1-0.dll">
+      <Link>api-ms-win-core-console-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-datetime-l1-1-0.dll">
+      <Link>api-ms-win-core-datetime-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-debug-l1-1-0.dll">
+      <Link>api-ms-win-core-debug-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-errorhandling-l1-1-0.dll">
+      <Link>api-ms-win-core-errorhandling-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-file-l1-1-0.dll">
+      <Link>api-ms-win-core-file-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-file-l1-2-0.dll">
+      <Link>api-ms-win-core-file-l1-2-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-file-l2-1-0.dll">
+      <Link>api-ms-win-core-file-l2-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-handle-l1-1-0.dll">
+      <Link>api-ms-win-core-handle-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-heap-l1-1-0.dll">
+      <Link>api-ms-win-core-heap-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-interlocked-l1-1-0.dll">
+      <Link>api-ms-win-core-interlocked-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-libraryloader-l1-1-0.dll">
+      <Link>api-ms-win-core-libraryloader-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-localization-l1-2-0.dll">
+      <Link>api-ms-win-core-localization-l1-2-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-memory-l1-1-0.dll">
+      <Link>api-ms-win-core-memory-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-namedpipe-l1-1-0.dll">
+      <Link>api-ms-win-core-namedpipe-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-processenvironment-l1-1-0.dll">
+      <Link>api-ms-win-core-processenvironment-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-processthreads-l1-1-0.dll">
+      <Link>api-ms-win-core-processthreads-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-processthreads-l1-1-1.dll">
+      <Link>api-ms-win-core-processthreads-l1-1-1.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-profile-l1-1-0.dll">
+      <Link>api-ms-win-core-profile-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-rtlsupport-l1-1-0.dll">
+      <Link>api-ms-win-core-rtlsupport-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-string-l1-1-0.dll">
+      <Link>api-ms-win-core-string-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-synch-l1-1-0.dll">
+      <Link>api-ms-win-core-synch-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-synch-l1-2-0.dll">
+      <Link>api-ms-win-core-synch-l1-2-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-sysinfo-l1-1-0.dll">
+      <Link>api-ms-win-core-sysinfo-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-timezone-l1-1-0.dll">
+      <Link>api-ms-win-core-timezone-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-core-util-l1-1-0.dll">
+      <Link>api-ms-win-core-util-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-crt-conio-l1-1-0.dll">
+      <Link>api-ms-win-crt-conio-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-crt-convert-l1-1-0.dll">
+      <Link>api-ms-win-crt-convert-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-crt-environment-l1-1-0.dll">
+      <Link>api-ms-win-crt-environment-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-crt-filesystem-l1-1-0.dll">
+      <Link>api-ms-win-crt-filesystem-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-crt-heap-l1-1-0.dll">
+      <Link>api-ms-win-crt-heap-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-crt-locale-l1-1-0.dll">
+      <Link>api-ms-win-crt-locale-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-crt-math-l1-1-0.dll">
+      <Link>api-ms-win-crt-math-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-crt-multibyte-l1-1-0.dll">
+      <Link>api-ms-win-crt-multibyte-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-crt-private-l1-1-0.dll">
+      <Link>api-ms-win-crt-private-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-crt-process-l1-1-0.dll">
+      <Link>api-ms-win-crt-process-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-crt-runtime-l1-1-0.dll">
+      <Link>api-ms-win-crt-runtime-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-crt-stdio-l1-1-0.dll">
+      <Link>api-ms-win-crt-stdio-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-crt-string-l1-1-0.dll">
+      <Link>api-ms-win-crt-string-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-crt-time-l1-1-0.dll">
+      <Link>api-ms-win-crt-time-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\api-ms-win-crt-utility-l1-1-0.dll">
+      <Link>api-ms-win-crt-utility-l1-1-0.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\msvcp140.dll">
+      <Link>msvcp140.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\ucrtbase.dll">
+      <Link>ucrtbase.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\vcomp140.dll">
+      <Link>vcomp140.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\Lib\Microsoft.VC140.CRT\x64\vcruntime140.dll">
+      <Link>vcruntime140.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_aux\msrc\utility\vendor_api\Waters\vc12_x64\cdt.dll">
+      <Link>cdt.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_aux\msrc\utility\vendor_api\Bruker\x64\baf2sql_c.dll">
+      <Link>baf2sql_c.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_aux\msrc\utility\vendor_api\Waters\vc12_x64\MassLynxRaw.dll">
+      <Link>MassLynxRaw.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_aux\msrc\utility\vendor_api\Agilent\x64\BaseDataAccess.dll.config">
+      <Link>BaseDataAccess.dll.config</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\BiblioSpec\obj\x64\BlibBuild.exe">
+      <Link>BlibBuild.exe</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\BiblioSpec\obj\x64\BlibFilter.exe">
+      <Link>BlibFilter.exe</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\BiblioSpec\obj\x64\msparser.dll">
+      <Link>msparser.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\BiblioSpec\obj\x64\msparserD.dll">
+      <Link>msparserD.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'" Include="..\..\..\pwiz\pwiz_tools\Shared\ProteowizardWrapper\bin\x64\Release\timsdata.dll">
+      <Link>timsdata.dll</Link>
+      <Visible> False </Visible>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>
