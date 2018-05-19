@@ -77,6 +77,27 @@ namespace WashU.BatemanLab.MassSpec.Tools.AnalysisTargets
 
     public class Peptide
     {
+        public static string GetPeptideShortName(string peptide)
+        {
+            string result;
+            switch (peptide)
+            {
+                case null: result = "";
+                    break;
+                case "KLVFFAEDVGSN": result = "Aβ[Total]";
+                    break;
+                case "KGAIIGLMVGG": result = "Aβ38";
+                    break;
+                case "KGAIIGLMVGGVV": result = "Aβ40";
+                    break;
+                case "KGAIIGLMVGGVVIA": result = "Aβ42";
+                    break;
+                default: result = peptide;
+                    break;
+            }
+            return result;
+        }
+
         public string Name;
         public string Sequence;
         public List<Precursor> Precursors { get; set; }

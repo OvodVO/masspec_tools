@@ -93,6 +93,10 @@
     <Reference Include="ProteowizardWrapper">
       <HintPath>..\..\..\pwiz\pwiz_tools\Shared\ProteowizardWrapper\bin\x64\Debug\ProteowizardWrapper.dll</HintPath>
     </Reference>
+    <Reference Include="SkylineTool, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\pwiz\pwiz_tools\Skyline\SkylineTool\bin\x64\Debug\SkylineTool.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -110,6 +114,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Graph.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

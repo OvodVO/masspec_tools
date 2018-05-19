@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="AnalysisResults.cs" />
     <Compile Include="AnalysisTargets.cs" />
+    <Compile Include="Common.cs" />
     <Compile Include="MsDataFileImplExtAgg.cs" />
     <Compile Include="ProcessRawDataTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

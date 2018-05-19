@@ -36,9 +36,21 @@
             this.button4 = new System.Windows.Forms.Button();
             this.tabMainForm = new System.Windows.Forms.TabControl();
             this.tabHomePage = new System.Windows.Forms.TabPage();
+            this.tabPeptideRatios = new System.Windows.Forms.TabPage();
             this.tabTEST = new System.Windows.Forms.TabPage();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.button1 = new System.Windows.Forms.Button();
+            this.mnuPeptideRatios = new System.Windows.Forms.MenuStrip();
+            this.mnuRatioSelection = new System.Windows.Forms.ToolStripMenuItem();
+            this.graphPeptideRatios = new ZedGraph.ZedGraphControl();
+            this.stsPeptideRatios = new System.Windows.Forms.StatusStrip();
+            this.stsStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabMainForm.SuspendLayout();
+            this.tabPeptideRatios.SuspendLayout();
             this.tabTEST.SuspendLayout();
+            this.mnuPeptideRatios.SuspendLayout();
+            this.stsPeptideRatios.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnTEST
@@ -65,7 +77,7 @@
             // 
             // zedGraphControlTest
             // 
-            this.zedGraphControlTest.Location = new System.Drawing.Point(8, 55);
+            this.zedGraphControlTest.Location = new System.Drawing.Point(43, 64);
             this.zedGraphControlTest.Name = "zedGraphControlTest";
             this.zedGraphControlTest.ScrollGrace = 0D;
             this.zedGraphControlTest.ScrollMaxX = 0D;
@@ -74,7 +86,7 @@
             this.zedGraphControlTest.ScrollMinX = 0D;
             this.zedGraphControlTest.ScrollMinY = 0D;
             this.zedGraphControlTest.ScrollMinY2 = 0D;
-            this.zedGraphControlTest.Size = new System.Drawing.Size(1520, 722);
+            this.zedGraphControlTest.Size = new System.Drawing.Size(1010, 463);
             this.zedGraphControlTest.TabIndex = 7;
             // 
             // button3
@@ -98,11 +110,13 @@
             // tabMainForm
             // 
             this.tabMainForm.Controls.Add(this.tabHomePage);
+            this.tabMainForm.Controls.Add(this.tabPeptideRatios);
             this.tabMainForm.Controls.Add(this.tabTEST);
+            this.tabMainForm.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabMainForm.Location = new System.Drawing.Point(0, 0);
             this.tabMainForm.Name = "tabMainForm";
             this.tabMainForm.SelectedIndex = 0;
-            this.tabMainForm.Size = new System.Drawing.Size(1575, 850);
+            this.tabMainForm.Size = new System.Drawing.Size(1559, 811);
             this.tabMainForm.TabIndex = 10;
             // 
             // tabHomePage
@@ -112,11 +126,28 @@
             this.tabHomePage.Padding = new System.Windows.Forms.Padding(3);
             this.tabHomePage.Size = new System.Drawing.Size(1567, 824);
             this.tabHomePage.TabIndex = 0;
-            this.tabHomePage.Text = "HomePage";
+            this.tabHomePage.Text = "Home Page";
             this.tabHomePage.UseVisualStyleBackColor = true;
+            // 
+            // tabPeptideRatios
+            // 
+            this.tabPeptideRatios.Controls.Add(this.stsPeptideRatios);
+            this.tabPeptideRatios.Controls.Add(this.graphPeptideRatios);
+            this.tabPeptideRatios.Controls.Add(this.mnuPeptideRatios);
+            this.tabPeptideRatios.Location = new System.Drawing.Point(4, 22);
+            this.tabPeptideRatios.Name = "tabPeptideRatios";
+            this.tabPeptideRatios.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPeptideRatios.Size = new System.Drawing.Size(1551, 785);
+            this.tabPeptideRatios.TabIndex = 2;
+            this.tabPeptideRatios.Text = "Peptide Ratios";
+            this.tabPeptideRatios.UseVisualStyleBackColor = true;
+            this.tabPeptideRatios.Enter += new System.EventHandler(this.tabPeptideRatios_Enter);
             // 
             // tabTEST
             // 
+            this.tabTEST.Controls.Add(this.listBox1);
+            this.tabTEST.Controls.Add(this.listView1);
+            this.tabTEST.Controls.Add(this.button1);
             this.tabTEST.Controls.Add(this.button3);
             this.tabTEST.Controls.Add(this.button4);
             this.tabTEST.Controls.Add(this.btnTEST2);
@@ -125,10 +156,84 @@
             this.tabTEST.Location = new System.Drawing.Point(4, 22);
             this.tabTEST.Name = "tabTEST";
             this.tabTEST.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTEST.Size = new System.Drawing.Size(1567, 824);
+            this.tabTEST.Size = new System.Drawing.Size(1551, 785);
             this.tabTEST.TabIndex = 1;
             this.tabTEST.Text = "TEST only";
             this.tabTEST.UseVisualStyleBackColor = true;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(1118, 359);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(322, 381);
+            this.listBox1.TabIndex = 13;
+            // 
+            // listView1
+            // 
+            this.listView1.Location = new System.Drawing.Point(1199, 64);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(220, 623);
+            this.listView1.TabIndex = 12;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.List;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(475, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(93, 37);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // mnuPeptideRatios
+            // 
+            this.mnuPeptideRatios.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuRatioSelection});
+            this.mnuPeptideRatios.Location = new System.Drawing.Point(3, 3);
+            this.mnuPeptideRatios.Name = "mnuPeptideRatios";
+            this.mnuPeptideRatios.Size = new System.Drawing.Size(1545, 24);
+            this.mnuPeptideRatios.TabIndex = 0;
+            this.mnuPeptideRatios.Text = "menuStrip1";
+            // 
+            // mnuRatioSelection
+            // 
+            this.mnuRatioSelection.Name = "mnuRatioSelection";
+            this.mnuRatioSelection.Size = new System.Drawing.Size(90, 20);
+            this.mnuRatioSelection.Text = "Shown Ratios";
+            // 
+            // graphPeptideRatios
+            // 
+            this.graphPeptideRatios.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.graphPeptideRatios.Location = new System.Drawing.Point(3, 27);
+            this.graphPeptideRatios.Name = "graphPeptideRatios";
+            this.graphPeptideRatios.ScrollGrace = 0D;
+            this.graphPeptideRatios.ScrollMaxX = 0D;
+            this.graphPeptideRatios.ScrollMaxY = 0D;
+            this.graphPeptideRatios.ScrollMaxY2 = 0D;
+            this.graphPeptideRatios.ScrollMinX = 0D;
+            this.graphPeptideRatios.ScrollMinY = 0D;
+            this.graphPeptideRatios.ScrollMinY2 = 0D;
+            this.graphPeptideRatios.Size = new System.Drawing.Size(1545, 755);
+            this.graphPeptideRatios.TabIndex = 1;
+            // 
+            // stsPeptideRatios
+            // 
+            this.stsPeptideRatios.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.stsStatus});
+            this.stsPeptideRatios.Location = new System.Drawing.Point(3, 760);
+            this.stsPeptideRatios.Name = "stsPeptideRatios";
+            this.stsPeptideRatios.Size = new System.Drawing.Size(1545, 22);
+            this.stsPeptideRatios.TabIndex = 2;
+            this.stsPeptideRatios.Text = "statusStrip1";
+            // 
+            // stsStatus
+            // 
+            this.stsStatus.Name = "stsStatus";
+            this.stsStatus.Size = new System.Drawing.Size(22, 17);
+            this.stsStatus.Text = "Ok";
             // 
             // MainForm
             // 
@@ -136,11 +241,18 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1559, 811);
             this.Controls.Add(this.tabMainForm);
+            this.MainMenuStrip = this.mnuPeptideRatios;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TrackIN";
             this.tabMainForm.ResumeLayout(false);
+            this.tabPeptideRatios.ResumeLayout(false);
+            this.tabPeptideRatios.PerformLayout();
             this.tabTEST.ResumeLayout(false);
+            this.mnuPeptideRatios.ResumeLayout(false);
+            this.mnuPeptideRatios.PerformLayout();
+            this.stsPeptideRatios.ResumeLayout(false);
+            this.stsPeptideRatios.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -155,6 +267,15 @@
         private System.Windows.Forms.TabControl tabMainForm;
         private System.Windows.Forms.TabPage tabHomePage;
         private System.Windows.Forms.TabPage tabTEST;
+        private System.Windows.Forms.TabPage tabPeptideRatios;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.MenuStrip mnuPeptideRatios;
+        private System.Windows.Forms.ToolStripMenuItem mnuRatioSelection;
+        private ZedGraph.ZedGraphControl graphPeptideRatios;
+        private System.Windows.Forms.StatusStrip stsPeptideRatios;
+        private System.Windows.Forms.ToolStripStatusLabel stsStatus;
     }
 }
 
