@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8EEF4590-74DE-4AB2-9E2A-E5FAD49C3ADC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>TrackIN</RootNamespace>
+    <RootNamespace>WashU.BatemanLab.MassSpec.TrackIN</RootNamespace>
     <AssemblyName>TrackIN</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -25,7 +25,7 @@
     <TargetCulture>en-US</TargetCulture>
     <ProductName>TrackIN</ProductName>
     <PublisherName>Bateman Lab</PublisherName>
-    <ApplicationRevision>22</ApplicationRevision>
+    <ApplicationRevision>27</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -137,6 +137,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Content Include="..\..\..\pwiz\pwiz_tools\Shared\ProteowizardWrapper\MSFileReader.XRawfile2.SxS.manifest">
       <Link>MSFileReader.XRawfile2.SxS.manifest</Link>

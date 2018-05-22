@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -12,8 +13,11 @@ using WashU.BatemanLab.Common;
 
 namespace WashU.BatemanLab.MassSpec.TrackIN
 {
+    
     partial class MainForm
     {
+        
+        private string _defaultPeptideRatioName = Properties.Settings.Default.PeptideRatio;
         private Graph _graphPeptideRatios;
         private AnalysisResults _analysisResults;
         private SkylineToolClient _toolClient;
@@ -62,9 +66,12 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                 mnuItem.Click += new EventHandler(DynamicMenuItemClicked);
 
+                if (variant.Item3 == _defaultPeptideRatioName) mnuItem.Checked = true;
+
                 mnuItems.Add(mnuItem);
-                
             }
+            if (mnuRatioSelection.DropDownItems.Cast<ToolStripMenuItem>().Where(m => m.Checked == true).Count() < 1)
+                mnuRatioSelection.DropDownItems.Cast<ToolStripMenuItem>().FirstOrDefault().Checked = true;
         }
 
         private void DynamicMenuItemClicked(object sender, EventArgs e)
@@ -76,10 +83,11 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
         private void ActivatePeptideRatiosTab()
         {
+
             if (IsConnectedToSkylineDoc && !HasPeptideRatiosTabActivated)
             {
                 BuildPeptideRatiosMenuStrips();
-                _graphPeptideRatios = new Graph(graphPeptideRatios, "MS Runs", "Peptide Ratio");
+                _graphPeptideRatios = new RatioGraph(graphPeptideRatios, "MS Runs", "Peptide Ratio");
                 BuildPeptideRatiosGraph();
                 HasPeptideRatiosTabActivated = true;
             }
@@ -93,6 +101,11 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
             var graphPane = this.graphPeptideRatios.GraphPane;
             graphPane.CurveList.Clear();
+
+            Color[] graphColors = new Color[] { Color.Red, Color.Blue, Color.Green, Color.Gray };
+
+            Queue<Color> queColors = new Queue<Color>(graphColors);
+            
 
             var PeptideList = reportPeptideRatios.Cells.Where(p => p[3] != null).Select(p => p[3]).Distinct();
 
@@ -132,7 +145,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                 if (SelectedRatios.Contains(ratioVariant.RatioName))
                 {
-                    graphPane.AddBar(ratioVariant.RatioName, null, Ratios.Select(r => r.PeptideRatio).ToArray(), Color.Green);
+                    graphPane.AddBar(ratioVariant.RatioName, null, Ratios.Select(r => r.PeptideRatio).ToArray(), queColors.Dequeue());
 
                     graphPane.XAxis.Scale.TextLabels = Ratios.Select(f => (f.FileName as String).Substring(1, 25)).ToArray();
                 }

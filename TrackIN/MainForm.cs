@@ -167,6 +167,14 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         {
             ActivatePeptideRatiosTab();
         }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Properties.Settings.Default.PeptideRatio != _defaultPeptideRatioName)
+                Properties.Settings.Default.PeptideRatio = _defaultPeptideRatioName;
+
+            Properties.Settings.Default.Save();
+        }
     }
 }
   

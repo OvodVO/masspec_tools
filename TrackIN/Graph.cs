@@ -29,6 +29,14 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             pane.YAxis.Title.Text = yLabel;
             pane.YAxis.MinorTic.IsOpposite = false;
             pane.YAxis.MajorTic.IsOpposite = false;
+        }
+    }
+
+    public class RatioGraph : Graph
+    {
+        public RatioGraph(ZedGraphControl graphControl, string xLabel, string yLabel)
+            : base(graphControl, xLabel, yLabel)
+        {
 
         }
     }

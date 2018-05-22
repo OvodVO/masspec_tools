@@ -37,20 +37,20 @@
             this.tabMainForm = new System.Windows.Forms.TabControl();
             this.tabHomePage = new System.Windows.Forms.TabPage();
             this.tabPeptideRatios = new System.Windows.Forms.TabPage();
+            this.stsPeptideRatios = new System.Windows.Forms.StatusStrip();
+            this.stsStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.graphPeptideRatios = new ZedGraph.ZedGraphControl();
+            this.mnuPeptideRatios = new System.Windows.Forms.MenuStrip();
+            this.mnuRatioSelection = new System.Windows.Forms.ToolStripMenuItem();
             this.tabTEST = new System.Windows.Forms.TabPage();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.button1 = new System.Windows.Forms.Button();
-            this.mnuPeptideRatios = new System.Windows.Forms.MenuStrip();
-            this.mnuRatioSelection = new System.Windows.Forms.ToolStripMenuItem();
-            this.graphPeptideRatios = new ZedGraph.ZedGraphControl();
-            this.stsPeptideRatios = new System.Windows.Forms.StatusStrip();
-            this.stsStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabMainForm.SuspendLayout();
             this.tabPeptideRatios.SuspendLayout();
-            this.tabTEST.SuspendLayout();
-            this.mnuPeptideRatios.SuspendLayout();
             this.stsPeptideRatios.SuspendLayout();
+            this.mnuPeptideRatios.SuspendLayout();
+            this.tabTEST.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnTEST
@@ -124,7 +124,7 @@
             this.tabHomePage.Location = new System.Drawing.Point(4, 22);
             this.tabHomePage.Name = "tabHomePage";
             this.tabHomePage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabHomePage.Size = new System.Drawing.Size(1567, 824);
+            this.tabHomePage.Size = new System.Drawing.Size(1551, 785);
             this.tabHomePage.TabIndex = 0;
             this.tabHomePage.Text = "Home Page";
             this.tabHomePage.UseVisualStyleBackColor = true;
@@ -142,6 +142,53 @@
             this.tabPeptideRatios.Text = "Peptide Ratios";
             this.tabPeptideRatios.UseVisualStyleBackColor = true;
             this.tabPeptideRatios.Enter += new System.EventHandler(this.tabPeptideRatios_Enter);
+            // 
+            // stsPeptideRatios
+            // 
+            this.stsPeptideRatios.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.stsStatus});
+            this.stsPeptideRatios.Location = new System.Drawing.Point(3, 760);
+            this.stsPeptideRatios.Name = "stsPeptideRatios";
+            this.stsPeptideRatios.Size = new System.Drawing.Size(1545, 22);
+            this.stsPeptideRatios.TabIndex = 2;
+            this.stsPeptideRatios.Text = "statusStrip1";
+            // 
+            // stsStatus
+            // 
+            this.stsStatus.Name = "stsStatus";
+            this.stsStatus.Size = new System.Drawing.Size(22, 17);
+            this.stsStatus.Text = "Ok";
+            // 
+            // graphPeptideRatios
+            // 
+            this.graphPeptideRatios.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.graphPeptideRatios.Location = new System.Drawing.Point(3, 27);
+            this.graphPeptideRatios.Name = "graphPeptideRatios";
+            this.graphPeptideRatios.ScrollGrace = 0D;
+            this.graphPeptideRatios.ScrollMaxX = 0D;
+            this.graphPeptideRatios.ScrollMaxY = 0D;
+            this.graphPeptideRatios.ScrollMaxY2 = 0D;
+            this.graphPeptideRatios.ScrollMinX = 0D;
+            this.graphPeptideRatios.ScrollMinY = 0D;
+            this.graphPeptideRatios.ScrollMinY2 = 0D;
+            this.graphPeptideRatios.Size = new System.Drawing.Size(1545, 755);
+            this.graphPeptideRatios.TabIndex = 1;
+            // 
+            // mnuPeptideRatios
+            // 
+            this.mnuPeptideRatios.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuRatioSelection});
+            this.mnuPeptideRatios.Location = new System.Drawing.Point(3, 3);
+            this.mnuPeptideRatios.Name = "mnuPeptideRatios";
+            this.mnuPeptideRatios.Size = new System.Drawing.Size(1545, 24);
+            this.mnuPeptideRatios.TabIndex = 0;
+            this.mnuPeptideRatios.Text = "menuStrip1";
+            // 
+            // mnuRatioSelection
+            // 
+            this.mnuRatioSelection.Name = "mnuRatioSelection";
+            this.mnuRatioSelection.Size = new System.Drawing.Size(90, 20);
+            this.mnuRatioSelection.Text = "Shown Ratios";
             // 
             // tabTEST
             // 
@@ -188,53 +235,6 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // mnuPeptideRatios
-            // 
-            this.mnuPeptideRatios.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuRatioSelection});
-            this.mnuPeptideRatios.Location = new System.Drawing.Point(3, 3);
-            this.mnuPeptideRatios.Name = "mnuPeptideRatios";
-            this.mnuPeptideRatios.Size = new System.Drawing.Size(1545, 24);
-            this.mnuPeptideRatios.TabIndex = 0;
-            this.mnuPeptideRatios.Text = "menuStrip1";
-            // 
-            // mnuRatioSelection
-            // 
-            this.mnuRatioSelection.Name = "mnuRatioSelection";
-            this.mnuRatioSelection.Size = new System.Drawing.Size(90, 20);
-            this.mnuRatioSelection.Text = "Shown Ratios";
-            // 
-            // graphPeptideRatios
-            // 
-            this.graphPeptideRatios.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.graphPeptideRatios.Location = new System.Drawing.Point(3, 27);
-            this.graphPeptideRatios.Name = "graphPeptideRatios";
-            this.graphPeptideRatios.ScrollGrace = 0D;
-            this.graphPeptideRatios.ScrollMaxX = 0D;
-            this.graphPeptideRatios.ScrollMaxY = 0D;
-            this.graphPeptideRatios.ScrollMaxY2 = 0D;
-            this.graphPeptideRatios.ScrollMinX = 0D;
-            this.graphPeptideRatios.ScrollMinY = 0D;
-            this.graphPeptideRatios.ScrollMinY2 = 0D;
-            this.graphPeptideRatios.Size = new System.Drawing.Size(1545, 755);
-            this.graphPeptideRatios.TabIndex = 1;
-            // 
-            // stsPeptideRatios
-            // 
-            this.stsPeptideRatios.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.stsStatus});
-            this.stsPeptideRatios.Location = new System.Drawing.Point(3, 760);
-            this.stsPeptideRatios.Name = "stsPeptideRatios";
-            this.stsPeptideRatios.Size = new System.Drawing.Size(1545, 22);
-            this.stsPeptideRatios.TabIndex = 2;
-            this.stsPeptideRatios.Text = "statusStrip1";
-            // 
-            // stsStatus
-            // 
-            this.stsStatus.Name = "stsStatus";
-            this.stsStatus.Size = new System.Drawing.Size(22, 17);
-            this.stsStatus.Text = "Ok";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -245,14 +245,15 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TrackIN";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.tabMainForm.ResumeLayout(false);
             this.tabPeptideRatios.ResumeLayout(false);
             this.tabPeptideRatios.PerformLayout();
-            this.tabTEST.ResumeLayout(false);
-            this.mnuPeptideRatios.ResumeLayout(false);
-            this.mnuPeptideRatios.PerformLayout();
             this.stsPeptideRatios.ResumeLayout(false);
             this.stsPeptideRatios.PerformLayout();
+            this.mnuPeptideRatios.ResumeLayout(false);
+            this.mnuPeptideRatios.PerformLayout();
+            this.tabTEST.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
