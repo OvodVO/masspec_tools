@@ -23,7 +23,11 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             pane.XAxis.MinorTic.IsOpposite = false;
             pane.XAxis.MajorTic.IsOpposite = false;
             pane.XAxis.MajorTic.IsAllTics = false;
-            pane.XAxis.Scale.FontSpec.Angle = 90;
+            pane.XAxis.Scale.FontSpec.Angle = 65;
+
+            //test
+            pane.XAxis.Scale.FontSpec.Size = 10;
+
             pane.XAxis.Scale.Align = AlignP.Inside;
 
             pane.YAxis.Title.Text = yLabel;

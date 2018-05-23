@@ -18,5 +18,10 @@ namespace WashU.BatemanLab.Common
             double.TryParse(s, out result);
             return result;
         }
+
+        public static double DictionaryTryGetValue()
+        {
+            return 0;
+        }
     }
 }

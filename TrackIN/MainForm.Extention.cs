@@ -18,6 +18,13 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
     {
         
         private string _defaultPeptideRatioName = Properties.Settings.Default.PeptideRatio;
+        private Dictionary<string, double> _peptideIntStdConcentrations = new Dictionary<string, double>()
+            {
+                {"Aβ42", 1},
+                {"Aβ40", 10},
+                {"Aβ38", 1.5},
+                {"Aβ[Total]", 12.5}
+            };
         private Graph _graphPeptideRatios;
         private AnalysisResults _analysisResults;
         private SkylineToolClient _toolClient;
@@ -109,14 +116,17 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
             var PeptideList = reportPeptideRatios.Cells.Where(p => p[3] != null).Select(p => p[3]).Distinct();
 
-            var PossibleRatios = from peptideN in PeptideList
-                                 from peptideD in PeptideList
+            var PossibleRatios = from peptideN in PeptideList.Select(p => Peptide.GetPeptideShortName(p))
+                                 from peptideD in PeptideList.Select(p => Peptide.GetPeptideShortName(p))
                                  where peptideN != peptideD
+                                       && _peptideIntStdConcentrations.ContainsKey(peptideN)
+                                       && _peptideIntStdConcentrations.ContainsKey(peptideD)
                                  select new
                                  {
-                                     Nominator = Peptide.GetPeptideShortName(peptideN),
-                                     Denominator = Peptide.GetPeptideShortName(peptideD),
-                                     RatioName = String.Format("{0}/{1}", Peptide.GetPeptideShortName(peptideN), Peptide.GetPeptideShortName(peptideD))
+                                     Nominator = peptideN,
+                                     Denominator = peptideD,
+                                     RatioName = String.Format("{0}/{1}", peptideN, peptideD),
+                                     CorCoef = _peptideIntStdConcentrations[peptideN] / _peptideIntStdConcentrations[peptideD]
                                  };
 
             var SelectedRatios = from mnuItem in mnuRatioSelection.DropDownItems.Cast<ToolStripMenuItem>()
@@ -140,14 +150,14 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                                              (n, d) => new
                                              {
                                                  FileName = n[0],
-                                                 PeptideRatio = ConvertUtil.doubleTryParse(n[4]) / ConvertUtil.doubleTryParse(d[4])
+                                                 PeptideRatio = ConvertUtil.doubleTryParse(n[4]) / ConvertUtil.doubleTryParse(d[4]) * ratioVariant.CorCoef
                                              });
 
                 if (SelectedRatios.Contains(ratioVariant.RatioName))
                 {
                     graphPane.AddBar(ratioVariant.RatioName, null, Ratios.Select(r => r.PeptideRatio).ToArray(), queColors.Dequeue());
 
-                    graphPane.XAxis.Scale.TextLabels = Ratios.Select(f => (f.FileName as String).Substring(1, 25)).ToArray();
+                    graphPane.XAxis.Scale.TextLabels = Ratios.Select(f => AnalysisResults.GetMSRunShorten(f.FileName, "0, 5")).ToArray();
                 }
             }
 

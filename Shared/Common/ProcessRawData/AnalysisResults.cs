@@ -11,6 +11,30 @@ namespace WashU.BatemanLab.MassSpec.Tools.AnalysisResults
     {
         private List<MsDataFileImplExtAgg> _analysisResults;
 
+        public static string GetMSRunShorten(string msRunName, string format)
+        {
+            string result = "";
+            char separator = '_';
+
+            string[] msRunSplit = msRunName.Split('_');
+            string[] formatSplit = format.Split(',');
+            int count = 0;
+            for (int i = 0; i < formatSplit.Length; i++)
+            {
+                int index;
+                if (int.TryParse(formatSplit[i], out index))
+                {
+                    if (index < msRunSplit.Length)
+                    {
+                        if (count > 0 ) { result += separator; }
+                        result += msRunSplit[index];
+                        count++;
+                    }
+                };
+            }
+            return result.Replace(".raw", "");
+        }
+
         public List<MsDataFileImplExtAgg> Results
         {
             get { return _analysisResults; }
