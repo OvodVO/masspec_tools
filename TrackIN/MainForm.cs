@@ -28,7 +28,6 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         public MainForm(string[] args) : this()
         {
             GetSkylineArgs(args);
-            MessageBox.Show(_skylineConnection);
             _toolClient = new SkylineTool.SkylineToolClient(_skylineConnection, "TrackIN");
             IsConnectedToSkylineDoc = true;
         }
@@ -212,6 +211,11 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                 MessageBox.Show(arg);
             }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            CreateSkylineLinker();
         }
     }
 }

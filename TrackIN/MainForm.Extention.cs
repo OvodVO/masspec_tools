@@ -2,10 +2,15 @@
 using System.Configuration;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Deployment;
+using System.Deployment.Application;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using SkylineTool;
 using WashU.BatemanLab.MassSpec.Tools.AnalysisResults;
 using WashU.BatemanLab.MassSpec.Tools.AnalysisTargets;
@@ -13,11 +18,11 @@ using WashU.BatemanLab.Common;
 
 namespace WashU.BatemanLab.MassSpec.TrackIN
 {
-    
+
     partial class MainForm
     {
-        
-        private string _defaultPeptideRatioName = Properties.Settings.Default.PeptideRatio;
+
+        private string _defaultPeptideRatioName; // = Properties.Settings.Default.PeptideRatio;
         private Dictionary<string, double> _peptideIntStdConcentrations = new Dictionary<string, double>()
             {
                 {"Aβ42", 1},
@@ -47,14 +52,14 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         private void PlotChromatograms(ZedGraph.ZedGraphControl graph)
         {
             foreach (var msrun in _analysisResults.Results)
-            foreach (var chromatogram in msrun.Chromatograms)
-            {
-                var ChromLine = graph.GraphPane.AddCurve(String.Format("{0} ({1}): [{2}] - {3}", chromatogram.Peptide, chromatogram.IsotopeLabelType, chromatogram.PrecursorMZ, "PosMatch"),
-                                                                       chromatogram.RetentionTimes,
-                                                                       chromatogram.SumOfPositiveMatch,
-                                                                       Color.Green);
-                ChromLine.Symbol.IsVisible = false;
-            }
+                foreach (var chromatogram in msrun.Chromatograms)
+                {
+                    var ChromLine = graph.GraphPane.AddCurve(String.Format("{0} ({1}): [{2}] - {3}", chromatogram.Peptide, chromatogram.IsotopeLabelType, chromatogram.PrecursorMZ, "PosMatch"),
+                                                                           chromatogram.RetentionTimes,
+                                                                           chromatogram.SumOfPositiveMatch,
+                                                                           Color.Green);
+                    ChromLine.Symbol.IsVisible = false;
+                }
 
             graph.AxisChange();
             graph.Refresh();
@@ -69,7 +74,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             var PossibleRatios = from peptideN in PeptideList
                                  from peptideD in PeptideList
                                  where peptideN != peptideD
-                                 select Tuple.Create (Peptide.GetPeptideShortName(peptideN),
+                                 select Tuple.Create(Peptide.GetPeptideShortName(peptideN),
                                                       Peptide.GetPeptideShortName(peptideD),
                                                       String.Format("{0}/{1}", Peptide.GetPeptideShortName(peptideN), Peptide.GetPeptideShortName(peptideD)));
             return PossibleRatios.ToList();
@@ -79,7 +84,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         {
             var mnuItems = mnuRatioSelection.DropDownItems;
             mnuItems.Clear();
-            
+
             foreach (var variant in GetPossibleRatios())
             {
                 var mnuItem = new ToolStripMenuItem(variant.Item3);
@@ -90,8 +95,9 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                 mnuItems.Add(mnuItem);
             }
-            if (mnuRatioSelection.DropDownItems.Cast<ToolStripMenuItem>().Where(m => m.Checked == true).Count() < 1)
-                mnuRatioSelection.DropDownItems.Cast<ToolStripMenuItem>().FirstOrDefault().Checked = true;
+
+            //if (mnuRatioSelection.DropDownItems.Cast<ToolStripMenuItem>().Where(m => m.Checked == true).Count() < 1)
+            //  mnuRatioSelection.DropDownItems.Cast<ToolStripMenuItem>().FirstOrDefault().Checked = true;
         }
 
         private void DynamicMenuItemClicked(object sender, EventArgs e)
@@ -103,6 +109,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
         private void ActivatePeptideRatiosTab()
         {
+            _defaultPeptideRatioName = Properties.Settings.Default.PeptideRatio;
 
             if (IsConnectedToSkylineDoc && !HasPeptideRatiosTabActivated)
             {
@@ -125,7 +132,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             Color[] graphColors = new Color[] { Color.Red, Color.Blue, Color.Green, Color.Gray };
 
             Queue<Color> queColors = new Queue<Color>(graphColors);
-            
+
 
             var PeptideList = reportPeptideRatios.Cells.Where(p => p[3] != null).Select(p => p[3]).Distinct();
 
@@ -179,6 +186,31 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
             graph.AxisChange();
             graph.Refresh();
+        }
+
+        public static void CreateSkylineLinker()
+        {
+            string linkFileName = "TrackIN";
+            string linkExtention = "cmd";
+            string publisherName = "Bateman Lab";
+            List<string> commands = new List<string>();
+
+            var linkFilePath = String.Format("{0}\\{1}\\{2}.{3}",
+                                              Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                                              linkFileName,
+                                              linkFileName, linkExtention);
+
+            var command_1 = String.Format("\"{0}\\{1}\\{2}.appref-ms\" %*",
+                                          Environment.GetFolderPath(Environment.SpecialFolder.Programs),
+                                          publisherName,
+                                          linkFileName);
+            commands.Add(command_1);
+            string path = Path.GetDirectoryName(linkFilePath);
+            if ( !Directory.Exists(path) )
+            {
+                Directory.CreateDirectory(path);
+            }
+            File.WriteAllLines(linkFilePath, commands);
         }
 
     }
