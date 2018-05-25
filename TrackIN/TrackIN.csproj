@@ -25,7 +25,7 @@
     <TargetCulture>en-US</TargetCulture>
     <ProductName>TrackIN</ProductName>
     <PublisherName>Bateman Lab</PublisherName>
-    <ApplicationRevision>27</ApplicationRevision>
+    <ApplicationRevision>41</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>

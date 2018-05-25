@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Deployment.Application;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,15 +17,38 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            char[] argsDelimiter = { '*' };
 
             if (args.Length > 0)
             {
-                Application.Run(new MainForm(args));
+                string[] cmdArgs = SplitArgs(args[0], argsDelimiter);
+                Application.Run(new MainForm(cmdArgs));
             }
             else
             {
-                Application.Run(new MainForm());
+                if (ApplicationDeployment.IsNetworkDeployed)
+                {
+                    var activationData = AppDomain.CurrentDomain.SetupInformation.ActivationArguments.ActivationData[0];
+                    string[] activationArgs = SplitArgs(activationData, argsDelimiter);
+                    if (activationArgs.Length > 0)
+                    {
+                        Application.Run(new MainForm(activationArgs));
+                    }
+                    else
+                    {
+                        Application.Run(new MainForm());
+                    }
+                }
+                else
+                {
+                    Application.Run(new MainForm());
+                }
             }
+        }
+
+        public static string[] SplitArgs(string combinedArgs, char[] delimiter)
+        {
+            return combinedArgs.Split(delimiter, StringSplitOptions.None);
         }
     }
 }

@@ -28,9 +28,22 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         private Graph _graphPeptideRatios;
         private AnalysisResults _analysisResults;
         private SkylineToolClient _toolClient;
+        private string _skylineConnection
+        {
+            get { return SkylineArgs["SkylineConnection"]; }
+            set { SkylineArgs["SkylineConnection"] = value; }
+        }
+
+        public Dictionary<string, string> SkylineArgs;
         private bool HasPeptideRatiosTabActivated = false;
         public bool IsConnectedToSkylineDoc { get; set; } = false;
-        
+
+        public void GetSkylineArgs(string[] args)
+        {
+            char[] separator = { '=' };
+            SkylineArgs = args.Select(a => new { argName = a.Split(separator)[0], argValue = a.Split(separator)[1] }).ToDictionary(di => di.argName, di => di.argValue);
+        }
+
         private void PlotChromatograms(ZedGraph.ZedGraphControl graph)
         {
             foreach (var msrun in _analysisResults.Results)

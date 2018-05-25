@@ -25,14 +25,15 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             _analysisResults = new AnalysisResults();
         }
 
-        public MainForm(string[] args):this()
+        public MainForm(string[] args) : this()
         {
-            //Do some checks here for connection
-            _toolClient = new SkylineTool.SkylineToolClient(args[0], "TrackIN");
+            GetSkylineArgs(args);
+            MessageBox.Show(_skylineConnection);
+            _toolClient = new SkylineTool.SkylineToolClient(_skylineConnection, "TrackIN");
             IsConnectedToSkylineDoc = true;
         }
 
-            MsDataFileImplExtAgg _msdatafile; 
+        MsDataFileImplExtAgg _msdatafile;
 
 
         private void btnTEST_Click(object sender, EventArgs e)
@@ -119,7 +120,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                                      Denominator = Peptide.GetPeptideShortName(peptideD),
                                      RatioName = String.Format("{0}/{1}", Peptide.GetPeptideShortName(peptideN), Peptide.GetPeptideShortName(peptideD))
                                  };
-            
+
             var GrouppedByPeptide = from reportRow in reportPeptideRatios.Cells
                                     group reportRow by Peptide.GetPeptideShortName(reportRow[3]) into GrouppedRows
                                     select new { Peptide = GrouppedRows.Key, Rows = GrouppedRows };
@@ -131,24 +132,24 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                 var Denominators = GrouppedByPeptide.Where(p => p.Peptide == ratioVariant.Denominator).Single().Rows.Where(r => r[4] != null).Select(r => r);
 
-                var Ratios = Nominators.Join(Denominators, 
+                var Ratios = Nominators.Join(Denominators,
                                              n => n[0], d => d[0],
                                              (n, d) => new
                                              {
                                                  FileName = n[0],
                                                  PeptideRatio = ConvertUtil.doubleTryParse(n[4]) / ConvertUtil.doubleTryParse(d[4])
-                                             }) ;
-                
+                                             });
+
                 foreach (var ratio in Ratios)
                 {
                     listBox1.Items.Add(String.Format("Ratio {0}: File - {1}: Value: {2};", ratioVariant.RatioName, ratio.FileName, ratio.PeptideRatio));
                 }
 
-                if ( ratioVariant.RatioName == "Aβ42/Aβ40")
+                if (ratioVariant.RatioName == "Aβ42/Aβ40")
                 {
                     zedGraphControlTest.GraphPane.AddBar(ratioVariant.RatioName, null, Ratios.Select(r => r.PeptideRatio).ToArray(), Color.Green);
 
-                        zedGraphControlTest.GraphPane.XAxis.Scale.TextLabels = Ratios.Select(f => (f.FileName as String).Substring(10, 10)).ToArray();
+                    zedGraphControlTest.GraphPane.XAxis.Scale.TextLabels = Ratios.Select(f => (f.FileName as String).Substring(10, 10)).ToArray();
                 }
 
             }
@@ -174,6 +175,43 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 Properties.Settings.Default.PeptideRatio = _defaultPeptideRatioName;
 
             Properties.Settings.Default.Save();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(Environment.GetFolderPath(Environment.SpecialFolder.Programs));
+            sb.Append("\\");
+            //publisher name is Nightbird
+            sb.Append("Bateman Lab");
+            sb.Append("\\");
+            //product name is TestRunningWithArgs
+            sb.Append("TrackIN.appref-ms ");
+            string shortcutPath = sb.ToString();
+
+            string argsToPass = "duzhe,klassno,ha,ho";
+
+            System.Diagnostics.Process.Start(shortcutPath, argsToPass);
+
+            MessageBox.Show(shortcutPath);
+            //string[] activationData =
+            //    AppDomain.CurrentDomain.SetupInformation.ActivationArguments.ActivationData;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string[] activationData =
+                  AppDomain.CurrentDomain.SetupInformation.ActivationArguments.ActivationData;
+
+            char[] myComma = { ',' };
+            foreach (string arg in activationData)
+            {
+                //string[] myList = activationData[0].Split(myComma, StringSplitOptions.RemoveEmptyEntries);
+
+//                foreach (string)
+
+                MessageBox.Show(arg);
+            }
         }
     }
 }
