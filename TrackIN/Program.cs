@@ -15,35 +15,41 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         [STAThread]
         static void Main(string[] args)
         {
+            MainForm mainForm = null;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             char[] argsDelimiter = { '*' };
-
-            if (args.Length > 0)
+            if (ApplicationDeployment.IsNetworkDeployed)
             {
-                string[] cmdArgs = SplitArgs(args[0], argsDelimiter);
-                Application.Run(new MainForm(cmdArgs));
-            }
-            else
-            {
-                if (ApplicationDeployment.IsNetworkDeployed)
+                if (AppDomain.CurrentDomain.SetupInformation.ActivationArguments != null)
                 {
-                    var activationData = AppDomain.CurrentDomain.SetupInformation.ActivationArguments.ActivationData[0];
-                    string[] activationArgs = SplitArgs(activationData, argsDelimiter);
-                    if (activationArgs.Length > 0)
+                    if (AppDomain.CurrentDomain.SetupInformation.ActivationArguments.ActivationData != null
+                        && AppDomain.CurrentDomain.SetupInformation.ActivationArguments.ActivationData.Length > 0)
                     {
-                        Application.Run(new MainForm(activationArgs));
+                        var activationData = AppDomain.CurrentDomain.SetupInformation.ActivationArguments.ActivationData[0];
+                        string[] activationArgs = SplitArgs(activationData, argsDelimiter);
+
+                        mainForm = new MainForm(activationArgs);
                     }
                     else
                     {
-                        Application.Run(new MainForm());
+                        mainForm = new MainForm();
                     }
+                }
+            }
+            else
+            {
+                if (args.Length > 0)
+                {
+                    string[] cmdArgs = SplitArgs(args[0], argsDelimiter);
+                    mainForm = new MainForm(cmdArgs);
                 }
                 else
                 {
-                    Application.Run(new MainForm());
+                    mainForm = new MainForm();
                 }
             }
+            Application.Run(mainForm);
         }
 
         public static string[] SplitArgs(string combinedArgs, char[] delimiter)
