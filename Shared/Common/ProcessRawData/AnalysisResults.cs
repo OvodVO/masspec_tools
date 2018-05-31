@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WashU.BatemanLab.MassSpec.Tools.AnalysisTargets;
 using WashU.BatemanLab.MassSpec.Tools.ProcessRawData;
 
 namespace WashU.BatemanLab.MassSpec.Tools.AnalysisResults
@@ -59,6 +60,14 @@ namespace WashU.BatemanLab.MassSpec.Tools.AnalysisResults
             {
                 msrun.GetMsDataSpectrums();
                 msrun.GetChromatograms(0.1);
+            }
+        }
+        public void PerformAnalysis(List<Protein> targets)
+        {
+            foreach (MsDataFileImplExtAgg msrun in _analysisResults)
+            {
+                msrun.GetMsDataSpectrums();
+                msrun.GetChromatograms(targets, 0.1);
             }
         }
     }

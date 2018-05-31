@@ -73,6 +73,10 @@ namespace WashU.BatemanLab.MassSpec.Tools.AnalysisTargets
     {
         public string Name;
         public List<Peptide> Peptides;
+        public Protein()
+        {
+            Peptides = new List<Peptide>();
+        }
     }
 
     public class Peptide
@@ -101,6 +105,10 @@ namespace WashU.BatemanLab.MassSpec.Tools.AnalysisTargets
         public string Name;
         public string Sequence;
         public List<Precursor> Precursors { get; set; }
+        public Peptide()
+        {
+            Precursors = new List<Precursor>();
+        }
     }
 
     public class Precursor
@@ -108,6 +116,10 @@ namespace WashU.BatemanLab.MassSpec.Tools.AnalysisTargets
         public string IsotopeLabelType;
         public double PrecursorMZ { get; set; }
         public List<double> Products { get; set; }
+        public Precursor()
+        {
+            Products = new List<double>();
+        }
     }
 
     public class Chromatogram

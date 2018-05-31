@@ -43,12 +43,13 @@
             this.mnuPeptideRatios = new System.Windows.Forms.MenuStrip();
             this.mnuRatioSelection = new System.Windows.Forms.ToolStripMenuItem();
             this.tabTEST = new System.Windows.Forms.TabPage();
+            this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.button1 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.tabMainForm.SuspendLayout();
             this.tabPeptideRatios.SuspendLayout();
             this.stsPeptideRatios.SuspendLayout();
@@ -89,7 +90,7 @@
             this.zedGraphControlTest.ScrollMinX = 0D;
             this.zedGraphControlTest.ScrollMinY = 0D;
             this.zedGraphControlTest.ScrollMinY2 = 0D;
-            this.zedGraphControlTest.Size = new System.Drawing.Size(1010, 463);
+            this.zedGraphControlTest.Size = new System.Drawing.Size(1031, 706);
             this.zedGraphControlTest.TabIndex = 7;
             // 
             // button3
@@ -100,6 +101,7 @@
             this.button3.TabIndex = 8;
             this.button3.Text = "button3";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
@@ -195,6 +197,7 @@
             // 
             // tabTEST
             // 
+            this.tabTEST.Controls.Add(this.button7);
             this.tabTEST.Controls.Add(this.button6);
             this.tabTEST.Controls.Add(this.button5);
             this.tabTEST.Controls.Add(this.button2);
@@ -213,6 +216,16 @@
             this.tabTEST.TabIndex = 1;
             this.tabTEST.Text = "TEST only";
             this.tabTEST.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(1007, 21);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(193, 23);
+            this.button6.TabIndex = 16;
+            this.button6.Text = "Make a link for Skyline";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button5
             // 
@@ -237,16 +250,16 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(1118, 359);
+            this.listBox1.Location = new System.Drawing.Point(1080, 64);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(322, 381);
+            this.listBox1.Size = new System.Drawing.Size(463, 706);
             this.listBox1.TabIndex = 13;
             // 
             // listView1
             // 
-            this.listView1.Location = new System.Drawing.Point(1199, 64);
+            this.listView1.Location = new System.Drawing.Point(1245, 12);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(220, 623);
+            this.listView1.Size = new System.Drawing.Size(220, 38);
             this.listView1.TabIndex = 12;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.List;
@@ -261,15 +274,15 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button6
+            // button7
             // 
-            this.button6.Location = new System.Drawing.Point(868, 27);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(193, 23);
-            this.button6.TabIndex = 16;
-            this.button6.Text = "Make a link for Skyline";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.button7.Location = new System.Drawing.Point(832, 20);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 17;
+            this.button7.Text = "button7";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // MainForm
             // 
@@ -316,6 +329,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
     }
 }
 

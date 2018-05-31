@@ -64,7 +64,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             watch.Reset();
             watch.Start();
 
-            _msdatafile.GetChromatograms(Toleranse);
+            _msdatafile.GetChromatograms(GetProteinsFromSkyline(), Toleranse);
 
             TimesToPerform[2] = TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds);
 
@@ -97,7 +97,8 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             if (openDlg.ShowDialog() == DialogResult.OK)
             {
                 _analysisResults.LoadAnalysisResults(openDlg.FileNames);
-                _analysisResults.PerformAnalysis();
+                //_analysisResults.PerformAnalysis();
+                _analysisResults.PerformAnalysis(GetProteinsFromSkyline());
             }
 
             PlotChromatograms(zedGraphControlTest);
@@ -216,6 +217,45 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         private void button6_Click(object sender, EventArgs e)
         {
             CreateSkylineLinker();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            List<Protein> test = GetProteinsFromSkyline();
+
+            foreach (var testpro in test)
+            {
+                MessageBox.Show(String.Format("Prot - {0}", testpro.Name));
+            }
+            
+
+            var proteins = from prot in test
+                     from pept in prot.Peptides
+                     from prec in pept.Precursors
+                     from prod in prec.Products
+                     select prot;
+
+            foreach (var pr in test)
+                foreach (var pe in pr.Peptides)
+                    foreach (var prec in pe.Precursors)
+                        foreach (var prod in prec.Products)
+                            listBox1.Items.Add(String.Format("Prot - {0}; Pept - {1}; Isotop - {2}; PrecMZ - {3}; ProdMZ - {4}",
+                                                             pr.Name,
+                                                             pe.Name,
+                                                             prec.IsotopeLabelType,
+                                                             prec.PrecursorMZ,
+                                                             prod
+                                                             )
+                                              );
+
+
+
+
         }
     }
 }

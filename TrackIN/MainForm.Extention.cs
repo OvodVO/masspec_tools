@@ -10,7 +10,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using SkylineTool;
 using WashU.BatemanLab.MassSpec.Tools.AnalysisResults;
 using WashU.BatemanLab.MassSpec.Tools.AnalysisTargets;
@@ -96,6 +95,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 mnuItems.Add(mnuItem);
             }
 
+            
             //if (mnuRatioSelection.DropDownItems.Cast<ToolStripMenuItem>().Where(m => m.Checked == true).Count() < 1)
             //  mnuRatioSelection.DropDownItems.Cast<ToolStripMenuItem>().FirstOrDefault().Checked = true;
         }
@@ -213,5 +213,58 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             File.WriteAllLines(linkFilePath, commands);
         }
 
+        private List<Protein> GetProteinsFromSkyline()
+        {
+            var result = new List<Protein>();
+            IReport reportTrackINTargets = _toolClient.GetReport("BLR TrackIN Targets");
+
+            var ProteinsQ =  from reportRow in reportTrackINTargets.Cells
+                             where string.IsNullOrEmpty(reportRow[0]) != true
+                             group reportRow by reportRow[0] into ProteintGroup
+                             select new
+                             {
+                                 Protein = ProteintGroup.Key,
+                                 Peptides = from reportRow in ProteintGroup
+                                            group reportRow by reportRow[1] into PeptideGroup
+                                            select new
+                                            {
+                                                Peptide = PeptideGroup.Key,
+                                                Precursors = from reportRow in PeptideGroup
+                                                             group reportRow by new { Isotope = reportRow[2], Precursor = reportRow[3] } into PrecursorGroup
+                                                             select new
+                                                             {
+                                                                 Isotope = PrecursorGroup.Key.Isotope,
+                                                                 PrecursorMZ = PrecursorGroup.Key.Precursor,
+                                                                 ProductMZ = from reportRow in PrecursorGroup
+                                                                             select reportRow[4]
+                                                             }
+                                            }
+                             };
+            
+            foreach (var prot in ProteinsQ)
+            {
+                Protein protein = new Protein();
+                protein.Name = prot.Protein;
+                foreach (var pept in prot.Peptides)
+                {
+                    Peptide peptide = new Peptide();
+                    peptide.Name = pept.Peptide;
+                    foreach (var prec in pept.Precursors)
+                    {
+                        Precursor precursor = new Precursor();
+                        precursor.IsotopeLabelType = prec.Isotope;
+                        precursor.PrecursorMZ = Convert.ToDouble(prec.PrecursorMZ);
+                        foreach (var prod in prec.ProductMZ)
+                        {
+                            precursor.Products.Add(Convert.ToDouble(prod));
+                        }
+                        peptide.Precursors.Add(precursor);
+                    }
+                    protein.Peptides.Add(peptide);
+                }
+                result.Add(protein);
+            }
+            return result;
+        }
     }
 }
