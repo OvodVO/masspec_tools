@@ -88,20 +88,23 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
         }
 
-        private void btnTEST2_Click(object sender, EventArgs e)
+        private async void btnTEST2_Click(object sender, EventArgs e)
         {
             OpenFileDialog openDlg = new OpenFileDialog();
             openDlg.Filter = "Thermo(*.raw,|*.raw;)";
             openDlg.Multiselect = true;
 
+            var f = GetProteinsFromSkyline();
+
             if (openDlg.ShowDialog() == DialogResult.OK)
             {
-                _analysisResults.LoadAnalysisResults(openDlg.FileNames);
-                //_analysisResults.PerformAnalysis();
-                _analysisResults.PerformAnalysis(GetProteinsFromSkyline());
-            }
+                var t = Task.Factory.StartNew(async () => { await _analysisResults.LoadAnalysisResults(openDlg.FileNames); })
+                    .ContinueWith(async (a) => { await _analysisResults.PerformAnalysis(f); });
 
-            PlotChromatograms(zedGraphControlTest);
+                await t;
+
+                PlotChromatograms(zedGraphControlTest);
+            }
 
         }
 

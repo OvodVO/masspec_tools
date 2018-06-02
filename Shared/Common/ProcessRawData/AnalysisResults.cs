@@ -46,11 +46,12 @@ namespace WashU.BatemanLab.MassSpec.Tools.AnalysisResults
             _analysisResults = new List<MsDataFileImplExtAgg>();
         }
 
-        public void LoadAnalysisResults(string[] msfilesToLoad)
+        public async Task LoadAnalysisResults(string[] msfilesToLoad)
         {           
             foreach (string path in msfilesToLoad)
             {
-                _analysisResults.Add( new MsDataFileImplExtAgg(path) );
+                /*await Task.Factory.StartNew( () => { _analysisResults.Add(new MsDataFileImplExtAgg(path)); } );*/
+                _analysisResults.Add(new MsDataFileImplExtAgg(path));
             }
         }
 
@@ -62,12 +63,14 @@ namespace WashU.BatemanLab.MassSpec.Tools.AnalysisResults
                 msrun.GetChromatograms(0.1);
             }
         }
-        public void PerformAnalysis(List<Protein> targets)
+        public async Task PerformAnalysis(List<Protein> targets)
         {
             foreach (MsDataFileImplExtAgg msrun in _analysisResults)
             {
-                msrun.GetMsDataSpectrums();
-                msrun.GetChromatograms(targets, 0.1);
+                /* await Task.Factory.StartNew(() => { msrun.GetMsDataSpectrums(); })
+                     .ContinueWith( (a) => { msrun.GetChromatograms(targets, 0.1); }); */
+                 msrun.GetMsDataSpectrums();
+                 msrun.GetChromatograms(targets, 0.1);
             }
         }
     }
