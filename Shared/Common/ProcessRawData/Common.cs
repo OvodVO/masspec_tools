@@ -24,4 +24,12 @@ namespace WashU.BatemanLab.Common
             return 0;
         }
     }
+
+  /*  public class ReadAndAnalyzeProgressInfo
+    {
+        public int TotalSpectrums { get; set; }
+        public int ReadSpectrums { get; set; }
+
+        public string ProgressMessage;
+    }*/
 }

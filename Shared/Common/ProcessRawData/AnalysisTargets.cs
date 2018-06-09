@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using pwiz.ProteowizardWrapper;
 
-namespace WashU.BatemanLab.MassSpec.Tools.AnalysisTargets
+namespace WashU.BatemanLab.MassSpec.Tools.Analysis
 {
     public class AnalysisTargets
     {

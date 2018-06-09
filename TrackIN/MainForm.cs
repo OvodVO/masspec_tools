@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SkylineTool;
 using WashU.BatemanLab.MassSpec.Tools.ProcessRawData;
-using WashU.BatemanLab.MassSpec.Tools.AnalysisTargets;
-using WashU.BatemanLab.MassSpec.Tools.AnalysisResults;
+using WashU.BatemanLab.MassSpec.Tools.Analysis;
 using WashU.BatemanLab.Common;
 
 namespace WashU.BatemanLab.MassSpec.TrackIN
@@ -88,24 +87,9 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
         }
 
-        private async void btnTEST2_Click(object sender, EventArgs e)
+        private void btnTEST2_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openDlg = new OpenFileDialog();
-            openDlg.Filter = "Thermo(*.raw,|*.raw;)";
-            openDlg.Multiselect = true;
-
-            var f = GetProteinsFromSkyline();
-
-            if (openDlg.ShowDialog() == DialogResult.OK)
-            {
-                var t = Task.Factory.StartNew(async () => { await _analysisResults.LoadAnalysisResults(openDlg.FileNames); })
-                    .ContinueWith(async (a) => { await _analysisResults.PerformAnalysis(f); });
-
-                await t;
-
-                PlotChromatograms(zedGraphControlTest);
-            }
-
+     
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -236,7 +220,6 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 MessageBox.Show(String.Format("Prot - {0}", testpro.Name));
             }
             
-
             var proteins = from prot in test
                      from pept in prot.Peptides
                      from prec in pept.Precursors
@@ -255,10 +238,23 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                                                              prod
                                                              )
                                               );
+        }
 
+        private void mnuAnalizeFromSkyline_Click(object sender, EventArgs e)
+        {
+            PlotChromatograms(zedGraphControlTest);
+        }
 
-
-
+        private async void mnuNASelectMSRunsToAnalyze_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openDlg = new OpenFileDialog();
+            openDlg.Filter = "Thermo(*.raw,|*.raw;)";
+            openDlg.Multiselect = true;
+            var TargetedProteins = GetProteinsFromSkyline();
+            if (openDlg.ShowDialog() == DialogResult.OK)
+            {
+               await ReadAndAnalyzeSet(openDlg.FileNames);
+            }
         }
     }
 }

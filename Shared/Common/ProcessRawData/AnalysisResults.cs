@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WashU.BatemanLab.MassSpec.Tools.AnalysisTargets;
+using WashU.BatemanLab.Common;
+using pwiz.ProteowizardWrapper;
 using WashU.BatemanLab.MassSpec.Tools.ProcessRawData;
 
-namespace WashU.BatemanLab.MassSpec.Tools.AnalysisResults
+
+namespace WashU.BatemanLab.MassSpec.Tools.Analysis
 {
     public class AnalysisResults
     {
         private List<MsDataFileImplExtAgg> _analysisResults;
+        private AnalysisTargets _analysisTargets;
+        public AnalysisTargets AnalysisTargets { get { return _analysisTargets; } set { _analysisTargets = value; } }
 
         public static string GetMSRunShorten(string msRunName, string format)
         {
@@ -44,34 +48,29 @@ namespace WashU.BatemanLab.MassSpec.Tools.AnalysisResults
         public AnalysisResults()
         {
             _analysisResults = new List<MsDataFileImplExtAgg>();
+            _analysisTargets = new AnalysisTargets();
         }
 
         public async Task LoadAnalysisResults(string[] msfilesToLoad)
         {           
             foreach (string path in msfilesToLoad)
             {
-                /*await Task.Factory.StartNew( () => { _analysisResults.Add(new MsDataFileImplExtAgg(path)); } );*/
                 _analysisResults.Add(new MsDataFileImplExtAgg(path));
             }
         }
 
-        public void PerformAnalysis()
+        public Task<bool> ReadAndAnalyzeMSFile(string path)
         {
-            foreach (MsDataFileImplExtAgg msrun in _analysisResults)
-            {
-                msrun.GetMsDataSpectrums();
-                msrun.GetChromatograms(0.1);
-            }
-        }
-        public async Task PerformAnalysis(List<Protein> targets)
-        {
-            foreach (MsDataFileImplExtAgg msrun in _analysisResults)
-            {
-                /* await Task.Factory.StartNew(() => { msrun.GetMsDataSpectrums(); })
-                     .ContinueWith( (a) => { msrun.GetChromatograms(targets, 0.1); }); */
-                 msrun.GetMsDataSpectrums();
-                 msrun.GetChromatograms(targets, 0.1);
-            }
+            var IsCompleted = false;
+            var c = _analysisResults.Count;
+            var progress = new ReadAndAnalyzeProgressInfo();
+            var msrun = new MsDataFileImplExtAgg(path);
+             msrun.GetMsDataSpectrums();
+             msrun.GetChromatograms(_analysisTargets.Proteins, 0.1);
+             _analysisResults.Add(msrun);
+            if (_analysisResults.Count - c == 1)
+                IsCompleted = true;
+            return Task.FromResult(IsCompleted); 
         }
     }
 }

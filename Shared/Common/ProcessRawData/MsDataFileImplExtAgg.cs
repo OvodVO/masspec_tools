@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using pwiz.ProteowizardWrapper;
-using WashU.BatemanLab.MassSpec.Tools.AnalysisTargets;
+using WashU.BatemanLab.MassSpec.Tools.Analysis;
 
 
 namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
@@ -49,6 +49,17 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
             _HasBeenRead = true;
         }
 
+        public void GetMsDataSpectrums(ReadAndAnalyzeProgressInfo progress)
+        {
+            try
+            {
+                _msDataFileImpl.GetMsDataSpectrums(progress);
+            }
+            catch (Exception e)
+            { }
+
+            _HasMzDataSpectrums = true;
+        }
         public void GetMsDataSpectrums()
         {
             try
@@ -82,7 +93,7 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
                            select new { ChannelMS1 = spectrumgroup.Key, ChannelSpectrums = spectrumgroup };
 
             //Assing targets here
-            var Proteins =  AnalysisTargets.AnalysisTargets.GetDefaultProteins();
+            var Proteins =  Analysis.AnalysisTargets.GetDefaultProteins();
 
             var Targets = from protein in Proteins
                           from peptide in protein.Peptides
@@ -163,33 +174,37 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
                                           where ProcessRawDataTools.InMZTolerance(channel.Key, Target.PrecursorMZ, tolerance) == true
                                           select channel.Value;
 
-                if (!SpectrumsForChannel.Any()) { throw new System.Exception("Haha" + Target.PrecursorMZ.ToString() ); }
+               // if (!SpectrumsForChannel.Any()) { throw new System.Exception("Haha" + Target.PrecursorMZ.ToString() ); }
 
-                var ExtraChromatograms = from mzspectrum in SpectrumsForChannel.Single()
-                                                         
-                                         select new
-                                         {
-                                             mzspectrum.PrecursorMZ,
-                                             mzspectrum.RetentionTime,
-                                             mzspectrum.IonIT,
-                                             mzspectrum.TIC,
-                                             SumOfIntensities = mzspectrum.Intensities.Sum(),
-                                             SumOfPositiveMatch = ProcessRawDataTools.AggIonCounts(mzspectrum.Mzs, mzspectrum.Intensities, Target.Products, tolerance)[0],
-                                             SumOfNegativeMatch = ProcessRawDataTools.AggIonCounts(mzspectrum.Mzs, mzspectrum.Intensities, Target.Products, tolerance)[1]
-                                         };
-
-                _chromatograms.Add(new Chromatogram()
+                if (SpectrumsForChannel.Any())
                 {
-                    Protein = Target.ProteinName,
-                    Peptide = Target.ProteinName,
-                    IsotopeLabelType = Target.PrecursorIsoform,
-                    PrecursorMZ = Target.PrecursorMZ,
-                    RetentionTimes = ExtraChromatograms.Select(ec => ec.RetentionTime.GetValueOrDefault(0)).ToArray(),
-                    IonInjectionTimes = ExtraChromatograms.Select(ec => ec.IonIT.GetValueOrDefault(0)).ToArray(),
-                    SumOfIntensities = ExtraChromatograms.Select(ec => ec.SumOfIntensities).ToArray(),
-                    SumOfPositiveMatch = ExtraChromatograms.Select(ec => ec.SumOfPositiveMatch).ToArray(),
-                    SumOfNegativeMatch = ExtraChromatograms.Select(ec => ec.SumOfNegativeMatch).ToArray()
-                });
+
+                    var ExtraChromatograms = from mzspectrum in SpectrumsForChannel.Single()
+
+                                             select new
+                                             {
+                                                 mzspectrum.PrecursorMZ,
+                                                 mzspectrum.RetentionTime,
+                                                 mzspectrum.IonIT,
+                                                 mzspectrum.TIC,
+                                                 SumOfIntensities = mzspectrum.Intensities.Sum(),
+                                                 SumOfPositiveMatch = ProcessRawDataTools.AggIonCounts(mzspectrum.Mzs, mzspectrum.Intensities, Target.Products, tolerance)[0],
+                                                 SumOfNegativeMatch = ProcessRawDataTools.AggIonCounts(mzspectrum.Mzs, mzspectrum.Intensities, Target.Products, tolerance)[1]
+                                             };
+
+                    _chromatograms.Add(new Chromatogram()
+                    {
+                        Protein = Target.ProteinName,
+                        Peptide = Target.ProteinName,
+                        IsotopeLabelType = Target.PrecursorIsoform,
+                        PrecursorMZ = Target.PrecursorMZ,
+                        RetentionTimes = ExtraChromatograms.Select(ec => ec.RetentionTime.GetValueOrDefault(0)).ToArray(),
+                        IonInjectionTimes = ExtraChromatograms.Select(ec => ec.IonIT.GetValueOrDefault(0)).ToArray(),
+                        SumOfIntensities = ExtraChromatograms.Select(ec => ec.SumOfIntensities).ToArray(),
+                        SumOfPositiveMatch = ExtraChromatograms.Select(ec => ec.SumOfPositiveMatch).ToArray(),
+                        SumOfNegativeMatch = ExtraChromatograms.Select(ec => ec.SumOfNegativeMatch).ToArray()
+                    });
+                }
             }
 
         }
@@ -215,7 +230,7 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
             }
 
             //Assing targets here
-            var Proteins = AnalysisTargets.AnalysisTargets.GetDefaultProteins();
+            var Proteins = Analysis.AnalysisTargets.GetDefaultProteins();
 
             var Targets = from protein in Proteins
                           from peptide in protein.Peptides
@@ -274,7 +289,7 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
                            select new { ChannelMS1 = spectrumgroup.Key, ChannelSpectrums = spectrumgroup };
 
             //Assing targets here
-            var Proteins = AnalysisTargets.AnalysisTargets.GetDefaultProteins();
+            var Proteins = Analysis.AnalysisTargets.GetDefaultProteins();
 
             var Targets = from protein in Proteins
                           from peptide in protein.Peptides

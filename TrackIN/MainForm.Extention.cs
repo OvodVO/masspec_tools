@@ -11,8 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SkylineTool;
-using WashU.BatemanLab.MassSpec.Tools.AnalysisResults;
-using WashU.BatemanLab.MassSpec.Tools.AnalysisTargets;
+using WashU.BatemanLab.MassSpec.Tools.Analysis;
 using WashU.BatemanLab.Common;
 
 namespace WashU.BatemanLab.MassSpec.TrackIN
@@ -59,6 +58,8 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                                                                            Color.Green);
                     ChromLine.Symbol.IsVisible = false;
                 }
+
+            graph.GraphPane.Legend.IsVisible = false;
 
             graph.AxisChange();
             graph.Refresh();
@@ -265,6 +266,27 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 result.Add(protein);
             }
             return result;
+        }
+
+        private async Task ReadAndAnalyzeSet(string[] files)
+        {
+            //var TargetedProteins = GetProteinsFromSkyline();
+
+            _analysisResults.AnalysisTargets.Proteins = GetProteinsFromSkyline();
+
+            var ImportsAsync = files.Select(filename => Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    await _analysisResults.ReadAndAnalyzeMSFile(filename);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                }));
+
+                await Task.Factory.ContinueWhenAll(ImportsAsync.ToArray(), results => PlotChromatograms(zedGraphControlTest));
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using pwiz.ProteowizardWrapper;
-using WashU.BatemanLab.MassSpec.Tools.AnalysisTargets;
+using WashU.BatemanLab.MassSpec.Tools.Analysis;
 
 namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
         
