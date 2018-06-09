@@ -36,6 +36,11 @@
             this.button4 = new System.Windows.Forms.Button();
             this.tabMainForm = new System.Windows.Forms.TabControl();
             this.tabHomePage = new System.Windows.Forms.TabPage();
+            this.tabNoiseAnalysis = new System.Windows.Forms.TabPage();
+            this.mnuNoiseAnalysis = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuAnalizeFromSkyline = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuNASelectMSRunsToAnalyze = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPeptideRatios = new System.Windows.Forms.TabPage();
             this.stsPeptideRatios = new System.Windows.Forms.StatusStrip();
             this.stsStatus = new System.Windows.Forms.ToolStripStatusLabel();
@@ -43,25 +48,20 @@
             this.mnuPeptideRatios = new System.Windows.Forms.MenuStrip();
             this.mnuRatioSelection = new System.Windows.Forms.ToolStripMenuItem();
             this.tabTEST = new System.Windows.Forms.TabPage();
-            this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.button1 = new System.Windows.Forms.Button();
-            this.tabNoiseAnalysis = new System.Windows.Forms.TabPage();
-            this.mnuNoiseAnalysis = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuAnalizeFromSkyline = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuNASelectMSRunsToAnalyze = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnMakeLinkerToSkyline = new System.Windows.Forms.Button();
             this.tabMainForm.SuspendLayout();
+            this.tabHomePage.SuspendLayout();
+            this.tabNoiseAnalysis.SuspendLayout();
+            this.mnuNoiseAnalysis.SuspendLayout();
             this.tabPeptideRatios.SuspendLayout();
             this.stsPeptideRatios.SuspendLayout();
             this.mnuPeptideRatios.SuspendLayout();
             this.tabTEST.SuspendLayout();
-            this.tabNoiseAnalysis.SuspendLayout();
-            this.mnuNoiseAnalysis.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnTEST
@@ -108,7 +108,6 @@
             this.button3.TabIndex = 8;
             this.button3.Text = "button3";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
@@ -134,6 +133,7 @@
             // 
             // tabHomePage
             // 
+            this.tabHomePage.Controls.Add(this.btnMakeLinkerToSkyline);
             this.tabHomePage.Location = new System.Drawing.Point(4, 22);
             this.tabHomePage.Name = "tabHomePage";
             this.tabHomePage.Padding = new System.Windows.Forms.Padding(3);
@@ -141,6 +141,49 @@
             this.tabHomePage.TabIndex = 0;
             this.tabHomePage.Text = "Home Page";
             this.tabHomePage.UseVisualStyleBackColor = true;
+            // 
+            // tabNoiseAnalysis
+            // 
+            this.tabNoiseAnalysis.Controls.Add(this.mnuNoiseAnalysis);
+            this.tabNoiseAnalysis.Location = new System.Drawing.Point(4, 22);
+            this.tabNoiseAnalysis.Name = "tabNoiseAnalysis";
+            this.tabNoiseAnalysis.Size = new System.Drawing.Size(1551, 785);
+            this.tabNoiseAnalysis.TabIndex = 3;
+            this.tabNoiseAnalysis.Text = "Noise Analysis";
+            this.tabNoiseAnalysis.UseVisualStyleBackColor = true;
+            // 
+            // mnuNoiseAnalysis
+            // 
+            this.mnuNoiseAnalysis.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.mnuNoiseAnalysis.Location = new System.Drawing.Point(0, 0);
+            this.mnuNoiseAnalysis.Name = "mnuNoiseAnalysis";
+            this.mnuNoiseAnalysis.Size = new System.Drawing.Size(1551, 24);
+            this.mnuNoiseAnalysis.TabIndex = 0;
+            this.mnuNoiseAnalysis.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuAnalizeFromSkyline,
+            this.mnuNASelectMSRunsToAnalyze});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // mnuAnalizeFromSkyline
+            // 
+            this.mnuAnalizeFromSkyline.Name = "mnuAnalizeFromSkyline";
+            this.mnuAnalizeFromSkyline.Size = new System.Drawing.Size(242, 22);
+            this.mnuAnalizeFromSkyline.Text = "Analyze from Skyline document";
+            this.mnuAnalizeFromSkyline.Click += new System.EventHandler(this.mnuAnalizeFromSkyline_Click);
+            // 
+            // mnuNASelectMSRunsToAnalyze
+            // 
+            this.mnuNASelectMSRunsToAnalyze.Name = "mnuNASelectMSRunsToAnalyze";
+            this.mnuNASelectMSRunsToAnalyze.Size = new System.Drawing.Size(242, 22);
+            this.mnuNASelectMSRunsToAnalyze.Text = "Select runs for analysis...";
+            this.mnuNASelectMSRunsToAnalyze.Click += new System.EventHandler(this.mnuNASelectMSRunsToAnalyze_Click);
             // 
             // tabPeptideRatios
             // 
@@ -205,9 +248,7 @@
             // 
             // tabTEST
             // 
-            this.tabTEST.Controls.Add(this.button7);
             this.tabTEST.Controls.Add(this.button6);
-            this.tabTEST.Controls.Add(this.button5);
             this.tabTEST.Controls.Add(this.button2);
             this.tabTEST.Controls.Add(this.listBox1);
             this.tabTEST.Controls.Add(this.listView1);
@@ -225,16 +266,6 @@
             this.tabTEST.Text = "TEST only";
             this.tabTEST.UseVisualStyleBackColor = true;
             // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(832, 20);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 17;
-            this.button7.Text = "button7";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
             // button6
             // 
             this.button6.Location = new System.Drawing.Point(1007, 21);
@@ -243,17 +274,7 @@
             this.button6.TabIndex = 16;
             this.button6.Text = "Make a link for Skyline";
             this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(708, 27);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 15;
-            this.button5.Text = "button5";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            
             // 
             // button2
             // 
@@ -263,7 +284,6 @@
             this.button2.TabIndex = 14;
             this.button2.Text = "button2";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // listBox1
             // 
@@ -290,50 +310,17 @@
             this.button1.TabIndex = 10;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // tabNoiseAnalysis
+            // btnMakeLinkerToSkyline
             // 
-            this.tabNoiseAnalysis.Controls.Add(this.mnuNoiseAnalysis);
-            this.tabNoiseAnalysis.Location = new System.Drawing.Point(4, 22);
-            this.tabNoiseAnalysis.Name = "tabNoiseAnalysis";
-            this.tabNoiseAnalysis.Size = new System.Drawing.Size(1551, 785);
-            this.tabNoiseAnalysis.TabIndex = 3;
-            this.tabNoiseAnalysis.Text = "Noise Analysis";
-            this.tabNoiseAnalysis.UseVisualStyleBackColor = true;
-            // 
-            // mnuNoiseAnalysis
-            // 
-            this.mnuNoiseAnalysis.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
-            this.mnuNoiseAnalysis.Location = new System.Drawing.Point(0, 0);
-            this.mnuNoiseAnalysis.Name = "mnuNoiseAnalysis";
-            this.mnuNoiseAnalysis.Size = new System.Drawing.Size(1551, 24);
-            this.mnuNoiseAnalysis.TabIndex = 0;
-            this.mnuNoiseAnalysis.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuAnalizeFromSkyline,
-            this.mnuNASelectMSRunsToAnalyze});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // mnuAnalizeFromSkyline
-            // 
-            this.mnuAnalizeFromSkyline.Name = "mnuAnalizeFromSkyline";
-            this.mnuAnalizeFromSkyline.Size = new System.Drawing.Size(242, 22);
-            this.mnuAnalizeFromSkyline.Text = "Analyze from Skyline document";
-            this.mnuAnalizeFromSkyline.Click += new System.EventHandler(this.mnuAnalizeFromSkyline_Click);
-            // 
-            // mnuNASelectMSRunsToAnalyze
-            // 
-            this.mnuNASelectMSRunsToAnalyze.Name = "mnuNASelectMSRunsToAnalyze";
-            this.mnuNASelectMSRunsToAnalyze.Size = new System.Drawing.Size(242, 22);
-            this.mnuNASelectMSRunsToAnalyze.Text = "Select runs for analysis...";
-            this.mnuNASelectMSRunsToAnalyze.Click += new System.EventHandler(this.mnuNASelectMSRunsToAnalyze_Click);
+            this.btnMakeLinkerToSkyline.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnMakeLinkerToSkyline.Location = new System.Drawing.Point(19, 18);
+            this.btnMakeLinkerToSkyline.Name = "btnMakeLinkerToSkyline";
+            this.btnMakeLinkerToSkyline.Size = new System.Drawing.Size(151, 58);
+            this.btnMakeLinkerToSkyline.TabIndex = 19;
+            this.btnMakeLinkerToSkyline.Text = "Make a link for Skyline";
+            this.btnMakeLinkerToSkyline.UseVisualStyleBackColor = true;
+            this.btnMakeLinkerToSkyline.Click += new System.EventHandler(this.btnMakeLinkerToSkyline_Click);
             // 
             // MainForm
             // 
@@ -347,6 +334,11 @@
             this.Text = "TrackIN";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.tabMainForm.ResumeLayout(false);
+            this.tabHomePage.ResumeLayout(false);
+            this.tabNoiseAnalysis.ResumeLayout(false);
+            this.tabNoiseAnalysis.PerformLayout();
+            this.mnuNoiseAnalysis.ResumeLayout(false);
+            this.mnuNoiseAnalysis.PerformLayout();
             this.tabPeptideRatios.ResumeLayout(false);
             this.tabPeptideRatios.PerformLayout();
             this.stsPeptideRatios.ResumeLayout(false);
@@ -354,10 +346,6 @@
             this.mnuPeptideRatios.ResumeLayout(false);
             this.mnuPeptideRatios.PerformLayout();
             this.tabTEST.ResumeLayout(false);
-            this.tabNoiseAnalysis.ResumeLayout(false);
-            this.tabNoiseAnalysis.PerformLayout();
-            this.mnuNoiseAnalysis.ResumeLayout(false);
-            this.mnuNoiseAnalysis.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -382,14 +370,13 @@
         private System.Windows.Forms.StatusStrip stsPeptideRatios;
         private System.Windows.Forms.ToolStripStatusLabel stsStatus;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
         private System.Windows.Forms.TabPage tabNoiseAnalysis;
         private System.Windows.Forms.MenuStrip mnuNoiseAnalysis;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mnuAnalizeFromSkyline;
         private System.Windows.Forms.ToolStripMenuItem mnuNASelectMSRunsToAnalyze;
+        private System.Windows.Forms.Button btnMakeLinkerToSkyline;
     }
 }
 

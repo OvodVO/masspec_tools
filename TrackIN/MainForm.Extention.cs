@@ -19,7 +19,6 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
     partial class MainForm
     {
-
         private string _defaultPeptideRatioName; // = Properties.Settings.Default.PeptideRatio;
         private Dictionary<string, double> _peptideIntStdConcentrations = new Dictionary<string, double>()
             {
@@ -54,13 +53,11 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 {
                     var ChromLine = graph.GraphPane.AddCurve(String.Format("{0} ({1}): [{2}] - {3}", chromatogram.Peptide, chromatogram.IsotopeLabelType, chromatogram.PrecursorMZ, "PosMatch"),
                                                                            chromatogram.RetentionTimes,
-                                                                           chromatogram.SumOfPositiveMatch,
+                                                                           chromatogram.SumOfNegativeMatch, // .SumOfPositiveMatch,
                                                                            Color.Green);
                     ChromLine.Symbol.IsVisible = false;
                 }
-
             graph.GraphPane.Legend.IsVisible = false;
-
             graph.AxisChange();
             graph.Refresh();
         }
@@ -68,9 +65,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         private List<Tuple<string, string, string>> GetPossibleRatios()
         {
             IReport reportPeptideRatios = _toolClient.GetReport("BLR Peptide Ratios");
-
             var PeptideList = reportPeptideRatios.Cells.Where(p => p[3] != null).Select(p => p[3]).Distinct();
-
             var PossibleRatios = from peptideN in PeptideList
                                  from peptideD in PeptideList
                                  where peptideN != peptideD
@@ -84,21 +79,13 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         {
             var mnuItems = mnuRatioSelection.DropDownItems;
             mnuItems.Clear();
-
             foreach (var variant in GetPossibleRatios())
             {
                 var mnuItem = new ToolStripMenuItem(variant.Item3);
-
                 mnuItem.Click += new EventHandler(DynamicMenuItemClicked);
-
                 if (variant.Item3 == _defaultPeptideRatioName) mnuItem.Checked = true;
-
                 mnuItems.Add(mnuItem);
             }
-
-            
-            //if (mnuRatioSelection.DropDownItems.Cast<ToolStripMenuItem>().Where(m => m.Checked == true).Count() < 1)
-            //  mnuRatioSelection.DropDownItems.Cast<ToolStripMenuItem>().FirstOrDefault().Checked = true;
         }
 
         private void DynamicMenuItemClicked(object sender, EventArgs e)
@@ -124,19 +111,12 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         private void BuildPeptideRatiosGraph()
         {
             IReport reportPeptideRatios = _toolClient.GetReport("BLR Peptide Ratios");
-
             var graph = this.graphPeptideRatios;
-
             var graphPane = this.graphPeptideRatios.GraphPane;
             graphPane.CurveList.Clear();
-
             Color[] graphColors = new Color[] { Color.Red, Color.Blue, Color.Green, Color.Gray };
-
             Queue<Color> queColors = new Queue<Color>(graphColors);
-
-
             var PeptideList = reportPeptideRatios.Cells.Where(p => p[3] != null).Select(p => p[3]).Distinct();
-
             var PossibleRatios = from peptideN in PeptideList.Select(p => Peptide.GetPeptideShortName(p))
                                  from peptideD in PeptideList.Select(p => Peptide.GetPeptideShortName(p))
                                  where peptideN != peptideD
@@ -149,23 +129,16 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                                      RatioName = String.Format("{0}/{1}", peptideN, peptideD),
                                      CorCoef = _peptideIntStdConcentrations[peptideN] / _peptideIntStdConcentrations[peptideD]
                                  };
-
             var SelectedRatios = from mnuItem in mnuRatioSelection.DropDownItems.Cast<ToolStripMenuItem>()
                                  where mnuItem.Checked
                                  select mnuItem.Text;
-
-
             var GrouppedByPeptide = from reportRow in reportPeptideRatios.Cells
                                     group reportRow by Peptide.GetPeptideShortName(reportRow[3]) into GrouppedRows
                                     select new { Peptide = GrouppedRows.Key, Rows = GrouppedRows };
-
-
             foreach (var ratioVariant in PossibleRatios)
             {
                 var Nominators = GrouppedByPeptide.Where(p => p.Peptide == ratioVariant.Nominator).Single().Rows.Where(r => r[4] != null).Select(r => r);
-
                 var Denominators = GrouppedByPeptide.Where(p => p.Peptide == ratioVariant.Denominator).Single().Rows.Where(r => r[4] != null).Select(r => r);
-
                 var Ratios = Nominators.Join(Denominators,
                                              n => n[0], d => d[0],
                                              (n, d) => new
@@ -173,18 +146,14 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                                                  FileName = n[0],
                                                  PeptideRatio = ConvertUtil.doubleTryParse(n[4]) / ConvertUtil.doubleTryParse(d[4]) * ratioVariant.CorCoef
                                              });
-
                 if (SelectedRatios.Contains(ratioVariant.RatioName))
                 {
                     graphPane.AddBar(ratioVariant.RatioName, null, Ratios.Select(r => r.PeptideRatio).ToArray(), queColors.Dequeue());
-
                     graphPane.XAxis.Scale.TextLabels = Ratios.Select(f => AnalysisResults.GetMSRunShorten(f.FileName, "0, 5")).ToArray();
                 }
             }
-
             graphPane.XAxis.MajorTic.IsBetweenLabels = true;
             graphPane.XAxis.Type = ZedGraph.AxisType.Text;
-
             graph.AxisChange();
             graph.Refresh();
         }
@@ -195,7 +164,6 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             string linkExtention = "cmd";
             string publisherName = "Bateman Lab";
             List<string> commands = new List<string>();
-
             var linkFilePath = String.Format("{0}\\{1}\\{2}.{3}",
                                               Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                               linkFileName,
@@ -218,7 +186,6 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         {
             var result = new List<Protein>();
             IReport reportTrackINTargets = _toolClient.GetReport("BLR TrackIN Targets");
-
             var ProteinsQ =  from reportRow in reportTrackINTargets.Cells
                              where string.IsNullOrEmpty(reportRow[0]) != true
                              group reportRow by reportRow[0] into ProteintGroup
@@ -241,7 +208,6 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                                                              }
                                             }
                              };
-            
             foreach (var prot in ProteinsQ)
             {
                 Protein protein = new Protein();
@@ -268,12 +234,18 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             return result;
         }
 
+        private string[] GetMSFilesFromSkyline()
+        {
+            IReport reportMSRunsforTrackIN = _toolClient.GetReport("BLR MS Runs for TrackIN analysis");
+            var MSRanNames = from reportRow in reportMSRunsforTrackIN.Cells
+                             where string.IsNullOrEmpty(reportRow[0]) != true
+                             select String.Format("{0}*{1}", reportRow[0], reportRow[1]);
+            return MSRanNames.ToArray();
+        }
+
         private async Task ReadAndAnalyzeSet(string[] files)
         {
-            //var TargetedProteins = GetProteinsFromSkyline();
-
             _analysisResults.AnalysisTargets.Proteins = GetProteinsFromSkyline();
-
             var ImportsAsync = files.Select(filename => Task.Factory.StartNew(async () =>
             {
                 try
@@ -285,7 +257,6 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                     MessageBox.Show(ex.Message);
                 }
                 }));
-
                 await Task.Factory.ContinueWhenAll(ImportsAsync.ToArray(), results => PlotChromatograms(zedGraphControlTest));
         }
     }

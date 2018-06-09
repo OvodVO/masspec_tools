@@ -20,7 +20,6 @@ namespace WashU.BatemanLab.MassSpec.Tools.Analysis
         {
             string result = "";
             char separator = '_';
-
             string[] msRunSplit = msRunName.Split('_');
             string[] formatSplit = format.Split(',');
             int count = 0;
@@ -49,14 +48,6 @@ namespace WashU.BatemanLab.MassSpec.Tools.Analysis
         {
             _analysisResults = new List<MsDataFileImplExtAgg>();
             _analysisTargets = new AnalysisTargets();
-        }
-
-        public async Task LoadAnalysisResults(string[] msfilesToLoad)
-        {           
-            foreach (string path in msfilesToLoad)
-            {
-                _analysisResults.Add(new MsDataFileImplExtAgg(path));
-            }
         }
 
         public Task<bool> ReadAndAnalyzeMSFile(string path)
