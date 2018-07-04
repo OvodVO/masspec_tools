@@ -35,6 +35,22 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
         MsDataFileImplExtAgg _msdatafile;
 
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            try
+            {
+                _toolClient.DocumentChanged -= OnDocumentChanged;
+                _toolClient.SelectionChanged -= OnSelectionChanged;
+                _toolClient.Dispose();
+            }
+            catch
+            { }
+
+            _toolClient = null;
+        }
+
         private void OnDocumentChanged(object sender, EventArgs eventArgs)
         {
             // Create graph on UI thread.
