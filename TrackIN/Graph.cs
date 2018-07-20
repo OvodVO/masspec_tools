@@ -11,6 +11,11 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
     public class Graph
     {
         private ZedGraphControl _graphControl;
+        public ZedGraphControl GraphControl
+        {
+            get { return _graphControl; }
+        }
+    
         public Graph(ZedGraphControl graphControl, string xLabel, string yLabel)
         {
             _graphControl = graphControl;
@@ -39,6 +44,15 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
     public class RatioGraph : Graph
     {
         public RatioGraph(ZedGraphControl graphControl, string xLabel, string yLabel)
+            : base(graphControl, xLabel, yLabel)
+        {
+
+        }
+    }
+
+    public class NoiseGraph : Graph
+    {
+        public NoiseGraph(ZedGraphControl graphControl, string xLabel, string yLabel)
             : base(graphControl, xLabel, yLabel)
         {
 

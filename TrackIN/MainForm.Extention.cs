@@ -28,6 +28,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 {"Aβ[Total]", 12.5}
             };
         private Graph _graphPeptideRatios;
+        private Graph _graphNoiseAnalysis;
         private AnalysisResults _analysisResults;
         private SkylineToolClient _toolClient;
         private string _skylineConnection
@@ -38,6 +39,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
         public Dictionary<string, string> SkylineArgs;
         private bool HasPeptideRatiosTabActivated = false;
+        private bool HasNoiseAnalysisTabActivated = false;
         public bool IsConnectedToSkylineDoc { get; set; } = false;
 
         public void GetSkylineArgs(string[] args)
@@ -60,6 +62,11 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             graph.GraphPane.Legend.IsVisible = false;
             graph.AxisChange();
             graph.Refresh();
+        }
+
+        private void Plot()
+        {
+
         }
 
         private List<Tuple<string, string, string>> GetPossibleRatios()
@@ -106,6 +113,41 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 BuildPeptideRatiosGraph();
                 HasPeptideRatiosTabActivated = true;
             }
+        }
+
+        private void ActivateNoiseAnalysisTab()
+        {
+            if ( !HasNoiseAnalysisTabActivated )
+            {
+                _graphNoiseAnalysis = new NoiseGraph(graphNoiseAnalysis, "Time, min", "Intensity");
+                BuildNoiseAnalysisGraph();
+                HasNoiseAnalysisTabActivated = true;
+            }
+        }
+
+        private void BuildNoiseAnalysisGraph()
+        {
+            var graph = _graphNoiseAnalysis.GraphControl;
+            var graphPane = graph.GraphPane;
+
+            graphPane.XAxis.MajorTic.IsBetweenLabels = true;
+            graphPane.XAxis.Type = ZedGraph.AxisType.Text;
+            graph.AxisChange();
+            graph.Refresh();
+
+        }
+        private void BuildNoiseAnalysisGraph(string msreplicate)
+        {
+           // var x = _analysisResults.Results.Where(msrun => msrun.  .Select(msrun => )
+
+            var graph = _graphNoiseAnalysis.GraphControl;
+            var graphPane = graph.GraphPane;
+
+            graphPane.XAxis.MajorTic.IsBetweenLabels = true;
+            graphPane.XAxis.Type = ZedGraph.AxisType.Text;
+            graph.AxisChange();
+            graph.Refresh();
+
         }
 
         private void BuildPeptideRatiosGraph()
@@ -254,10 +296,10 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message + filename + " Kuku");
                 }
                 }));
-                await Task.Factory.ContinueWhenAll(ImportsAsync.ToArray(), results => PlotChromatograms(zedGraphControlTest));
+                await Task.Factory.ContinueWhenAll(ImportsAsync.ToArray(), results => PlotChromatograms(this.graphNoiseAnalysis));
         }
     }
 }

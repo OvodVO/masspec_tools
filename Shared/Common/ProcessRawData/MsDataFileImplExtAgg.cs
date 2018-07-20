@@ -22,6 +22,8 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
         public bool HasChromatograms { get { return _HasChromatograms; } }
         public bool HasBeenRead { get { return _HasBeenRead; } }
 
+        public string ReplicateName;
+
         public MsDataFileImplExtAgg()
         {
             _chromatograms = new List<Chromatogram>();

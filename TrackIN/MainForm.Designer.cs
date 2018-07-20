@@ -36,14 +36,18 @@
             this.button4 = new System.Windows.Forms.Button();
             this.tabMainForm = new System.Windows.Forms.TabControl();
             this.tabHomePage = new System.Windows.Forms.TabPage();
+            this.btnMakeLinkerToSkyline = new System.Windows.Forms.Button();
             this.tabNoiseAnalysis = new System.Windows.Forms.TabPage();
+            this.graphNoiseAnalysis = new ZedGraph.ZedGraphControl();
+            this.stsNoiseAnalysis = new System.Windows.Forms.StatusStrip();
+            this.stsNoiseAnalysisLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.mnuNoiseAnalysis = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAnalizeFromSkyline = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNASelectMSRunsToAnalyze = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPeptideRatios = new System.Windows.Forms.TabPage();
             this.stsPeptideRatios = new System.Windows.Forms.StatusStrip();
-            this.stsStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.stsPeptideRatiosLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.graphPeptideRatios = new ZedGraph.ZedGraphControl();
             this.mnuPeptideRatios = new System.Windows.Forms.MenuStrip();
             this.mnuRatioSelection = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,15 +57,22 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.button1 = new System.Windows.Forms.Button();
-            this.btnMakeLinkerToSkyline = new System.Windows.Forms.Button();
+            this.tabSequenceTool = new System.Windows.Forms.TabPage();
+            this.dgSampleList = new System.Windows.Forms.DataGridView();
+            this.btnPasteFromExcel = new System.Windows.Forms.Button();
+            this.btnGenSequence = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.tabMainForm.SuspendLayout();
             this.tabHomePage.SuspendLayout();
             this.tabNoiseAnalysis.SuspendLayout();
+            this.stsNoiseAnalysis.SuspendLayout();
             this.mnuNoiseAnalysis.SuspendLayout();
             this.tabPeptideRatios.SuspendLayout();
             this.stsPeptideRatios.SuspendLayout();
             this.mnuPeptideRatios.SuspendLayout();
             this.tabTEST.SuspendLayout();
+            this.tabSequenceTool.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgSampleList)).BeginInit();
             this.SuspendLayout();
             // 
             // btnTEST
@@ -97,7 +108,7 @@
             this.zedGraphControlTest.ScrollMinX = 0D;
             this.zedGraphControlTest.ScrollMinY = 0D;
             this.zedGraphControlTest.ScrollMinY2 = 0D;
-            this.zedGraphControlTest.Size = new System.Drawing.Size(1031, 706);
+            this.zedGraphControlTest.Size = new System.Drawing.Size(473, 706);
             this.zedGraphControlTest.TabIndex = 7;
             // 
             // button3
@@ -123,6 +134,7 @@
             this.tabMainForm.Controls.Add(this.tabHomePage);
             this.tabMainForm.Controls.Add(this.tabNoiseAnalysis);
             this.tabMainForm.Controls.Add(this.tabPeptideRatios);
+            this.tabMainForm.Controls.Add(this.tabSequenceTool);
             this.tabMainForm.Controls.Add(this.tabTEST);
             this.tabMainForm.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabMainForm.Location = new System.Drawing.Point(0, 0);
@@ -130,6 +142,7 @@
             this.tabMainForm.SelectedIndex = 0;
             this.tabMainForm.Size = new System.Drawing.Size(1559, 811);
             this.tabMainForm.TabIndex = 10;
+            this.tabMainForm.Enter += new System.EventHandler(this.tabMainForm_Enter);
             // 
             // tabHomePage
             // 
@@ -142,8 +155,21 @@
             this.tabHomePage.Text = "Home Page";
             this.tabHomePage.UseVisualStyleBackColor = true;
             // 
+            // btnMakeLinkerToSkyline
+            // 
+            this.btnMakeLinkerToSkyline.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnMakeLinkerToSkyline.Location = new System.Drawing.Point(19, 18);
+            this.btnMakeLinkerToSkyline.Name = "btnMakeLinkerToSkyline";
+            this.btnMakeLinkerToSkyline.Size = new System.Drawing.Size(151, 58);
+            this.btnMakeLinkerToSkyline.TabIndex = 19;
+            this.btnMakeLinkerToSkyline.Text = "Make a link for Skyline";
+            this.btnMakeLinkerToSkyline.UseVisualStyleBackColor = true;
+            this.btnMakeLinkerToSkyline.Click += new System.EventHandler(this.btnMakeLinkerToSkyline_Click);
+            // 
             // tabNoiseAnalysis
             // 
+            this.tabNoiseAnalysis.Controls.Add(this.graphNoiseAnalysis);
+            this.tabNoiseAnalysis.Controls.Add(this.stsNoiseAnalysis);
             this.tabNoiseAnalysis.Controls.Add(this.mnuNoiseAnalysis);
             this.tabNoiseAnalysis.Location = new System.Drawing.Point(4, 22);
             this.tabNoiseAnalysis.Name = "tabNoiseAnalysis";
@@ -151,6 +177,37 @@
             this.tabNoiseAnalysis.TabIndex = 3;
             this.tabNoiseAnalysis.Text = "Noise Analysis";
             this.tabNoiseAnalysis.UseVisualStyleBackColor = true;
+            // 
+            // graphNoiseAnalysis
+            // 
+            this.graphNoiseAnalysis.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.graphNoiseAnalysis.Location = new System.Drawing.Point(0, 24);
+            this.graphNoiseAnalysis.Name = "graphNoiseAnalysis";
+            this.graphNoiseAnalysis.ScrollGrace = 0D;
+            this.graphNoiseAnalysis.ScrollMaxX = 0D;
+            this.graphNoiseAnalysis.ScrollMaxY = 0D;
+            this.graphNoiseAnalysis.ScrollMaxY2 = 0D;
+            this.graphNoiseAnalysis.ScrollMinX = 0D;
+            this.graphNoiseAnalysis.ScrollMinY = 0D;
+            this.graphNoiseAnalysis.ScrollMinY2 = 0D;
+            this.graphNoiseAnalysis.Size = new System.Drawing.Size(1551, 739);
+            this.graphNoiseAnalysis.TabIndex = 2;
+            // 
+            // stsNoiseAnalysis
+            // 
+            this.stsNoiseAnalysis.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.stsNoiseAnalysisLabel});
+            this.stsNoiseAnalysis.Location = new System.Drawing.Point(0, 763);
+            this.stsNoiseAnalysis.Name = "stsNoiseAnalysis";
+            this.stsNoiseAnalysis.Size = new System.Drawing.Size(1551, 22);
+            this.stsNoiseAnalysis.TabIndex = 1;
+            this.stsNoiseAnalysis.Text = "Ok";
+            // 
+            // stsNoiseAnalysisLabel
+            // 
+            this.stsNoiseAnalysisLabel.Name = "stsNoiseAnalysisLabel";
+            this.stsNoiseAnalysisLabel.Size = new System.Drawing.Size(22, 17);
+            this.stsNoiseAnalysisLabel.Text = "Ok";
             // 
             // mnuNoiseAnalysis
             // 
@@ -202,18 +259,18 @@
             // stsPeptideRatios
             // 
             this.stsPeptideRatios.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.stsStatus});
+            this.stsPeptideRatiosLabel});
             this.stsPeptideRatios.Location = new System.Drawing.Point(3, 760);
             this.stsPeptideRatios.Name = "stsPeptideRatios";
             this.stsPeptideRatios.Size = new System.Drawing.Size(1545, 22);
             this.stsPeptideRatios.TabIndex = 2;
             this.stsPeptideRatios.Text = "statusStrip1";
             // 
-            // stsStatus
+            // stsPeptideRatiosLabel
             // 
-            this.stsStatus.Name = "stsStatus";
-            this.stsStatus.Size = new System.Drawing.Size(22, 17);
-            this.stsStatus.Text = "Ok";
+            this.stsPeptideRatiosLabel.Name = "stsPeptideRatiosLabel";
+            this.stsPeptideRatiosLabel.Size = new System.Drawing.Size(22, 17);
+            this.stsPeptideRatiosLabel.Text = "Ok";
             // 
             // graphPeptideRatios
             // 
@@ -274,7 +331,6 @@
             this.button6.TabIndex = 16;
             this.button6.Text = "Make a link for Skyline";
             this.button6.UseVisualStyleBackColor = true;
-            
             // 
             // button2
             // 
@@ -288,9 +344,9 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(1080, 64);
+            this.listBox1.Location = new System.Drawing.Point(522, 64);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(463, 706);
+            this.listBox1.Size = new System.Drawing.Size(1021, 706);
             this.listBox1.TabIndex = 13;
             // 
             // listView1
@@ -311,16 +367,57 @@
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // btnMakeLinkerToSkyline
+            // tabSequenceTool
             // 
-            this.btnMakeLinkerToSkyline.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnMakeLinkerToSkyline.Location = new System.Drawing.Point(19, 18);
-            this.btnMakeLinkerToSkyline.Name = "btnMakeLinkerToSkyline";
-            this.btnMakeLinkerToSkyline.Size = new System.Drawing.Size(151, 58);
-            this.btnMakeLinkerToSkyline.TabIndex = 19;
-            this.btnMakeLinkerToSkyline.Text = "Make a link for Skyline";
-            this.btnMakeLinkerToSkyline.UseVisualStyleBackColor = true;
-            this.btnMakeLinkerToSkyline.Click += new System.EventHandler(this.btnMakeLinkerToSkyline_Click);
+            this.tabSequenceTool.Controls.Add(this.button5);
+            this.tabSequenceTool.Controls.Add(this.btnGenSequence);
+            this.tabSequenceTool.Controls.Add(this.btnPasteFromExcel);
+            this.tabSequenceTool.Controls.Add(this.dgSampleList);
+            this.tabSequenceTool.Location = new System.Drawing.Point(4, 22);
+            this.tabSequenceTool.Name = "tabSequenceTool";
+            this.tabSequenceTool.Size = new System.Drawing.Size(1551, 785);
+            this.tabSequenceTool.TabIndex = 4;
+            this.tabSequenceTool.Text = "Sequence Tool";
+            this.tabSequenceTool.UseVisualStyleBackColor = true;
+            // 
+            // dgSampleList
+            // 
+            this.dgSampleList.AllowUserToOrderColumns = true;
+            this.dgSampleList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgSampleList.Location = new System.Drawing.Point(20, 144);
+            this.dgSampleList.Name = "dgSampleList";
+            this.dgSampleList.Size = new System.Drawing.Size(349, 615);
+            this.dgSampleList.TabIndex = 0;
+            // 
+            // btnPasteFromExcel
+            // 
+            this.btnPasteFromExcel.Location = new System.Drawing.Point(20, 115);
+            this.btnPasteFromExcel.Name = "btnPasteFromExcel";
+            this.btnPasteFromExcel.Size = new System.Drawing.Size(75, 23);
+            this.btnPasteFromExcel.TabIndex = 1;
+            this.btnPasteFromExcel.Text = "Paste...";
+            this.btnPasteFromExcel.UseVisualStyleBackColor = true;
+            this.btnPasteFromExcel.Click += new System.EventHandler(this.btnPasteFromExcel_Click);
+            // 
+            // btnGenSequence
+            // 
+            this.btnGenSequence.Location = new System.Drawing.Point(592, 478);
+            this.btnGenSequence.Name = "btnGenSequence";
+            this.btnGenSequence.Size = new System.Drawing.Size(75, 23);
+            this.btnGenSequence.TabIndex = 2;
+            this.btnGenSequence.Text = "button5";
+            this.btnGenSequence.UseVisualStyleBackColor = true;
+            this.btnGenSequence.Click += new System.EventHandler(this.btnGenSequence_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(889, 478);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 3;
+            this.button5.Text = "button5";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // MainForm
             // 
@@ -337,6 +434,8 @@
             this.tabHomePage.ResumeLayout(false);
             this.tabNoiseAnalysis.ResumeLayout(false);
             this.tabNoiseAnalysis.PerformLayout();
+            this.stsNoiseAnalysis.ResumeLayout(false);
+            this.stsNoiseAnalysis.PerformLayout();
             this.mnuNoiseAnalysis.ResumeLayout(false);
             this.mnuNoiseAnalysis.PerformLayout();
             this.tabPeptideRatios.ResumeLayout(false);
@@ -346,6 +445,8 @@
             this.mnuPeptideRatios.ResumeLayout(false);
             this.mnuPeptideRatios.PerformLayout();
             this.tabTEST.ResumeLayout(false);
+            this.tabSequenceTool.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgSampleList)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -368,7 +469,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuRatioSelection;
         private ZedGraph.ZedGraphControl graphPeptideRatios;
         private System.Windows.Forms.StatusStrip stsPeptideRatios;
-        private System.Windows.Forms.ToolStripStatusLabel stsStatus;
+        private System.Windows.Forms.ToolStripStatusLabel stsPeptideRatiosLabel;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.TabPage tabNoiseAnalysis;
@@ -377,6 +478,14 @@
         private System.Windows.Forms.ToolStripMenuItem mnuAnalizeFromSkyline;
         private System.Windows.Forms.ToolStripMenuItem mnuNASelectMSRunsToAnalyze;
         private System.Windows.Forms.Button btnMakeLinkerToSkyline;
+        private System.Windows.Forms.StatusStrip stsNoiseAnalysis;
+        private System.Windows.Forms.ToolStripStatusLabel stsNoiseAnalysisLabel;
+        private ZedGraph.ZedGraphControl graphNoiseAnalysis;
+        private System.Windows.Forms.TabPage tabSequenceTool;
+        private System.Windows.Forms.DataGridView dgSampleList;
+        private System.Windows.Forms.Button btnPasteFromExcel;
+        private System.Windows.Forms.Button btnGenSequence;
+        private System.Windows.Forms.Button button5;
     }
 }
 
