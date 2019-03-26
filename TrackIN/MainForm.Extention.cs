@@ -40,6 +40,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         public Dictionary<string, string> SkylineArgs;
         private bool HasPeptideRatiosTabActivated = false;
         private bool HasNoiseAnalysisTabActivated = false;
+        private bool HasPrepForSkylineTabActivated = false;
         public bool IsConnectedToSkylineDoc { get; set; } = false;
 
         public void GetSkylineArgs(string[] args)

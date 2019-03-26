@@ -51,17 +51,27 @@
             this.graphPeptideRatios = new ZedGraph.ZedGraphControl();
             this.mnuPeptideRatios = new System.Windows.Forms.MenuStrip();
             this.mnuRatioSelection = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabSequenceTool = new System.Windows.Forms.TabPage();
+            this.button5 = new System.Windows.Forms.Button();
+            this.btnGenSequence = new System.Windows.Forms.Button();
+            this.btnPasteFromExcel = new System.Windows.Forms.Button();
+            this.dgSampleList = new System.Windows.Forms.DataGridView();
             this.tabTEST = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.button1 = new System.Windows.Forms.Button();
-            this.tabSequenceTool = new System.Windows.Forms.TabPage();
-            this.dgSampleList = new System.Windows.Forms.DataGridView();
-            this.btnPasteFromExcel = new System.Windows.Forms.Button();
-            this.btnGenSequence = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.tabPrepForSkyline = new System.Windows.Forms.TabPage();
+            this.lbFolder = new System.Windows.Forms.Label();
+            this.btReplaceAll = new System.Windows.Forms.Button();
+            this.lVSubsForSkyline = new System.Windows.Forms.ListView();
+            this.cblSelectedFiles = new System.Windows.Forms.CheckedListBox();
+            this.lbWorkingFolder = new System.Windows.Forms.Label();
+            this.btSelectFolder = new System.Windows.Forms.Button();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.btCheckUnprocessed = new System.Windows.Forms.Button();
+            this.btCheckALL = new System.Windows.Forms.Button();
             this.tabMainForm.SuspendLayout();
             this.tabHomePage.SuspendLayout();
             this.tabNoiseAnalysis.SuspendLayout();
@@ -70,9 +80,10 @@
             this.tabPeptideRatios.SuspendLayout();
             this.stsPeptideRatios.SuspendLayout();
             this.mnuPeptideRatios.SuspendLayout();
-            this.tabTEST.SuspendLayout();
             this.tabSequenceTool.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgSampleList)).BeginInit();
+            this.tabTEST.SuspendLayout();
+            this.tabPrepForSkyline.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnTEST
@@ -136,6 +147,7 @@
             this.tabMainForm.Controls.Add(this.tabPeptideRatios);
             this.tabMainForm.Controls.Add(this.tabSequenceTool);
             this.tabMainForm.Controls.Add(this.tabTEST);
+            this.tabMainForm.Controls.Add(this.tabPrepForSkyline);
             this.tabMainForm.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabMainForm.Location = new System.Drawing.Point(0, 0);
             this.tabMainForm.Name = "tabMainForm";
@@ -303,6 +315,58 @@
             this.mnuRatioSelection.Size = new System.Drawing.Size(90, 20);
             this.mnuRatioSelection.Text = "Shown Ratios";
             // 
+            // tabSequenceTool
+            // 
+            this.tabSequenceTool.Controls.Add(this.button5);
+            this.tabSequenceTool.Controls.Add(this.btnGenSequence);
+            this.tabSequenceTool.Controls.Add(this.btnPasteFromExcel);
+            this.tabSequenceTool.Controls.Add(this.dgSampleList);
+            this.tabSequenceTool.Location = new System.Drawing.Point(4, 22);
+            this.tabSequenceTool.Name = "tabSequenceTool";
+            this.tabSequenceTool.Size = new System.Drawing.Size(1551, 785);
+            this.tabSequenceTool.TabIndex = 4;
+            this.tabSequenceTool.Text = "Sequence Tool";
+            this.tabSequenceTool.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(889, 478);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 3;
+            this.button5.Text = "button5";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // btnGenSequence
+            // 
+            this.btnGenSequence.Location = new System.Drawing.Point(592, 478);
+            this.btnGenSequence.Name = "btnGenSequence";
+            this.btnGenSequence.Size = new System.Drawing.Size(75, 23);
+            this.btnGenSequence.TabIndex = 2;
+            this.btnGenSequence.Text = "button5";
+            this.btnGenSequence.UseVisualStyleBackColor = true;
+            this.btnGenSequence.Click += new System.EventHandler(this.btnGenSequence_Click);
+            // 
+            // btnPasteFromExcel
+            // 
+            this.btnPasteFromExcel.Location = new System.Drawing.Point(20, 115);
+            this.btnPasteFromExcel.Name = "btnPasteFromExcel";
+            this.btnPasteFromExcel.Size = new System.Drawing.Size(75, 23);
+            this.btnPasteFromExcel.TabIndex = 1;
+            this.btnPasteFromExcel.Text = "Paste...";
+            this.btnPasteFromExcel.UseVisualStyleBackColor = true;
+            this.btnPasteFromExcel.Click += new System.EventHandler(this.btnPasteFromExcel_Click);
+            // 
+            // dgSampleList
+            // 
+            this.dgSampleList.AllowUserToOrderColumns = true;
+            this.dgSampleList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgSampleList.Location = new System.Drawing.Point(20, 144);
+            this.dgSampleList.Name = "dgSampleList";
+            this.dgSampleList.Size = new System.Drawing.Size(349, 615);
+            this.dgSampleList.TabIndex = 0;
+            // 
             // tabTEST
             // 
             this.tabTEST.Controls.Add(this.button6);
@@ -367,57 +431,101 @@
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // tabSequenceTool
+            // tabPrepForSkyline
             // 
-            this.tabSequenceTool.Controls.Add(this.button5);
-            this.tabSequenceTool.Controls.Add(this.btnGenSequence);
-            this.tabSequenceTool.Controls.Add(this.btnPasteFromExcel);
-            this.tabSequenceTool.Controls.Add(this.dgSampleList);
-            this.tabSequenceTool.Location = new System.Drawing.Point(4, 22);
-            this.tabSequenceTool.Name = "tabSequenceTool";
-            this.tabSequenceTool.Size = new System.Drawing.Size(1551, 785);
-            this.tabSequenceTool.TabIndex = 4;
-            this.tabSequenceTool.Text = "Sequence Tool";
-            this.tabSequenceTool.UseVisualStyleBackColor = true;
+            this.tabPrepForSkyline.Controls.Add(this.btCheckALL);
+            this.tabPrepForSkyline.Controls.Add(this.btCheckUnprocessed);
+            this.tabPrepForSkyline.Controls.Add(this.lbFolder);
+            this.tabPrepForSkyline.Controls.Add(this.btReplaceAll);
+            this.tabPrepForSkyline.Controls.Add(this.lVSubsForSkyline);
+            this.tabPrepForSkyline.Controls.Add(this.cblSelectedFiles);
+            this.tabPrepForSkyline.Controls.Add(this.lbWorkingFolder);
+            this.tabPrepForSkyline.Controls.Add(this.btSelectFolder);
+            this.tabPrepForSkyline.Location = new System.Drawing.Point(4, 22);
+            this.tabPrepForSkyline.Name = "tabPrepForSkyline";
+            this.tabPrepForSkyline.Size = new System.Drawing.Size(1551, 785);
+            this.tabPrepForSkyline.TabIndex = 5;
+            this.tabPrepForSkyline.Text = "Prep file for Skyline";
+            this.tabPrepForSkyline.UseVisualStyleBackColor = true;
+            this.tabPrepForSkyline.Enter += new System.EventHandler(this.tabPrepForSkyline_Enter);
             // 
-            // dgSampleList
+            // lbFolder
             // 
-            this.dgSampleList.AllowUserToOrderColumns = true;
-            this.dgSampleList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgSampleList.Location = new System.Drawing.Point(20, 144);
-            this.dgSampleList.Name = "dgSampleList";
-            this.dgSampleList.Size = new System.Drawing.Size(349, 615);
-            this.dgSampleList.TabIndex = 0;
+            this.lbFolder.AutoSize = true;
+            this.lbFolder.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lbFolder.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.lbFolder.Location = new System.Drawing.Point(170, 18);
+            this.lbFolder.Name = "lbFolder";
+            this.lbFolder.Size = new System.Drawing.Size(115, 16);
+            this.lbFolder.TabIndex = 5;
+            this.lbFolder.Text = "Folder is set to:";
             // 
-            // btnPasteFromExcel
+            // btReplaceAll
             // 
-            this.btnPasteFromExcel.Location = new System.Drawing.Point(20, 115);
-            this.btnPasteFromExcel.Name = "btnPasteFromExcel";
-            this.btnPasteFromExcel.Size = new System.Drawing.Size(75, 23);
-            this.btnPasteFromExcel.TabIndex = 1;
-            this.btnPasteFromExcel.Text = "Paste...";
-            this.btnPasteFromExcel.UseVisualStyleBackColor = true;
-            this.btnPasteFromExcel.Click += new System.EventHandler(this.btnPasteFromExcel_Click);
+            this.btReplaceAll.Location = new System.Drawing.Point(821, 393);
+            this.btReplaceAll.Name = "btReplaceAll";
+            this.btReplaceAll.Size = new System.Drawing.Size(125, 45);
+            this.btReplaceAll.TabIndex = 4;
+            this.btReplaceAll.Text = "Prepare all selected....";
+            this.btReplaceAll.UseVisualStyleBackColor = true;
+            this.btReplaceAll.Click += new System.EventHandler(this.btReplaceAll_Click);
             // 
-            // btnGenSequence
+            // lVSubsForSkyline
             // 
-            this.btnGenSequence.Location = new System.Drawing.Point(592, 478);
-            this.btnGenSequence.Name = "btnGenSequence";
-            this.btnGenSequence.Size = new System.Drawing.Size(75, 23);
-            this.btnGenSequence.TabIndex = 2;
-            this.btnGenSequence.Text = "button5";
-            this.btnGenSequence.UseVisualStyleBackColor = true;
-            this.btnGenSequence.Click += new System.EventHandler(this.btnGenSequence_Click);
+            this.lVSubsForSkyline.Location = new System.Drawing.Point(809, 189);
+            this.lVSubsForSkyline.Name = "lVSubsForSkyline";
+            this.lVSubsForSkyline.Size = new System.Drawing.Size(708, 156);
+            this.lVSubsForSkyline.TabIndex = 3;
+            this.lVSubsForSkyline.UseCompatibleStateImageBehavior = false;
             // 
-            // button5
+            // cblSelectedFiles
             // 
-            this.button5.Location = new System.Drawing.Point(889, 478);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 3;
-            this.button5.Text = "button5";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.cblSelectedFiles.FormattingEnabled = true;
+            this.cblSelectedFiles.Location = new System.Drawing.Point(8, 74);
+            this.cblSelectedFiles.Name = "cblSelectedFiles";
+            this.cblSelectedFiles.Size = new System.Drawing.Size(783, 364);
+            this.cblSelectedFiles.TabIndex = 2;
+            // 
+            // lbWorkingFolder
+            // 
+            this.lbWorkingFolder.AutoSize = true;
+            this.lbWorkingFolder.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lbWorkingFolder.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lbWorkingFolder.Location = new System.Drawing.Point(169, 39);
+            this.lbWorkingFolder.Name = "lbWorkingFolder";
+            this.lbWorkingFolder.Size = new System.Drawing.Size(29, 20);
+            this.lbWorkingFolder.TabIndex = 1;
+            this.lbWorkingFolder.Text = "file";
+            // 
+            // btSelectFolder
+            // 
+            this.btSelectFolder.Location = new System.Drawing.Point(8, 18);
+            this.btSelectFolder.Name = "btSelectFolder";
+            this.btSelectFolder.Size = new System.Drawing.Size(147, 41);
+            this.btSelectFolder.TabIndex = 0;
+            this.btSelectFolder.Text = "Set Experiment Folder....";
+            this.btSelectFolder.UseVisualStyleBackColor = true;
+            this.btSelectFolder.Click += new System.EventHandler(this.btSelectFolder_Click);
+            // 
+            // btCheckUnprocessed
+            // 
+            this.btCheckUnprocessed.Location = new System.Drawing.Point(809, 113);
+            this.btCheckUnprocessed.Name = "btCheckUnprocessed";
+            this.btCheckUnprocessed.Size = new System.Drawing.Size(204, 23);
+            this.btCheckUnprocessed.TabIndex = 6;
+            this.btCheckUnprocessed.Text = "Check unprocessed *.mzXML yet..";
+            this.btCheckUnprocessed.UseVisualStyleBackColor = true;
+            this.btCheckUnprocessed.Click += new System.EventHandler(this.btCheckUnprocessed_Click);
+            // 
+            // btCheckALL
+            // 
+            this.btCheckALL.Location = new System.Drawing.Point(809, 74);
+            this.btCheckALL.Name = "btCheckALL";
+            this.btCheckALL.Size = new System.Drawing.Size(75, 23);
+            this.btCheckALL.TabIndex = 7;
+            this.btCheckALL.Text = "Check ALL";
+            this.btCheckALL.UseVisualStyleBackColor = true;
+            this.btCheckALL.Click += new System.EventHandler(this.btCheckALL_Click);
             // 
             // MainForm
             // 
@@ -444,9 +552,11 @@
             this.stsPeptideRatios.PerformLayout();
             this.mnuPeptideRatios.ResumeLayout(false);
             this.mnuPeptideRatios.PerformLayout();
-            this.tabTEST.ResumeLayout(false);
             this.tabSequenceTool.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgSampleList)).EndInit();
+            this.tabTEST.ResumeLayout(false);
+            this.tabPrepForSkyline.ResumeLayout(false);
+            this.tabPrepForSkyline.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -486,6 +596,16 @@
         private System.Windows.Forms.Button btnPasteFromExcel;
         private System.Windows.Forms.Button btnGenSequence;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.TabPage tabPrepForSkyline;
+        private System.Windows.Forms.Label lbWorkingFolder;
+        private System.Windows.Forms.Button btSelectFolder;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.CheckedListBox cblSelectedFiles;
+        private System.Windows.Forms.ListView lVSubsForSkyline;
+        private System.Windows.Forms.Button btReplaceAll;
+        private System.Windows.Forms.Label lbFolder;
+        private System.Windows.Forms.Button btCheckUnprocessed;
+        private System.Windows.Forms.Button btCheckALL;
     }
 }
 

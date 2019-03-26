@@ -187,9 +187,9 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
         private void btnGenSequence_Click(object sender, EventArgs e)
         {
-            string f_date = "20180717";
+            string f_date = "20180818";
             string s_pos = ""; string b_pos = "1:F,8";
-            string s_batch = "Batch_01";
+            string s_batch = "Batch_09 | ";
 
             Queue<string> tray = new Queue<string>(new string[] { "1:A,1", "1:A,2", "1:A,3", "1:A,4", "1:A,5", "1:A,6", "1:A,7", "1:A,8",
                                                                   "1:B,1", "1:B,2", "1:B,3", "1:B,4", "1:B,5", "1:B,6", "1:B,7", "1:B,8",
@@ -198,8 +198,8 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                                                                   "1:E,1", "1:E,2", "1:E,3", "1:E,4", "1:E,5", "1:E,6", "1:E,7", "1:E,8",
                                                                   "1:F,1", "1:F,2", "1:F,3", "1:F,4", "1:F,5", "1:F,6", "1:F,7", "1:F,8",});
 
-            string s_inst_meth = "D:\\OTFLumos\\Plasma-Aß\\_methods\\20180703_Ab-noC13_HSS-T3-75x100_AVG-mass_300ulpmin_VO5";
-            string s_path = @"D:\OTFLumos\Plasma-Aß\20180718_ADRC-1^2_hPlasma_Dyna_2mL_OTL_TS_VO";
+            string s_inst_meth = "D:\\OTFLumos\\Plasma-Aß\\_methods\\20180812_Ab-noC13_HSS-T3-75x100_AVG-mass_300ulpmin_VO5";
+            string s_path = @"D:\OTFLumos\Plasma-Aß\20180818_ADRC-9^_hPlasma_Dyna_2mL_OTL_TS_VO";
             string s_sample_type = "Unknown";
 
             List<string> _sequemce = new List<string>();
@@ -211,7 +211,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 string s_prtc = String.Format("{0}_PRTC_VO_B{1},VO {2},\"2:F,7\",4.500,D:\\OTFLumos\\Plasma-Aß\\_methods\\20170202_PRTC_PRM_VO5,D:\\OTFLumos\\_QC_PRTC,Unknown,,,1.000,0.000,,,,0.000,0.000,,,,,,",
                                               f_date,
                                               i.ToString().PadLeft(2, '0'),
-                                              "07/18/2018");
+                                              "08/12/2018");
                 _sequemce.Add(s_prtc);
             }
 
@@ -260,9 +260,11 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                     s_pos = tray.Dequeue();
 
+                    var s_comm = s_batch + "SN" + row.Cells[0].Value.ToString().PadLeft(3, '0');
+
                     string sample_row1 = String.Format("{0},{1},\"{2}\",{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},",
                                                     filename_a,
-                                                    s_batch, //Comment,
+                                                    s_comm, //Comment,
                                                     s_pos, //Position,
                                                     "4.500", //Inj Vol,
                                                     s_inst_meth, //Instrument Method,
@@ -285,7 +287,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                     string sample_row2 = String.Format("{0},{1},\"{2}\",{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},",
                                                     filename_b,
-                                                    s_batch, //Comment,
+                                                    s_comm, //Comment,
                                                     s_pos, //Position,
                                                     "4.500", //Inj Vol,
                                                     s_inst_meth, //Instrument Method,
@@ -311,13 +313,178 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                     _sequemce.Add(sample_row2);
                 }
             }
+
+            SaveFileDialog _saveDlg = new SaveFileDialog();
+            if ( _saveDlg.ShowDialog() == DialogResult.OK )
+            {
+                File.WriteAllLines( _saveDlg.FileName, _sequemce, Encoding.GetEncoding(1250));
+            }
+
             
-            File.WriteAllLines(@"D:\test.csv", _sequemce, Encoding.GetEncoding(1250));
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             File.WriteAllText(@"D:\test5.csv", "Plasma-Aß", Encoding.GetEncoding(1250));
+        }
+
+        private void btSelectFolder_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderBrowserDlg = new FolderBrowserDialog();
+
+            folderBrowserDlg.SelectedPath = @"T:\";
+
+            if (folderBrowserDlg.ShowDialog() == DialogResult.OK)
+            {
+                lbWorkingFolder.Text = folderBrowserDlg.SelectedPath;
+
+                string[] mzXMLfiles = Directory.GetFiles(folderBrowserDlg.SelectedPath, "*.mzXML");
+
+                cblSelectedFiles.Items.AddRange(mzXMLfiles);
+
+               // for (int i = 0; i < cblSelectedFiles.Items.Count; i++)
+               // {
+               //     cblSelectedFiles.SetItemChecked(i, true);
+               // }
+
+            }
+
+           
+  
+
+        }
+
+        private void GetDefaultSubstitutionList()
+        {
+            lVSubsForSkyline.View = View.Details;
+            lVSubsForSkyline.GridLines = true;
+            lVSubsForSkyline.FullRowSelect = true;
+
+            lVSubsForSkyline.CheckBoxes = true;
+
+            lVSubsForSkyline.Columns.Add("", 20);
+            lVSubsForSkyline.Columns.Add("What", 50);
+            lVSubsForSkyline.Columns.Add("Find", 300); lVSubsForSkyline.Columns.Add("Replace", 300);
+
+            string[] replacement = new string[4];
+            ListViewItem itm;
+
+            replacement[0] = "true";
+            replacement[1] = "MS Level";
+            replacement[2] = "msLevel=\"3\"";
+            replacement[3] = "msLevel=\"2\"";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "Ab40 N14";
+            replacement[2] = ">891</precursorMz>";
+            replacement[3] = ">607.7778</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "Ab40 N15";
+            replacement[2] = ">901.5</precursorMz>";
+            replacement[3] = ">614.7317</precursorMz>";
+            
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "Ab42 N14";
+            replacement[2] = ">1096.5</precursorMz>";
+            replacement[3] = ">699.8963</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "Ab42 N15";
+            replacement[2] = ">1109.5</precursorMz>";
+            replacement[3] = ">707.8436</precursorMz>";
+
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            foreach (ListViewItem item in lVSubsForSkyline.Items)
+            {
+                item.Checked = true;
+            }
+
+
+        }
+
+        private void tabPrepForSkyline_Enter(object sender, EventArgs e)
+        {
+            if (!HasPrepForSkylineTabActivated)
+            {
+                lbWorkingFolder.Text = "";
+                GetDefaultSubstitutionList();
+                HasPrepForSkylineTabActivated = true;
+            }
+        }
+
+        private void btReplaceAll_Click(object sender, EventArgs e)
+        {
+            foreach (object drMzFile in cblSelectedFiles.CheckedItems)
+            {
+                string _fileName = drMzFile.ToString();
+                string _mzXMLfile = File.ReadAllText(_fileName);
+
+                foreach (ListViewItem itemToSub in lVSubsForSkyline.CheckedItems)
+                {
+                    _mzXMLfile = _mzXMLfile.Replace( itemToSub.SubItems[2].Text, itemToSub.SubItems[3].Text);
+                }
+
+                string _directoryNameOnly = Path.GetDirectoryName(_fileName);
+                string _newDirectoryName = Path.Combine(_directoryNameOnly, "Skyline");
+
+                if (!Directory.Exists(_newDirectoryName)) Directory.CreateDirectory(_newDirectoryName);
+
+                string _fileNameOnly = Path.GetFileName(_fileName);
+
+                string _newFileName = _newDirectoryName + Path.DirectorySeparatorChar + _fileNameOnly;
+
+                File.WriteAllText( _newFileName, _mzXMLfile);
+
+            }
+
+            MessageBox.Show("Completed");
+
+        }
+
+        private void btCheckUnprocessed_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < cblSelectedFiles.Items.Count; i++)
+            {
+                string _fileName = cblSelectedFiles.Items[i].ToString();
+
+                string _directoryNameOnly = Path.GetDirectoryName(_fileName);
+
+                string _newDirectoryName = Path.Combine(_directoryNameOnly, "Skyline");
+
+                string _fileNameOnly = Path.GetFileName(_fileName);
+
+                string _newFileName = _newDirectoryName + Path.DirectorySeparatorChar + _fileNameOnly;
+
+                if (File.Exists(_newFileName))
+                { cblSelectedFiles.SetItemChecked(i, false); }
+                else { cblSelectedFiles.SetItemChecked(i, true); }
+            }
+        }
+
+        private void btCheckALL_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < cblSelectedFiles.Items.Count; i++)
+            {
+                cblSelectedFiles.SetItemChecked(i, true);
+            }
+
         }
     }
 }
