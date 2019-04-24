@@ -63,6 +63,8 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.button1 = new System.Windows.Forms.Button();
             this.tabPrepForSkyline = new System.Windows.Forms.TabPage();
+            this.btCheckALL = new System.Windows.Forms.Button();
+            this.btCheckUnprocessed = new System.Windows.Forms.Button();
             this.lbFolder = new System.Windows.Forms.Label();
             this.btReplaceAll = new System.Windows.Forms.Button();
             this.lVSubsForSkyline = new System.Windows.Forms.ListView();
@@ -70,8 +72,7 @@
             this.lbWorkingFolder = new System.Windows.Forms.Label();
             this.btSelectFolder = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.btCheckUnprocessed = new System.Windows.Forms.Button();
-            this.btCheckALL = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.tabMainForm.SuspendLayout();
             this.tabHomePage.SuspendLayout();
             this.tabNoiseAnalysis.SuspendLayout();
@@ -433,6 +434,7 @@
             // 
             // tabPrepForSkyline
             // 
+            this.tabPrepForSkyline.Controls.Add(this.button7);
             this.tabPrepForSkyline.Controls.Add(this.btCheckALL);
             this.tabPrepForSkyline.Controls.Add(this.btCheckUnprocessed);
             this.tabPrepForSkyline.Controls.Add(this.lbFolder);
@@ -448,6 +450,26 @@
             this.tabPrepForSkyline.Text = "Prep file for Skyline";
             this.tabPrepForSkyline.UseVisualStyleBackColor = true;
             this.tabPrepForSkyline.Enter += new System.EventHandler(this.tabPrepForSkyline_Enter);
+            // 
+            // btCheckALL
+            // 
+            this.btCheckALL.Location = new System.Drawing.Point(809, 74);
+            this.btCheckALL.Name = "btCheckALL";
+            this.btCheckALL.Size = new System.Drawing.Size(75, 23);
+            this.btCheckALL.TabIndex = 7;
+            this.btCheckALL.Text = "Check ALL";
+            this.btCheckALL.UseVisualStyleBackColor = true;
+            this.btCheckALL.Click += new System.EventHandler(this.btCheckALL_Click);
+            // 
+            // btCheckUnprocessed
+            // 
+            this.btCheckUnprocessed.Location = new System.Drawing.Point(809, 113);
+            this.btCheckUnprocessed.Name = "btCheckUnprocessed";
+            this.btCheckUnprocessed.Size = new System.Drawing.Size(204, 23);
+            this.btCheckUnprocessed.TabIndex = 6;
+            this.btCheckUnprocessed.Text = "Check unprocessed *.mzXML yet..";
+            this.btCheckUnprocessed.UseVisualStyleBackColor = true;
+            this.btCheckUnprocessed.Click += new System.EventHandler(this.btCheckUnprocessed_Click);
             // 
             // lbFolder
             // 
@@ -472,9 +494,9 @@
             // 
             // lVSubsForSkyline
             // 
-            this.lVSubsForSkyline.Location = new System.Drawing.Point(809, 189);
+            this.lVSubsForSkyline.Location = new System.Drawing.Point(809, 158);
             this.lVSubsForSkyline.Name = "lVSubsForSkyline";
-            this.lVSubsForSkyline.Size = new System.Drawing.Size(708, 156);
+            this.lVSubsForSkyline.Size = new System.Drawing.Size(708, 229);
             this.lVSubsForSkyline.TabIndex = 3;
             this.lVSubsForSkyline.UseCompatibleStateImageBehavior = false;
             // 
@@ -507,25 +529,15 @@
             this.btSelectFolder.UseVisualStyleBackColor = true;
             this.btSelectFolder.Click += new System.EventHandler(this.btSelectFolder_Click);
             // 
-            // btCheckUnprocessed
+            // button7
             // 
-            this.btCheckUnprocessed.Location = new System.Drawing.Point(809, 113);
-            this.btCheckUnprocessed.Name = "btCheckUnprocessed";
-            this.btCheckUnprocessed.Size = new System.Drawing.Size(204, 23);
-            this.btCheckUnprocessed.TabIndex = 6;
-            this.btCheckUnprocessed.Text = "Check unprocessed *.mzXML yet..";
-            this.btCheckUnprocessed.UseVisualStyleBackColor = true;
-            this.btCheckUnprocessed.Click += new System.EventHandler(this.btCheckUnprocessed_Click);
-            // 
-            // btCheckALL
-            // 
-            this.btCheckALL.Location = new System.Drawing.Point(809, 74);
-            this.btCheckALL.Name = "btCheckALL";
-            this.btCheckALL.Size = new System.Drawing.Size(75, 23);
-            this.btCheckALL.TabIndex = 7;
-            this.btCheckALL.Text = "Check ALL";
-            this.btCheckALL.UseVisualStyleBackColor = true;
-            this.btCheckALL.Click += new System.EventHandler(this.btCheckALL_Click);
+            this.button7.Location = new System.Drawing.Point(902, 74);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 8;
+            this.button7.Text = "button7";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // MainForm
             // 
@@ -606,6 +618,7 @@
         private System.Windows.Forms.Label lbFolder;
         private System.Windows.Forms.Button btCheckUnprocessed;
         private System.Windows.Forms.Button btCheckALL;
+        private System.Windows.Forms.Button button7;
     }
 }
 

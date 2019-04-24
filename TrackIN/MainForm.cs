@@ -332,7 +332,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         {
             FolderBrowserDialog folderBrowserDlg = new FolderBrowserDialog();
 
-            folderBrowserDlg.SelectedPath = @"T:\";
+            folderBrowserDlg.SelectedPath = @"T:\20190402_AIBL-2_hPlasma_Dyna_0^5mL_OTL_NO-KF_VO\";
 
             if (folderBrowserDlg.ShowDialog() == DialogResult.OK)
             {
@@ -342,10 +342,8 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                 cblSelectedFiles.Items.AddRange(mzXMLfiles);
 
-               // for (int i = 0; i < cblSelectedFiles.Items.Count; i++)
-               // {
-               //     cblSelectedFiles.SetItemChecked(i, true);
-               // }
+              //  CheckUnprocessedmzXML();
+              
 
             }
 
@@ -390,7 +388,6 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             replacement[2] = ">901.5</precursorMz>";
             replacement[3] = ">614.7317</precursorMz>";
             
-
             itm = new ListViewItem(replacement);
             lVSubsForSkyline.Items.Add(itm);
 
@@ -406,10 +403,42 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             replacement[1] = "Ab42 N15";
             replacement[2] = ">1109.5</precursorMz>";
             replacement[3] = ">707.8436</precursorMz>";
-
+            
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+                        
+            replacement[0] = "true";
+            replacement[1] = "Ab38 N14";
+            replacement[2] = ">768.5</precursorMz>";
+            replacement[3] = ">508.6460</precursorMz>";
 
             itm = new ListViewItem(replacement);
             lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "Ab38 N15";
+            replacement[2] = ">777.5</precursorMz>";
+            replacement[3] = ">514.6065</precursorMz>";
+            
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+            
+            replacement[0] = "true";
+            replacement[1] = "AbMD N14";
+            replacement[2] = ">1028.5</precursorMz>";
+            replacement[3] = ">663.7446</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "AbMD N15";
+            replacement[2] = ">1038.5</precursorMz>";
+            replacement[3] = ">670.6985</precursorMz>";
+            
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+            
 
             foreach (ListViewItem item in lVSubsForSkyline.Items)
             {
@@ -458,7 +487,14 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
         }
 
-        private void btCheckUnprocessed_Click(object sender, EventArgs e)
+        private void CheckAllmzXML()
+        {
+            for (int i = 0; i < cblSelectedFiles.Items.Count; i++)
+             {
+                 cblSelectedFiles.SetItemChecked(i, true);
+             }
+        }
+        private void CheckUnprocessedmzXML()
         {
             for (int i = 0; i < cblSelectedFiles.Items.Count; i++)
             {
@@ -477,14 +513,54 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 else { cblSelectedFiles.SetItemChecked(i, true); }
             }
         }
+        private void btCheckUnprocessed_Click(object sender, EventArgs e)
+        {
+            CheckUnprocessedmzXML();
+        }
 
         private void btCheckALL_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < cblSelectedFiles.Items.Count; i++)
+            CheckAllmzXML();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            foreach (object drMzFile in cblSelectedFiles.CheckedItems)
             {
-                cblSelectedFiles.SetItemChecked(i, true);
+                string _fileName = drMzFile.ToString();
+
+                string _fileNameRAW = _fileName.Replace(".mxXML", ".raw");
+
+                var msrun = new MsDataFileImplExtAgg(_fileNameRAW);
+
+               // msrun.MsDataFile.RunStartTime
+
+                MessageBox.Show("Is Thermo File" + msrun.MsDataFile.IsThermoFile.ToString());
+                MessageBox.Show("Is Waters File" + msrun.MsDataFile.IsWatersFile.ToString());
+
+                MessageBox.Show(msrun.MsDataFile.RunStartTime.HasValue.ToString() );
+
+                //string _mzXMLfile = File.ReadAllText(_fileName);
+
+                //foreach (ListViewItem itemToSub in lVSubsForSkyline.CheckedItems)
+                //{
+                //    _mzXMLfile = _mzXMLfile.Replace(itemToSub.SubItems[2].Text, itemToSub.SubItems[3].Text);
+                //}
+
+                //string _directoryNameOnly = Path.GetDirectoryName(_fileName);
+                //string _newDirectoryName = Path.Combine(_directoryNameOnly, "Skyline");
+
+                //if (!Directory.Exists(_newDirectoryName)) Directory.CreateDirectory(_newDirectoryName);
+
+                //string _fileNameOnly = Path.GetFileName(_fileName);
+
+                //string _newFileName = _newDirectoryName + Path.DirectorySeparatorChar + _fileNameOnly;
+
+                //File.WriteAllText(_newFileName, _mzXMLfile);
+
             }
 
+            MessageBox.Show("Completed");
         }
     }
 }
