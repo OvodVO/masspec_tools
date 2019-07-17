@@ -63,6 +63,8 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.button1 = new System.Windows.Forms.Button();
             this.tabPrepForSkyline = new System.Windows.Forms.TabPage();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.btCheckALL = new System.Windows.Forms.Button();
             this.btCheckUnprocessed = new System.Windows.Forms.Button();
             this.lbFolder = new System.Windows.Forms.Label();
@@ -72,7 +74,7 @@
             this.lbWorkingFolder = new System.Windows.Forms.Label();
             this.btSelectFolder = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.button7 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
             this.tabMainForm.SuspendLayout();
             this.tabHomePage.SuspendLayout();
             this.tabNoiseAnalysis.SuspendLayout();
@@ -416,6 +418,7 @@
             // 
             // listView1
             // 
+            this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(1245, 12);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(220, 38);
@@ -434,6 +437,8 @@
             // 
             // tabPrepForSkyline
             // 
+            this.tabPrepForSkyline.Controls.Add(this.button9);
+            this.tabPrepForSkyline.Controls.Add(this.button8);
             this.tabPrepForSkyline.Controls.Add(this.button7);
             this.tabPrepForSkyline.Controls.Add(this.btCheckALL);
             this.tabPrepForSkyline.Controls.Add(this.btCheckUnprocessed);
@@ -450,6 +455,26 @@
             this.tabPrepForSkyline.Text = "Prep file for Skyline";
             this.tabPrepForSkyline.UseVisualStyleBackColor = true;
             this.tabPrepForSkyline.Enter += new System.EventHandler(this.tabPrepForSkyline_Enter);
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(681, 27);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(75, 23);
+            this.button8.TabIndex = 9;
+            this.button8.Text = "button8";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(902, 74);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 8;
+            this.button7.Text = "button7";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // btCheckALL
             // 
@@ -494,6 +519,7 @@
             // 
             // lVSubsForSkyline
             // 
+            this.lVSubsForSkyline.HideSelection = false;
             this.lVSubsForSkyline.Location = new System.Drawing.Point(809, 158);
             this.lVSubsForSkyline.Name = "lVSubsForSkyline";
             this.lVSubsForSkyline.Size = new System.Drawing.Size(708, 229);
@@ -529,15 +555,15 @@
             this.btSelectFolder.UseVisualStyleBackColor = true;
             this.btSelectFolder.Click += new System.EventHandler(this.btSelectFolder_Click);
             // 
-            // button7
+            // button9
             // 
-            this.button7.Location = new System.Drawing.Point(902, 74);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 8;
-            this.button7.Text = "button7";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.button9.Location = new System.Drawing.Point(809, 27);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(146, 23);
+            this.button9.TabIndex = 10;
+            this.button9.Text = "{TEMP} Add mzXML...";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // MainForm
             // 
@@ -619,6 +645,8 @@
         private System.Windows.Forms.Button btCheckUnprocessed;
         private System.Windows.Forms.Button btCheckALL;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button9;
     }
 }
 

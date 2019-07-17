@@ -10,10 +10,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using SkylineTool;
 using WashU.BatemanLab.MassSpec.Tools.ProcessRawData;
 using WashU.BatemanLab.MassSpec.Tools.Analysis;
 using WashU.BatemanLab.Common;
+
+//using XRAWLib = XCALIBURFILESLib; // XRAWFILE2Lib;
+
+using MSFileReader = MSFileReaderLib;
 
 namespace WashU.BatemanLab.MassSpec.TrackIN
 {
@@ -332,7 +337,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         {
             FolderBrowserDialog folderBrowserDlg = new FolderBrowserDialog();
 
-            folderBrowserDlg.SelectedPath = @"T:\20190402_AIBL-2_hPlasma_Dyna_0^5mL_OTL_NO-KF_VO\";
+            //folderBrowserDlg.SelectedPath = @"d:\_TEMP\mzXMLTEST\";
 
             if (folderBrowserDlg.ShowDialog() == DialogResult.OK)
             {
@@ -342,7 +347,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                 cblSelectedFiles.Items.AddRange(mzXMLfiles);
 
-              //  CheckUnprocessedmzXML();
+                CheckUnprocessedmzXML();
               
 
             }
@@ -350,6 +355,17 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
            
   
 
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            string currentPath = @"o:\Plasma-Aß\20190715_MAPT-7_hPlasma_Dyna_0^5mL_OTL_NO-KF_VO\";
+
+            string[] mzXMLfiles = Directory.GetFiles(currentPath, "*.mzXML");
+
+            cblSelectedFiles.Items.AddRange(mzXMLfiles);
+
+            CheckUnprocessedmzXML();
         }
 
         private void GetDefaultSubstitutionList()
@@ -463,6 +479,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             foreach (object drMzFile in cblSelectedFiles.CheckedItems)
             {
                 string _fileName = drMzFile.ToString();
+                string _Rawfilename = Path.ChangeExtension(_fileName, ".raw");
                 string _mzXMLfile = File.ReadAllText(_fileName);
 
                 foreach (ListViewItem itemToSub in lVSubsForSkyline.CheckedItems)
@@ -480,6 +497,31 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 string _newFileName = _newDirectoryName + Path.DirectorySeparatorChar + _fileNameOnly;
 
                 File.WriteAllText( _newFileName, _mzXMLfile);
+
+                XDocument _mzXMLdoc;
+                try               
+                {
+                    _mzXMLdoc = XDocument.Load(_newFileName);
+                }
+                catch (Exception _XMLExeption)
+                {
+                    MessageBox.Show(_XMLExeption.Message);
+                    return;
+                }
+
+                
+                var indexOffsetElement = _mzXMLdoc.Root.Descendants().SingleOrDefault(p => p.Name.LocalName == "indexOffset");
+                var indexElement = _mzXMLdoc.Root.Descendants().SingleOrDefault(p => p.Name.LocalName == "index");
+                
+
+                indexOffsetElement.Remove();
+                indexElement.Remove();
+
+                _mzXMLdoc.Save(_newFileName);
+
+                File.SetCreationTime(_newFileName, GetRawCreationDate(_Rawfilename));
+                File.SetLastWriteTime(_newFileName, GetRawCreationDate(_Rawfilename));
+                //File.SetLastWriteTime(_newFileName, GetRawCreationDate(_Rawfilename));
 
             }
 
@@ -535,10 +577,12 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                // msrun.MsDataFile.RunStartTime
 
-                MessageBox.Show("Is Thermo File" + msrun.MsDataFile.IsThermoFile.ToString());
-                MessageBox.Show("Is Waters File" + msrun.MsDataFile.IsWatersFile.ToString());
+                MessageBox.Show(msrun.MsDataFile.IsThermoFile.ToString(), "Is Thermo File");
+                MessageBox.Show(msrun.MsDataFile.IsWatersFile.ToString(), "Is Waters File");
 
-                MessageBox.Show(msrun.MsDataFile.RunStartTime.HasValue.ToString() );
+                MessageBox.Show(msrun.MsDataFile.RunStartTime.HasValue.ToString(), "RunStartTime.HasValue" );
+
+                //MessageBox.Show(msrun.MsDataFile. .HasValue.ToString(), "RunStartTime.HasValue");
 
                 //string _mzXMLfile = File.ReadAllText(_fileName);
 
@@ -562,6 +606,43 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
             MessageBox.Show("Completed");
         }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog _openDlg = new OpenFileDialog();
+            _openDlg.Filter = "RAW|*.RAW";
+            _openDlg.Multiselect = true;
+
+            if (_openDlg.ShowDialog() == DialogResult.OK)
+            {
+                DateTime exported = GetRawCreationDate(_openDlg.FileName);
+            }
+        }
+
+
+        public static DateTime GetRawCreationDate(string RawFileName)
+        {
+            MSFileReader.IXRawfile _rawfile = new MSFileReader.MSFileReader_XRawfile();
+
+            _rawfile.Open(RawFileName);
+            _rawfile.SetCurrentController(0, 1);
+
+            //  string AquDate = null;
+            //_rawfile.GetInstSerialNumber(ref AquDate);
+
+           // _rawfile.GetSeqRowComment(ref AquDate);
+          //  MessageBox.Show(AquDate, "AquDate");
+
+            DateTime pCreationDate = new DateTime();
+            _rawfile.GetCreationDate(ref pCreationDate);
+
+           /* string AcquisitionFileName = null;
+            _rawfile.GetAcquisitionFileName(ref AcquisitionFileName); MessageBox.Show(AcquisitionFileName, "AcquisitionFileName()");*/
+
+            return pCreationDate;
+        }
+
+      
     }
 }
   

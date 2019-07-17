@@ -252,8 +252,16 @@ namespace WashU.BatemanLab.Tools.ThermoRawFileReader
 
             
             File.WriteAllText(Path.ChangeExtension(RawFileName, "inm"), pbstrInstMethod0 + pbstrInstMethod1);
-            
+
             //MessageBox.Show(pbstrInstMethod0);
+
+            string AquDate = null;
+
+            _rawfile.GetInstSerialNumber (ref AquDate);
+
+            MessageBox.Show(pCreationDate.ToString(), "Creatio");
+
+            MessageBox.Show(AquDate, "AquDate");
 
             return 1;
 
