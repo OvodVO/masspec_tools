@@ -63,6 +63,7 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.button1 = new System.Windows.Forms.Button();
             this.tabPrepForSkyline = new System.Windows.Forms.TabPage();
+            this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.btCheckALL = new System.Windows.Forms.Button();
@@ -73,8 +74,9 @@
             this.cblSelectedFiles = new System.Windows.Forms.CheckedListBox();
             this.lbWorkingFolder = new System.Windows.Forms.Label();
             this.btSelectFolder = new System.Windows.Forms.Button();
+            this.tabAutoTrackTool = new System.Windows.Forms.TabPage();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.button9 = new System.Windows.Forms.Button();
+            this.clbReplacementsSelection = new System.Windows.Forms.CheckedListBox();
             this.tabMainForm.SuspendLayout();
             this.tabHomePage.SuspendLayout();
             this.tabNoiseAnalysis.SuspendLayout();
@@ -151,6 +153,7 @@
             this.tabMainForm.Controls.Add(this.tabSequenceTool);
             this.tabMainForm.Controls.Add(this.tabTEST);
             this.tabMainForm.Controls.Add(this.tabPrepForSkyline);
+            this.tabMainForm.Controls.Add(this.tabAutoTrackTool);
             this.tabMainForm.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabMainForm.Location = new System.Drawing.Point(0, 0);
             this.tabMainForm.Name = "tabMainForm";
@@ -437,6 +440,7 @@
             // 
             // tabPrepForSkyline
             // 
+            this.tabPrepForSkyline.Controls.Add(this.clbReplacementsSelection);
             this.tabPrepForSkyline.Controls.Add(this.button9);
             this.tabPrepForSkyline.Controls.Add(this.button8);
             this.tabPrepForSkyline.Controls.Add(this.button7);
@@ -456,9 +460,19 @@
             this.tabPrepForSkyline.UseVisualStyleBackColor = true;
             this.tabPrepForSkyline.Enter += new System.EventHandler(this.tabPrepForSkyline_Enter);
             // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(809, 27);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(146, 23);
+            this.button9.TabIndex = 10;
+            this.button9.Text = "{TEMP} Add mzXML...";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(681, 27);
+            this.button8.Location = new System.Drawing.Point(1011, 56);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(75, 23);
             this.button8.TabIndex = 9;
@@ -468,7 +482,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(902, 74);
+            this.button7.Location = new System.Drawing.Point(1011, 27);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(75, 23);
             this.button7.TabIndex = 8;
@@ -520,9 +534,9 @@
             // lVSubsForSkyline
             // 
             this.lVSubsForSkyline.HideSelection = false;
-            this.lVSubsForSkyline.Location = new System.Drawing.Point(809, 158);
+            this.lVSubsForSkyline.Location = new System.Drawing.Point(809, 196);
             this.lVSubsForSkyline.Name = "lVSubsForSkyline";
-            this.lVSubsForSkyline.Size = new System.Drawing.Size(708, 229);
+            this.lVSubsForSkyline.Size = new System.Drawing.Size(708, 191);
             this.lVSubsForSkyline.TabIndex = 3;
             this.lVSubsForSkyline.UseCompatibleStateImageBehavior = false;
             // 
@@ -555,15 +569,27 @@
             this.btSelectFolder.UseVisualStyleBackColor = true;
             this.btSelectFolder.Click += new System.EventHandler(this.btSelectFolder_Click);
             // 
-            // button9
+            // tabAutoTrackTool
             // 
-            this.button9.Location = new System.Drawing.Point(809, 27);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(146, 23);
-            this.button9.TabIndex = 10;
-            this.button9.Text = "{TEMP} Add mzXML...";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.tabAutoTrackTool.Location = new System.Drawing.Point(4, 22);
+            this.tabAutoTrackTool.Name = "tabAutoTrackTool";
+            this.tabAutoTrackTool.Padding = new System.Windows.Forms.Padding(3);
+            this.tabAutoTrackTool.Size = new System.Drawing.Size(1551, 785);
+            this.tabAutoTrackTool.TabIndex = 6;
+            this.tabAutoTrackTool.Text = "X";
+            this.tabAutoTrackTool.UseVisualStyleBackColor = true;
+            // 
+            // clbReplacementsSelection
+            // 
+            this.clbReplacementsSelection.FormattingEnabled = true;
+            this.clbReplacementsSelection.Items.AddRange(new object[] {
+            "Abeta",
+            "Tau"});
+            this.clbReplacementsSelection.Location = new System.Drawing.Point(1105, 102);
+            this.clbReplacementsSelection.Name = "clbReplacementsSelection";
+            this.clbReplacementsSelection.Size = new System.Drawing.Size(116, 34);
+            this.clbReplacementsSelection.TabIndex = 11;
+            this.clbReplacementsSelection.SelectedIndexChanged += new System.EventHandler(this.clbReplacementsSelection_SelectedIndexChanged);
             // 
             // MainForm
             // 
@@ -647,6 +673,8 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.TabPage tabAutoTrackTool;
+        private System.Windows.Forms.CheckedListBox clbReplacementsSelection;
     }
 }
 

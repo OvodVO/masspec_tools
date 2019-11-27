@@ -359,7 +359,9 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
         private void button9_Click(object sender, EventArgs e)
         {
-            string currentPath = @"o:\Plasma-Aß\20190715_MAPT-7_hPlasma_Dyna_0^5mL_OTL_NO-KF_VO\";
+            //string currentPath = @"o:\Plasma-Aß\20190722_MAPT-9_hPlasma_Dyna_0^5mL_OTL_NO-KF_VO\";
+            //string currentPath = @"o:\Plasma-Aß\20190724_MAPT-10_hPlasma_Dyna_0^5mL_OTL_NO-KF_VO\";
+            string currentPath = @"o:\Plasma-Aß\20190918_MAYO-1r_hPlasma_Dyna_0^5mL_OTL_NO-KF_PL\";
 
             string[] mzXMLfiles = Directory.GetFiles(currentPath, "*.mzXML");
 
@@ -368,7 +370,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             CheckUnprocessedmzXML();
         }
 
-        private void GetDefaultSubstitutionList()
+        private void InitlVSubsForSkyline()
         {
             lVSubsForSkyline.View = View.Details;
             lVSubsForSkyline.GridLines = true;
@@ -379,7 +381,10 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             lVSubsForSkyline.Columns.Add("", 20);
             lVSubsForSkyline.Columns.Add("What", 50);
             lVSubsForSkyline.Columns.Add("Find", 300); lVSubsForSkyline.Columns.Add("Replace", 300);
+        }
 
+        private void GetMSLevelSubstitutionRow()
+        {
             string[] replacement = new string[4];
             ListViewItem itm;
 
@@ -390,6 +395,11 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
             itm = new ListViewItem(replacement);
             lVSubsForSkyline.Items.Add(itm);
+        }
+        private void GetAbetaSubstitutionList()
+        {
+            string[] replacement = new string[4];
+            ListViewItem itm;
 
             replacement[0] = "true";
             replacement[1] = "Ab40 N14";
@@ -403,7 +413,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             replacement[1] = "Ab40 N15";
             replacement[2] = ">901.5</precursorMz>";
             replacement[3] = ">614.7317</precursorMz>";
-            
+
             itm = new ListViewItem(replacement);
             lVSubsForSkyline.Items.Add(itm);
 
@@ -419,10 +429,10 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             replacement[1] = "Ab42 N15";
             replacement[2] = ">1109.5</precursorMz>";
             replacement[3] = ">707.8436</precursorMz>";
-            
+
             itm = new ListViewItem(replacement);
             lVSubsForSkyline.Items.Add(itm);
-                        
+
             replacement[0] = "true";
             replacement[1] = "Ab38 N14";
             replacement[2] = ">768.5</precursorMz>";
@@ -435,10 +445,10 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             replacement[1] = "Ab38 N15";
             replacement[2] = ">777.5</precursorMz>";
             replacement[3] = ">514.6065</precursorMz>";
-            
+
             itm = new ListViewItem(replacement);
             lVSubsForSkyline.Items.Add(itm);
-            
+
             replacement[0] = "true";
             replacement[1] = "AbMD N14";
             replacement[2] = ">1028.5</precursorMz>";
@@ -451,10 +461,10 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             replacement[1] = "AbMD N15";
             replacement[2] = ">1038.5</precursorMz>";
             replacement[3] = ">670.6985</precursorMz>";
-            
+
             itm = new ListViewItem(replacement);
             lVSubsForSkyline.Items.Add(itm);
-            
+
 
             foreach (ListViewItem item in lVSubsForSkyline.Items)
             {
@@ -463,16 +473,158 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
 
         }
+        private void GetTauSubstitutionList()
+        {
+            string[] replacement = new string[4];
+            ListViewItem itm;
 
+            replacement[0] = "true";
+            replacement[1] = "p0N pT111 14N";
+            replacement[2] = ">967</precursorMz>";
+            replacement[3] = ">835.3694</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "pT153 14N";
+            replacement[2] = ">524</precursorMz>";
+            replacement[3] = ">319.1571</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "pT231 14N";
+            replacement[2] = ">660</precursorMz>";
+            replacement[3] = ">523.7915</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "pT231 AQUA";
+            replacement[2] = ">660.1</precursorMz>";
+            replacement[3] = ">527.7986</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "pT175 14N";
+            replacement[2] = ">493.7572</precursorMz>";
+            replacement[3] = ">367.2018</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "pT175 AQUA";
+            replacement[2] = ">497.7643</precursorMz>";
+            replacement[3] = ">369.8733</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "TPSL 14N";
+            replacement[2] = ">668.3726</precursorMz>";
+            replacement[3] = ">533.7982</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "TPSL AQUA";
+            replacement[2] = ">678.3809</precursorMz>";
+            replacement[3] = ">538.8023</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "TPSL 15N";
+            replacement[2] = ">677.3459</precursorMz>";
+            replacement[3] = ">540.2789</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "pT217 pS214 14N";
+            replacement[2] = ">713</precursorMz>";
+            replacement[3] = ">573.7814</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "pT217 AQUA";
+            replacement[2] = ">758.34</precursorMz>";
+            replacement[3] = ">578.7855</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "pT181 14N";
+            replacement[2] = ">735.3554</precursorMz>";
+            replacement[3] = ">556.6062</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+            replacement[0] = "true";
+            replacement[1] = "pT181 AQUA";
+            replacement[2] = ">739.3625</precursorMz>";
+            replacement[3] = ">559.2776</precursorMz>";
+
+            itm = new ListViewItem(replacement);
+            lVSubsForSkyline.Items.Add(itm);
+
+
+            foreach (ListViewItem item in lVSubsForSkyline.Items)
+            {
+                item.Checked = true;
+            }
+
+
+        }
         private void tabPrepForSkyline_Enter(object sender, EventArgs e)
         {
             if (!HasPrepForSkylineTabActivated)
             {
                 lbWorkingFolder.Text = "";
-                GetDefaultSubstitutionList();
+                InitlVSubsForSkyline();
                 HasPrepForSkylineTabActivated = true;
             }
         }
+
+        private void SetlVSubsForSkyline()
+        {
+            lVSubsForSkyline.Items.Clear();
+
+            if (clbReplacementsSelection.CheckedItems.Count > 0)
+
+            {
+                GetMSLevelSubstitutionRow();
+
+                foreach (var item in clbReplacementsSelection.CheckedItems)
+                {
+                    switch (item.ToString())
+                    {
+                        case "Abeta":
+                            GetAbetaSubstitutionList();
+                            break;
+                        case "Tau":
+                            GetTauSubstitutionList();
+                            break;
+                    }
+                }
+            }
+
+        }
+
 
         private void btReplaceAll_Click(object sender, EventArgs e)
         {
@@ -642,7 +794,10 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             return pCreationDate;
         }
 
-      
+        private void clbReplacementsSelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetlVSubsForSkyline();
+        }
     }
 }
   
