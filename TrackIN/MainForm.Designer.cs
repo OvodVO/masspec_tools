@@ -63,6 +63,7 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.button1 = new System.Windows.Forms.Button();
             this.tabPrepForSkyline = new System.Windows.Forms.TabPage();
+            this.clbReplacementsSelection = new System.Windows.Forms.CheckedListBox();
             this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
@@ -76,7 +77,7 @@
             this.btSelectFolder = new System.Windows.Forms.Button();
             this.tabAutoTrackTool = new System.Windows.Forms.TabPage();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.clbReplacementsSelection = new System.Windows.Forms.CheckedListBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabMainForm.SuspendLayout();
             this.tabHomePage.SuspendLayout();
             this.tabNoiseAnalysis.SuspendLayout();
@@ -89,6 +90,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgSampleList)).BeginInit();
             this.tabTEST.SuspendLayout();
             this.tabPrepForSkyline.SuspendLayout();
+            this.tabAutoTrackTool.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnTEST
@@ -460,6 +462,18 @@
             this.tabPrepForSkyline.UseVisualStyleBackColor = true;
             this.tabPrepForSkyline.Enter += new System.EventHandler(this.tabPrepForSkyline_Enter);
             // 
+            // clbReplacementsSelection
+            // 
+            this.clbReplacementsSelection.FormattingEnabled = true;
+            this.clbReplacementsSelection.Items.AddRange(new object[] {
+            "Abeta",
+            "Tau"});
+            this.clbReplacementsSelection.Location = new System.Drawing.Point(1105, 102);
+            this.clbReplacementsSelection.Name = "clbReplacementsSelection";
+            this.clbReplacementsSelection.Size = new System.Drawing.Size(116, 34);
+            this.clbReplacementsSelection.TabIndex = 11;
+            this.clbReplacementsSelection.SelectedIndexChanged += new System.EventHandler(this.clbReplacementsSelection_SelectedIndexChanged);
+            // 
             // button9
             // 
             this.button9.Location = new System.Drawing.Point(809, 27);
@@ -571,6 +585,7 @@
             // 
             // tabAutoTrackTool
             // 
+            this.tabAutoTrackTool.Controls.Add(this.label1);
             this.tabAutoTrackTool.Location = new System.Drawing.Point(4, 22);
             this.tabAutoTrackTool.Name = "tabAutoTrackTool";
             this.tabAutoTrackTool.Padding = new System.Windows.Forms.Padding(3);
@@ -579,17 +594,15 @@
             this.tabAutoTrackTool.Text = "X";
             this.tabAutoTrackTool.UseVisualStyleBackColor = true;
             // 
-            // clbReplacementsSelection
+            // label1
             // 
-            this.clbReplacementsSelection.FormattingEnabled = true;
-            this.clbReplacementsSelection.Items.AddRange(new object[] {
-            "Abeta",
-            "Tau"});
-            this.clbReplacementsSelection.Location = new System.Drawing.Point(1105, 102);
-            this.clbReplacementsSelection.Name = "clbReplacementsSelection";
-            this.clbReplacementsSelection.Size = new System.Drawing.Size(116, 34);
-            this.clbReplacementsSelection.TabIndex = 11;
-            this.clbReplacementsSelection.SelectedIndexChanged += new System.EventHandler(this.clbReplacementsSelection_SelectedIndexChanged);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(173, 75);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(33, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Haha";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // MainForm
             // 
@@ -621,6 +634,8 @@
             this.tabTEST.ResumeLayout(false);
             this.tabPrepForSkyline.ResumeLayout(false);
             this.tabPrepForSkyline.PerformLayout();
+            this.tabAutoTrackTool.ResumeLayout(false);
+            this.tabAutoTrackTool.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -675,6 +690,7 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.TabPage tabAutoTrackTool;
         private System.Windows.Forms.CheckedListBox clbReplacementsSelection;
+        private System.Windows.Forms.Label label1;
     }
 }
 

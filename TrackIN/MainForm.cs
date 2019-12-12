@@ -134,7 +134,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             MessageBox.Show(t.Count().ToString());
             listBox1.Items.AddRange(GetMSFilesFromSkyline().Select(f => f.Split('*')[1]).ToArray());
 
-            await ReadAndAnalyzeSet(GetMSFilesFromSkyline().Select(f => f.Split('*')[1]).ToArray());
+            await ReadAndAnalyzeSetAsync(GetMSFilesFromSkyline().Select(f => f.Split('*')[1]).ToArray());
         }
 
         private async void mnuNASelectMSRunsToAnalyze_Click(object sender, EventArgs e)
@@ -144,7 +144,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             openDlg.Multiselect = true;
             if (openDlg.ShowDialog() == DialogResult.OK)
             {
-               await ReadAndAnalyzeSet(openDlg.FileNames);
+               await ReadAndAnalyzeSetAsync(openDlg.FileNames);
             }
         }
 
@@ -797,6 +797,11 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         private void clbReplacementsSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
             SetlVSubsForSkyline();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

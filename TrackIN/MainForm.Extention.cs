@@ -56,11 +56,12 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 {
                     var ChromLine = graph.GraphPane.AddCurve(String.Format("{0} ({1}): [{2}] - {3}", chromatogram.Peptide, chromatogram.IsotopeLabelType, chromatogram.PrecursorMZ, "PosMatch"),
                                                                            chromatogram.RetentionTimes,
-                                                                           chromatogram.SumOfNegativeMatch, // .SumOfPositiveMatch,
+                                                                           //chromatogram.SumOfNegativeMatch, // .SumOfPositiveMatch,
+                                                                           chromatogram.IonInjectionTimes,
                                                                            Color.Green);
                     ChromLine.Symbol.IsVisible = false;
                 }
-            graph.GraphPane.Legend.IsVisible = false;
+            graph.GraphPane.Legend.IsVisible = true;
             graph.AxisChange();
             graph.Refresh();
         }
@@ -286,7 +287,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             return MSRanNames.ToArray();
         }
 
-        private async Task ReadAndAnalyzeSet(string[] files)
+        private async Task ReadAndAnalyzeSetAsync(string[] files)
         {
             _analysisResults.AnalysisTargets.Proteins = GetProteinsFromSkyline();
             var ImportsAsync = files.Select(filename => Task.Factory.StartNew(async () =>
