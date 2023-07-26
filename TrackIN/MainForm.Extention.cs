@@ -19,7 +19,8 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
     partial class MainForm
     {
-        private string _defaultPeptideRatioName; // = Properties.Settings.Default.PeptideRatio;
+        private string _defaultPeptideRatioName;
+        private string _defaultPeptideName;
         private Dictionary<string, double> _peptideIntStdConcentrations = new Dictionary<string, double>()
             {
                 {"Aβ42", 1},
@@ -27,20 +28,32 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 {"Aβ38", 1.5},
                 {"Aβ[Total]", 12.5}
             };
+
+        public List<string> SelectedMeasures
+        {
+            get
+            {
+                return (from mnuItem in mnuNAMeasure.DropDownItems.Cast<ToolStripMenuItem>()
+                       where mnuItem.Checked
+                       select mnuItem.Text).ToList();
+            }
+        }
+
         private Graph _graphPeptideRatios;
-        private Graph _graphNoiseAnalysis;
+        private NAmsrunsTabControl _tabControlMsRuns;
         private AnalysisResults _analysisResults;
         private SkylineToolClient _toolClient;
+
         private string _skylineConnection
         {
             get { return SkylineArgs["SkylineConnection"]; }
             set { SkylineArgs["SkylineConnection"] = value; }
         }
-
         public Dictionary<string, string> SkylineArgs;
         private bool HasPeptideRatiosTabActivated = false;
         private bool HasNoiseAnalysisTabActivated = false;
         private bool HasPrepForSkylineTabActivated = false;
+
         public bool IsConnectedToSkylineDoc { get; set; } = false;
 
         public void GetSkylineArgs(string[] args)
@@ -48,27 +61,19 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             char[] separator = { '=' };
             SkylineArgs = args.Select(a => new { argName = a.Split(separator)[0], argValue = a.Split(separator)[1] }).ToDictionary(di => di.argName, di => di.argValue);
         }
-
-        private void PlotChromatograms(ZedGraph.ZedGraphControl graph)
+        
+        private List<string> GetPeptideListFromAnalysis()
         {
-            foreach (var msrun in _analysisResults.Results)
-                foreach (var chromatogram in msrun.Chromatograms)
-                {
-                    var ChromLine = graph.GraphPane.AddCurve(String.Format("{0} ({1}): [{2}] - {3}", chromatogram.Peptide, chromatogram.IsotopeLabelType, chromatogram.PrecursorMZ, "PosMatch"),
-                                                                           chromatogram.RetentionTimes,
-                                                                           //chromatogram.SumOfNegativeMatch, // .SumOfPositiveMatch,
-                                                                           chromatogram.IonInjectionTimes,
-                                                                           Color.Green);
-                    ChromLine.Symbol.IsVisible = false;
-                }
-            graph.GraphPane.Legend.IsVisible = true;
-            graph.AxisChange();
-            graph.Refresh();
+            var _peptides = (from _protein in _analysisResults.AnalysisTargets.Proteins
+                             from _peptide in _protein.Peptides
+                             select _peptide.Name.Trim()).Distinct();
+            return _peptides.ToList();
         }
 
-        private void Plot()
+        private void CompleteAnalysisTasks()
         {
-
+            BuildShownPeptideMenuStrips();
+            Invoke( new Action(() => BuildNoiseAnalysisPlots()) );
         }
 
         private List<Tuple<string, string, string>> GetPossibleRatios()
@@ -86,28 +91,60 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
         private void BuildPeptideRatiosMenuStrips()
         {
-            var mnuItems = mnuRatioSelection.DropDownItems;
+            var mnuItems = mnuPRratioSelection.DropDownItems;
             mnuItems.Clear();
             foreach (var variant in GetPossibleRatios())
             {
                 var mnuItem = new ToolStripMenuItem(variant.Item3);
-                mnuItem.Click += new EventHandler(DynamicMenuItemClicked);
+                mnuItem.Click += new EventHandler(PRDynamicMenuItemClicked);
                 if (variant.Item3 == _defaultPeptideRatioName) mnuItem.Checked = true;
                 mnuItems.Add(mnuItem);
             }
         }
 
-        private void DynamicMenuItemClicked(object sender, EventArgs e)
+        private void BuildShownPeptideMenuStrips()
+        {
+            var mnuItems = mnuNAPeptide.DropDownItems;
+            mnuItems.Clear();
+            foreach (var peptide in GetPeptideListFromAnalysis())
+            {
+                var mnuItem = new ToolStripMenuItem(peptide);
+                mnuItem.Click += new EventHandler(NADynamicMenuItemClicked);
+                if (peptide == _defaultPeptideRatioName) mnuItem.Checked = true;
+                mnuItems.Add(mnuItem);
+            }
+        }
+
+        private void BuildShownMeasuresMenuStrips()
+        {
+            var mnuItems = mnuNAMeasure.DropDownItems;
+            mnuItems.Clear();
+            foreach (var measure in Chromatogramm.MeasuresNameList)
+            {
+                var mnuItem = new ToolStripMenuItem(measure);
+                mnuItem.Click += new EventHandler(NADynamicMenuItemClicked);
+                if (Chromatogramm.MeasuresNameListByDefault.Contains( measure )) mnuItem.Checked = true;
+                mnuItems.Add(mnuItem);
+            }
+        }
+
+        private void PRDynamicMenuItemClicked(object sender, EventArgs e)
         {
             var item = (ToolStripMenuItem)sender;
             item.Checked = !item.Checked;
             BuildPeptideRatiosGraph();
         }
 
+        private void NADynamicMenuItemClicked(object sender, EventArgs e)
+        {
+            var item = (ToolStripMenuItem)sender;
+            item.Checked = !item.Checked;
+            ModifyNoiseAnalysisPlots();
+        }
+
         private void ActivatePeptideRatiosTab()
         {
             _defaultPeptideRatioName = Properties.Settings.Default.PeptideRatio;
-
             if (IsConnectedToSkylineDoc && !HasPeptideRatiosTabActivated)
             {
                 BuildPeptideRatiosMenuStrips();
@@ -119,37 +156,24 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
         private void ActivateNoiseAnalysisTab()
         {
+            _defaultPeptideName = Properties.Settings.Default.PeptideName;
             if ( !HasNoiseAnalysisTabActivated )
             {
-                _graphNoiseAnalysis = new NoiseGraph(graphNoiseAnalysis, "Time, min", "Intensity");
-                BuildNoiseAnalysisGraph();
+                BuildShownMeasuresMenuStrips();
                 HasNoiseAnalysisTabActivated = true;
             }
         }
 
-        private void BuildNoiseAnalysisGraph()
+        private void ActivateLCTracersTab()
         {
-            var graph = _graphNoiseAnalysis.GraphControl;
-            var graphPane = graph.GraphPane;
+            lbTargetDir.Text = @"r:\_Projects\Aß\Plasma\Clinical Studies\BioFINDER\LC Data source BF-1";
 
-            graphPane.XAxis.MajorTic.IsBetweenLabels = true;
-            graphPane.XAxis.Type = ZedGraph.AxisType.Text;
-            graph.AxisChange();
-            graph.Refresh();
-
-        }
-        private void BuildNoiseAnalysisGraph(string msreplicate)
-        {
-           // var x = _analysisResults.Results.Where(msrun => msrun.  .Select(msrun => )
-
-            var graph = _graphNoiseAnalysis.GraphControl;
-            var graphPane = graph.GraphPane;
-
-            graphPane.XAxis.MajorTic.IsBetweenLabels = true;
-            graphPane.XAxis.Type = ZedGraph.AxisType.Text;
-            graph.AxisChange();
-            graph.Refresh();
-
+          //  _defaultPeptideName = Properties.Settings.Default.PeptideName;
+          //  if (!HasNoiseAnalysisTabActivated)
+          //  {
+          //      BuildShownMeasuresMenuStrips();
+          //      HasNoiseAnalysisTabActivated = true;
+          //  }
         }
 
         private void BuildPeptideRatiosGraph()
@@ -173,7 +197,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                                      RatioName = String.Format("{0}/{1}", peptideN, peptideD),
                                      CorCoef = _peptideIntStdConcentrations[peptideN] / _peptideIntStdConcentrations[peptideD]
                                  };
-            var SelectedRatios = from mnuItem in mnuRatioSelection.DropDownItems.Cast<ToolStripMenuItem>()
+            var SelectedRatios = from mnuItem in mnuPRratioSelection.DropDownItems.Cast<ToolStripMenuItem>()
                                  where mnuItem.Checked
                                  select mnuItem.Text;
             var GrouppedByPeptide = from reportRow in reportPeptideRatios.Cells
@@ -289,7 +313,11 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
         private async Task ReadAndAnalyzeSetAsync(string[] files)
         {
-            _analysisResults.AnalysisTargets.Proteins = GetProteinsFromSkyline();
+            if (this.IsConnectedToSkylineDoc)
+            { _analysisResults.AnalysisTargets.Proteins = AnalysisTargets.GetDefaultProteins(); }  //GetProteinsFromSkyline(); }
+            else
+            { _analysisResults.AnalysisTargets.Proteins = AnalysisTargets.GetDefaultProteins(); }
+
             var ImportsAsync = files.Select(filename => Task.Factory.StartNew(async () =>
             {
                 try
@@ -298,10 +326,311 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message + filename + " Kuku");
+                    MessageBox.Show(ex.Message + " Cannot import file - " + filename);
                 }
                 }));
-                await Task.Factory.ContinueWhenAll(ImportsAsync.ToArray(), results => PlotChromatograms(this.graphNoiseAnalysis));
+                await Task.Factory.ContinueWhenAll(ImportsAsync.ToArray(), results => CompleteAnalysisTasks());
+        }
+
+        private void BuildNoiseAnalysisPlots1()
+        {
+            _tabControlMsRuns = new NAmsrunsTabControl();
+            foreach (var result in _analysisResults.Results)
+            {
+                TabPage tabMsRunPage = new TabPage();
+                tabMsRunPage.Name = result.MSrunFileName;
+                tabMsRunPage.Text = result.MSrunFileName;
+                NApeptidesTabControl _tabControlPeptide = new NApeptidesTabControl();
+
+                foreach (var peptide in GetPeptideListFromAnalysis())
+                {
+                    TabPage tabPeptidePage = new TabPage();
+                    tabPeptidePage.Name = peptide;
+                    tabPeptidePage.Text = Peptide.GetPeptideShortName(peptide);
+
+                    SplitContainer splPeptidePage = new SplitContainer();
+                    splPeptidePage.Dock = DockStyle.Fill;
+                    splPeptidePage.Orientation = Orientation.Horizontal;
+                    splPeptidePage.BorderStyle = BorderStyle.None;
+
+                    NoiseMasspecDataGraph graphAnalyte = new NoiseMasspecDataGraph("Retention Time", "Intensity", "Time, miliS");
+                    graphAnalyte.GraphControl.Dock = DockStyle.Fill;
+
+                    NoiseMasspecDataGraph graphISTD = new NoiseMasspecDataGraph("Retention Time", "Intensity", "Time, miliS");
+                    graphISTD.GraphControl.Dock = DockStyle.Fill;
+
+                    var analyteChroms = (from chrom in result.Chromatograms
+                                         where chrom.Peptide == peptide && chrom.IsotopeLabelType == "light"
+                                         select chrom).Single();
+
+                    var istdChroms = (from chrom in result.Chromatograms
+                                      where chrom.Peptide == peptide && chrom.IsotopeLabelType == "N15 ISTD"
+                                      select chrom).Single();
+
+
+                    foreach (var _measure in Chromatogramm.MeasuresDictionary)
+                    {
+                        var lineAnalyte = graphAnalyte.GraphControl.GraphPane.AddCurve
+                                 (_measure.Key, analyteChroms.RetentionTimes,
+                                  analyteChroms.GetMeasureByName(_measure.Key), _measure.Value);
+
+                        var lineISTD = graphISTD.GraphControl.GraphPane.AddCurve
+                                 (_measure.Key, istdChroms.RetentionTimes,
+                                 istdChroms.GetMeasureByName(_measure.Key), _measure.Value);
+
+                        lineAnalyte.Symbol.IsVisible = false;
+                        lineAnalyte.Line.Width = 3.0F;
+                        lineISTD.Symbol.IsVisible = false;
+                        lineISTD.Line.Width = 3.0F;
+
+                        if (_measure.Key == "IIT")
+                        {
+                            lineAnalyte.IsY2Axis = true; lineISTD.IsY2Axis = true;
+                        }
+
+                        if (SelectedMeasures.Contains(_measure.Key))
+                        {
+                            if (_measure.Key == "IIT")
+                            {
+                                graphAnalyte.GraphControl.GraphPane.Y2Axis.IsVisible = true;
+                                graphISTD.GraphControl.GraphPane.Y2Axis.IsVisible = true;
+                            }
+                            lineAnalyte.IsVisible = true; lineAnalyte.Label.IsVisible = true;
+                            lineISTD.IsVisible = true; lineISTD.Label.IsVisible = true;
+                        }
+                        else
+                        {
+                            if (_measure.Key == "IIT")
+                            {
+                                graphAnalyte.GraphControl.GraphPane.Y2Axis.IsVisible = false;
+                                graphISTD.GraphControl.GraphPane.Y2Axis.IsVisible = false;
+                            }
+                            lineAnalyte.IsVisible = false; lineAnalyte.Label.IsVisible = false;
+                            lineISTD.IsVisible = false; lineISTD.Label.IsVisible = false;
+                        }
+                    }
+
+                    graphAnalyte.GraphControl.GraphPane.XAxis.Type = ZedGraph.AxisType.Linear;
+                    graphISTD.GraphControl.GraphPane.XAxis.Type = ZedGraph.AxisType.Linear;
+                    splPeptidePage.Panel1.Controls.Add(graphAnalyte.GraphControl);
+                    graphAnalyte.GraphControl.AxisChange();
+                    graphAnalyte.GraphControl.Refresh();
+                    splPeptidePage.Panel1.Controls.Add(graphISTD.GraphControl);
+                    graphISTD.GraphControl.AxisChange(); graphISTD.GraphControl.Refresh(); //graphISTD.GraphControl.
+                    tabPeptidePage.Controls.Add(splPeptidePage);
+                    _tabControlPeptide.TabPages.Add(tabPeptidePage);
+                }
+                tabMsRunPage.Controls.Add(_tabControlPeptide);
+                _tabControlMsRuns.TabPages.Add(tabMsRunPage);
+            }
+            splNAtab.Panel2.Controls.Add(_tabControlMsRuns);
+        }
+
+        private void BuildNoiseAnalysisPlots()
+        {
+            _tabControlMsRuns = new NAmsrunsTabControl();
+            foreach (var result in _analysisResults.Results)
+            {
+                TabPage tabMsRunPage = new TabPage();
+                tabMsRunPage.Name = result.MSrunFileName;
+                tabMsRunPage.Text = result.MSrunFileName;
+                NApeptidesTabControl _tabControlPeptide = new NApeptidesTabControl();
+
+                foreach (var peptide in GetPeptideListFromAnalysis())
+                {
+                    TabPage tabPeptidePage = new TabPage();
+                    tabPeptidePage.Name = peptide;
+                    tabPeptidePage.Text = Peptide.GetPeptideShortName(peptide);
+
+                    SplitContainer splPeptidePage = new SplitContainer();
+                    splPeptidePage.Dock = DockStyle.Fill;
+                    splPeptidePage.Orientation = Orientation.Horizontal;
+                    splPeptidePage.BorderStyle = BorderStyle.None;
+
+                    splPeptidePage.Panel2Collapsed = true;
+
+                    NoiseMasspecDataGraph graphAnalyte = new NoiseMasspecDataGraph("Retention Time", "Intensity", "Time, miliS");
+                    graphAnalyte.GraphControl.Dock = DockStyle.Fill;
+
+                    //ZedGraph.GraphPane ISTDGraphPane = new ZedGraph.GraphPane();
+
+
+                    var ISTDGraphPane = graphAnalyte.GraphControl.MasterPane.PaneList["ISTD"];
+
+                    //graphAnalyte.GraphControl.MasterPane.Add(ISTDGraphPane);
+
+                    NoiseMasspecDataGraph graphISTD = new NoiseMasspecDataGraph("Retention Time", "Intensity", "Time, miliS");
+                    graphISTD.GraphControl.Dock = DockStyle.Fill;
+
+                    var analyteChroms = (from chrom in result.Chromatograms
+                                         where chrom.Peptide == peptide && chrom.IsotopeLabelType == "light"
+                                         select chrom).Single();
+
+                    var istdChroms = (from chrom in result.Chromatograms
+                                      where chrom.Peptide == peptide && chrom.IsotopeLabelType == "N15 ISTD"
+                                      select chrom).Single();
+
+
+                    foreach (var _measure in Chromatogramm.MeasuresDictionary)
+                    {
+                        var lineAnalyte = graphAnalyte.GraphControl.GraphPane.AddCurve
+                                 (_measure.Key, analyteChroms.RetentionTimes,
+                                  analyteChroms.GetMeasureByName(_measure.Key), _measure.Value);
+
+                        
+
+                        var lineISTD = ISTDGraphPane.AddCurve
+                                 (_measure.Key, istdChroms.RetentionTimes,
+                                 istdChroms.GetMeasureByName(_measure.Key), _measure.Value);
+
+                        lineAnalyte.Symbol.IsVisible = false;
+                        lineAnalyte.Line.Width = 3.0F;
+                        lineISTD.Symbol.IsVisible = false;
+                        lineISTD.Line.Width = 3.0F;
+
+                        if (_measure.Key == "IIT")
+                        {
+                            lineAnalyte.IsY2Axis = true; lineISTD.IsY2Axis = true;
+                        }
+
+                        if (SelectedMeasures.Contains(_measure.Key))
+                        {
+                            if (_measure.Key == "IIT")
+                            {
+                                graphAnalyte.GraphControl.GraphPane.Y2Axis.IsVisible = true;
+
+                                ISTDGraphPane.Y2Axis.IsVisible = true;
+
+                                graphISTD.GraphControl.GraphPane.Y2Axis.IsVisible = true;
+                            }
+                            lineAnalyte.IsVisible = true; lineAnalyte.Label.IsVisible = true;
+                            lineISTD.IsVisible = true; lineISTD.Label.IsVisible = true;
+                        }
+                        else
+                        {
+                            if (_measure.Key == "IIT")
+                            {
+                                graphAnalyte.GraphControl.GraphPane.Y2Axis.IsVisible = false;
+
+                                ISTDGraphPane.Y2Axis.IsVisible = false;
+
+                                //graphAnalyte.GraphControl.MasterPane.PaneList["ISTD"].Y2Axis.IsVisible = false;
+
+                                graphISTD.GraphControl.GraphPane.Y2Axis.IsVisible = false;
+                            }
+                            lineAnalyte.IsVisible = false; lineAnalyte.Label.IsVisible = false;
+                            lineISTD.IsVisible = false; lineISTD.Label.IsVisible = false;
+
+                            //ISTDGraphPane.Y2Axis.IsVisible = false;
+                        }
+                    }
+
+                    graphAnalyte.GraphControl.GraphPane.XAxis.Type = ZedGraph.AxisType.Linear;
+                    graphISTD.GraphControl.GraphPane.XAxis.Type = ZedGraph.AxisType.Linear;
+                    splPeptidePage.Panel1.Controls.Add(graphAnalyte.GraphControl);
+
+                    graphAnalyte.GraphControl.MasterPane.SetLayout(splPeptidePage.Panel1.CreateGraphics(), ZedGraph.PaneLayout.SingleColumn);
+
+
+                    graphAnalyte.GraphControl.AxisChange();
+                    graphAnalyte.GraphControl.Refresh();
+                    splPeptidePage.Panel2.Controls.Add(graphISTD.GraphControl);
+                    graphISTD.GraphControl.AxisChange(); graphISTD.GraphControl.Refresh(); //graphISTD.GraphControl.
+                    tabPeptidePage.Controls.Add(splPeptidePage);
+                    _tabControlPeptide.TabPages.Add(tabPeptidePage);
+                }
+                tabMsRunPage.Controls.Add(_tabControlPeptide);
+                _tabControlMsRuns.TabPages.Add(tabMsRunPage);
+            }
+            splNAtab.Panel2.Controls.Add(_tabControlMsRuns);
+        }
+        private void ModifyNoiseAnalysisPlots1()
+        {
+            var AnalyteGraphsForMsRuns = from _msrunTabPage in _tabControlMsRuns.TabPages.Cast<TabPage>()
+                                         from _petideTabContolPage in _msrunTabPage.Controls.OfType<NApeptidesTabControl>()
+                                         from _peptideTabPage in _petideTabContolPage.TabPages.Cast<TabPage>()
+                                         from _splitContainer in _peptideTabPage.Controls.OfType<SplitContainer>()
+                                         from _graph in _splitContainer.Panel1.Controls.OfType<ZedGraph.ZedGraphControl>()
+                                         select _graph;
+
+            var ISTDGraphsForMsRuns = from _msrunTabPage in _tabControlMsRuns.TabPages.Cast<TabPage>()
+                                      from _petideTabContolPage in _msrunTabPage.Controls.OfType<NApeptidesTabControl>()
+                                      from _peptideTabPage in _petideTabContolPage.TabPages.Cast<TabPage>()
+                                      from _splitContainer in _peptideTabPage.Controls.OfType<SplitContainer>()
+                                      from _graph in _splitContainer.Panel2.Controls.OfType<ZedGraph.ZedGraphControl>()
+                                      select _graph;
+
+            var AllGraphsForMsRuns = AnalyteGraphsForMsRuns.Concat(ISTDGraphsForMsRuns);
+
+
+            foreach (var GraphOfRun in AllGraphsForMsRuns.Cast<ZedGraph.ZedGraphControl>())
+            {
+                var CurvesOfGraph = from _curve in GraphOfRun.GraphPane.CurveList
+                                    select _curve;
+
+
+                foreach (var Curve in CurvesOfGraph)
+                {
+                    if (SelectedMeasures.Contains(Curve.Label.Text))
+                    {
+                        Curve.IsVisible = true; Curve.Label.IsVisible = true;
+                        if (Curve.Label.Text=="IIT") { GraphOfRun.GraphPane.Y2Axis.IsVisible = true; }
+                    }
+                    else
+                    {
+                        Curve.IsVisible = false; Curve.Label.IsVisible = false;
+                        if (Curve.Label.Text == "IIT") { GraphOfRun.GraphPane.Y2Axis.IsVisible = false; }
+                    }
+                }
+
+                GraphOfRun.AxisChange(); GraphOfRun.Refresh();
+
+            }
+
+        }
+
+        private void ModifyNoiseAnalysisPlots()
+        {
+            var AnalyteGraphsForMsRuns = from _msrunTabPage in _tabControlMsRuns.TabPages.Cast<TabPage>()
+                                         from _petideTabContolPage in _msrunTabPage.Controls.OfType<NApeptidesTabControl>()
+                                         from _peptideTabPage in _petideTabContolPage.TabPages.Cast<TabPage>()
+                                         from _splitContainer in _peptideTabPage.Controls.OfType<SplitContainer>()
+                                         from _graph in _splitContainer.Panel1.Controls.OfType<ZedGraph.ZedGraphControl>()
+                                         select _graph;
+
+            var ISTDGraphsForMsRuns = from _msrunTabPage in _tabControlMsRuns.TabPages.Cast<TabPage>()
+                                      from _petideTabContolPage in _msrunTabPage.Controls.OfType<NApeptidesTabControl>()
+                                      from _peptideTabPage in _petideTabContolPage.TabPages.Cast<TabPage>()
+                                      from _splitContainer in _peptideTabPage.Controls.OfType<SplitContainer>()
+                                      from _graph in _splitContainer.Panel2.Controls.OfType<ZedGraph.ZedGraphControl>()
+                                      select _graph;
+
+            var AllGraphsForMsRuns = AnalyteGraphsForMsRuns.Concat(ISTDGraphsForMsRuns);
+
+
+            foreach (var GraphOfRun in AllGraphsForMsRuns.Cast<ZedGraph.ZedGraphControl>())
+            {
+                var CurvesOfGraph  = from _pane in GraphOfRun.MasterPane.PaneList
+                                     from _curve in _pane.CurveList
+                                     select _curve;
+
+                foreach (var Curve in CurvesOfGraph)
+                {
+                    if (SelectedMeasures.Contains(Curve.Label.Text))
+                    {
+                        Curve.IsVisible = true; Curve.Label.IsVisible = true;
+                        if (Curve.Label.Text == "IIT") { GraphOfRun.MasterPane.PaneList.ForEach((p) => p.Y2Axis.IsVisible = true); }
+                    }
+                    else
+                    {
+                        Curve.IsVisible = false; Curve.Label.IsVisible = false;
+                        if (Curve.Label.Text == "IIT") { GraphOfRun.MasterPane.PaneList.ForEach((p) => p.Y2Axis.IsVisible = false); }
+                    }
+                }
+                GraphOfRun.AxisChange(); GraphOfRun.Refresh();
+
+            }
+
         }
     }
 }

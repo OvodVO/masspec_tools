@@ -26,7 +26,7 @@
     <ProductName>TrackIN</ProductName>
     <PublisherName>Bateman Lab</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>99</ApplicationRevision>
+    <ApplicationRevision>154</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -75,10 +75,11 @@
     <StartupObject>WashU.BatemanLab.MassSpec.TrackIN.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>1C8A5A029C09AC45AA46CF843FDE2468601CD96F</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>13619BAF529D6E9BEDBFD3F1160F1B6A8F29B71C</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>TrackIN_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -91,9 +92,6 @@
     <Reference Include="MSFileReaderLib">
       <HintPath>C:\Program Files\Thermo\MSFileReader\MSFileReaderLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="ProcessRawData">
-      <HintPath>..\Shared\Common\ProcessRawData\bin\x64\Debug\ProcessRawData.dll</HintPath>
     </Reference>
     <Reference Include="ProteowizardWrapper">
       <HintPath>..\..\..\pwiz\pwiz_tools\Shared\ProteowizardWrapper\bin\x64\Debug\ProteowizardWrapper.dll</HintPath>
@@ -128,6 +126,18 @@
     </Compile>
     <Compile Include="MainForm.Extention.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NAmsrunsTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NAmsrunsTabControl.Designer.cs">
+      <DependentUpon>NAmsrunsTabControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NApeptidesTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NApeptidesTabControl.Designer.cs">
+      <DependentUpon>NApeptidesTabControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -481,6 +491,12 @@
       <Visible> False </Visible>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Common\ProcessRawData\ProcessRawData.csproj">
+      <Project>{116d7753-adfb-4f1b-8838-c54d8bd3565d}</Project>
+      <Name>ProcessRawData</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -10696,7 +10696,10 @@ namespace XQNReader
 
             if (_openDlg.ShowDialog() == DialogResult.OK)
             {
-                int exported = Raw.ThermoRawFileReaderClass.DumpInstrumentMethod(_openDlg.FileName);
+              //  int exported = Raw.ThermoRawFileReaderClass.DumpInstrumentMethod(_openDlg.FileName);
+
+                Raw.ThermoRawFileReaderClass.DumpScanHeaderData(_openDlg.FileName, Path.GetFileNameWithoutExtension(_openDlg.FileName) + ".dmD", true);
+
             }
 
         }

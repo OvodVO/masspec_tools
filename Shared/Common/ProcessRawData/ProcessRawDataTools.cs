@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using pwiz.ProteowizardWrapper;
 using WashU.BatemanLab.MassSpec.Tools.Analysis;
 
+using System.IO;
+
 namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
         
 {    
@@ -74,30 +76,100 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
             return result;
         }
 
-        public static double[] AggIonCounts(double[] MZs, double[] Intensities, List<double> expectedMzList, double tolerance)
+        public static double[] AggIonCounts(double[] MZs, double[] Intensities, double tolerance,
+                                            List<double> expectedM0List,
+                                            List<double> expectedM1List,
+                                            List<double> expectedM2List,
+                                            List<double> expectedM3List,
+                                            List<double> expectedMneg1List)
+        {
+            double[] result = new double[7];
+            double posMatchSum_M0 = 0, posMatchSum_M1 = 0, posMatchSum_M2 = 0, posMatchSum_M3 = 0, posMatchSum_Mneg1 = 0;
+            double negMatchSum = 0;
+
+            for (int i = 0; i < MZs.Length; i++)
+            {
+                if (InMZTolerance(MZs[i], expectedM0List, tolerance))
+                {
+                    posMatchSum_M0 += Intensities[i];
+                }
+                else if ((InMZTolerance(MZs[i], expectedM1List, tolerance)))
+                {
+                    posMatchSum_M1 += Intensities[i];
+                }
+                else if ((InMZTolerance(MZs[i], expectedM2List, tolerance)))
+                {
+                    posMatchSum_M2 += Intensities[i];
+                }
+                else if ((InMZTolerance(MZs[i], expectedM3List, tolerance)))
+                {
+                    posMatchSum_M3 += Intensities[i];
+                }
+                else if ((InMZTolerance(MZs[i], expectedMneg1List, tolerance)))
+                {
+                    posMatchSum_Mneg1 += Intensities[i];
+                }
+                else
+                {
+                   negMatchSum += Intensities[i];
+                }
+            }
+
+            result[0] = negMatchSum; 
+            result[1] = posMatchSum_M0;
+            result[2] = posMatchSum_M1;
+            result[3] = posMatchSum_M2;
+            result[4] = posMatchSum_M3;
+            result[5] = posMatchSum_Mneg1;
+            result[6] = posMatchSum_M0 + posMatchSum_M1 + posMatchSum_M2 + posMatchSum_M3 + posMatchSum_Mneg1;
+
+            return result;
+        }
+
+        public static double[] AggIonCountsOld(double[] MZs, double[] Intensities, List<double> expectedMzList, double tolerance)
         {
             double[] result = new double[2];
             double posMatchSum = 0;
             double negMatchSum = 0;
-                        
+
+            // temp
+
+            // List<String> _deb = new List<string>();
+
             for (int i = 0; i < MZs.Length; i++)
             {
+                //   string debstr = "i=" + i.ToString() + "  MZs[i]=" + MZs[i].ToString();
+
                 if (InMZTolerance(MZs[i], expectedMzList, tolerance))
                 {
-                    posMatchSum += Intensities[i]; 
+                    posMatchSum += Intensities[i];
+                    //     debstr += "Intensities - " + Intensities[i].ToString() + " true; and posMatchSum=" + posMatchSum.ToString();
                 }
                 else
                 {
                     negMatchSum += Intensities[i];
+                    //     debstr += "Intensities - " + Intensities[i].ToString() +  " false; and negMatchSum=" + negMatchSum.ToString();
                 }
+                // _deb.Add(debstr);
             }
+
             result[0] = posMatchSum;
             result[1] = negMatchSum;
+
+            //_deb.Add("Finally result[0] is - " + result[0].ToString());
+            //_deb.Add("Finally result[1] is - " + result[1].ToString());
+
+            //File.WriteAllLines(@"d:\_TEMP\2019-12-09\debug.txt", _deb.ToArray<String>());
+
             return result;
         }
     }
 
-    public class MzIntensityPair
+
+
+
+
+public class MzIntensityPair
     {
         public MzIntensityPair() { }
         public double intensity { get; set; }

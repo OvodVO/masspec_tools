@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,23 +11,28 @@ using WashU.BatemanLab.MassSpec.Tools.Analysis;
 namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
 {
     #region MsDataFileImplExtAgg definition
+    [Serializable]
     public class MsDataFileImplExtAgg
     {
+        [NonSerialized]
         private MsDataFileImpl _msDataFileImpl;
         private bool _HasMzDataSpectrums = false;
         private bool _HasChromatograms = false;
         private bool _HasBeenRead = false;
-        private List<Chromatogram> _chromatograms;
+        private List<Chromatogramm> _chromatograms;
         
         public bool HasMzDataSpectrums { get { return _HasMzDataSpectrums; } }
         public bool HasChromatograms { get { return _HasChromatograms; } }
         public bool HasBeenRead { get { return _HasBeenRead; } }
 
-        public string ReplicateName;
+        public string _msrunFileName;
+
+        public string MSrunFileName { get { return _msrunFileName; } }
+        
 
         public MsDataFileImplExtAgg()
         {
-            _chromatograms = new List<Chromatogram>();
+            _chromatograms = new List<Chromatogramm>();
         }
 
         public MsDataFileImpl MsDataFile
@@ -34,7 +40,7 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
             get { return _msDataFileImpl; }
         }
 
-        public List<Chromatogram> Chromatograms
+        public List<Chromatogramm> Chromatograms
         {
             get { return _chromatograms; }
         }
@@ -44,6 +50,7 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
             try
             {
                 _msDataFileImpl = new MsDataFileImpl(path);
+                _msrunFileName = Path.GetFileName(path);
             }
             catch (Exception e)
             { }
@@ -86,9 +93,74 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
             _HasMzDataSpectrums = true;
         }
 
+        public void TESTMS3()
+        {
+            List<string> _strOutput = new List<string>();
+            for (int s = 1; s < _msDataFileImpl.SpectrumCount; s++)
+            {
+                _strOutput.Add("Index" + _msDataFileImpl.MsDataSpectrums[s].Index.ToString() +
+                               "; MsLevel - " + _msDataFileImpl.MsDataSpectrums[s].Level.ToString() +
+                               "; Precursor - " + _msDataFileImpl.MsDataSpectrums[s].PrecursorMZ.ToString() );
+                                
+            }
+
+            File.WriteAllLines(@"d:\_TEMP\2019-12-09\out.txt", _strOutput.ToArray());
+        }
+        public void ITFtoMS2(double ITFprecursor, double MS2precursor, double tolerance)
+        {
+            List<string> _strOutput = new List<string>();
+            for (int s = 1; s < _msDataFileImpl.SpectrumCount; s++)
+            {
+                if (_msDataFileImpl.MsDataSpectrums[s].PrecursorMZ > ITFprecursor - tolerance &&
+                    _msDataFileImpl.MsDataSpectrums[s].PrecursorMZ < ITFprecursor + tolerance)
+                {
+                    _msDataFileImpl.MsDataSpectrums[s].PrecursorMZ = MS2precursor;
+                }
+
+
+            }
+
+            File.WriteAllLines(@"d:\_TEMP\2019-12-09\out.txt", _strOutput.ToArray());
+        }
+
+        public void CorrectForITF(Dictionary<double, double> correctionDictionary)
+        {
+            for (int spectrum = 0; spectrum < _msDataFileImpl.SpectrumCount; spectrum++)
+            {
+                if ( _msDataFileImpl.MsDataSpectrums[spectrum].PrecursorMZ.HasValue )
+                {
+                    double ITFprecursor = _msDataFileImpl.MsDataSpectrums[spectrum].PrecursorMZ.Value;
+                    if ( correctionDictionary.ContainsKey( ITFprecursor ) )
+                    {
+                        _msDataFileImpl.MsDataSpectrums[spectrum].PrecursorMZ = correctionDictionary[ITFprecursor];
+
+                    }
+
+
+                }
+            }
+        }
+
+        public void CorrectForITF1(Dictionary<double, double> correctionDictionary)
+        {
+            foreach ( var ITFtoMS2pair in correctionDictionary)
+            {
+                double ITFprecursor = ITFtoMS2pair.Key, MS2precursor = ITFtoMS2pair.Value;
+
+                for (int spectrum = 0; spectrum < _msDataFileImpl.SpectrumCount; spectrum++)
+                {
+                    if (_msDataFileImpl.MsDataSpectrums[spectrum].PrecursorMZ == ITFprecursor)
+                    {
+                        _msDataFileImpl.MsDataSpectrums[spectrum].PrecursorMZ = MS2precursor;
+                    }
+
+                }
+            }
+        }
+
         public void GetChromatograms(double tolerance)
         {
-            _chromatograms = new List<Chromatogram>();
+            _chromatograms = new List<Chromatogramm>();
             var Channels = from spectrum in _msDataFileImpl.MsDataSpectrums
                            group spectrum by spectrum.PrecursorMZ into spectrumgroup
                            select new { ChannelMS1 = spectrumgroup.Key, ChannelSpectrums = spectrumgroup };
@@ -116,14 +188,14 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
                                              mzspectrum.IonIT,
                                              mzspectrum.TIC,
                                              SumOfIntensities = mzspectrum.Intensities.Sum(),
-                                             SumOfPositiveMatch = ProcessRawDataTools.AggIonCounts(mzspectrum.Mzs, mzspectrum.Intensities, Target.Products, tolerance)[0],
-                                             SumOfNegativeMatch = ProcessRawDataTools.AggIonCounts(mzspectrum.Mzs, mzspectrum.Intensities, Target.Products, tolerance)[1]
+                                             SumOfPositiveMatch = ProcessRawDataTools.AggIonCountsOld(mzspectrum.Mzs, mzspectrum.Intensities, Target.Products, tolerance)[0],
+                                             SumOfNegativeMatch = ProcessRawDataTools.AggIonCountsOld(mzspectrum.Mzs, mzspectrum.Intensities, Target.Products, tolerance)[1]
                                          };
 
-                _chromatograms.Add(new Chromatogram()
+                _chromatograms.Add(new Chromatogramm()
                 {
                     Protein = Target.ProteinName,
-                    Peptide = Target.ProteinName,
+                    Peptide = Target.PeptideName,
                     IsotopeLabelType = Target.PrecursorIsoform,
                     PrecursorMZ = Target.PrecursorMZ,
                     RetentionTimes = ExtraChromatograms.Select(ec => ec.RetentionTime.GetValueOrDefault(0)).ToArray(),
@@ -135,12 +207,12 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
             }
         }
 
-        public void GetChromatograms(List<Protein> targets, double tolerance)
+        public void GetChromatograms(List<Protein> targets, double MS1tolerance, double MS2tolerance)
         {
             MsDataSpectrum defaultSpectrum = new MsDataSpectrum();
             MsDataSpectrum[] msDataSpectrums = new MsDataSpectrum[1];
             msDataSpectrums[0] = defaultSpectrum;
-            _chromatograms = new List<Chromatogram>();
+            _chromatograms = new List<Chromatogramm>();
             var Channels = (from spectrum in _msDataFileImpl.MsDataSpectrums
                            group spectrum by spectrum.PrecursorMZ into spectrumgroup
                            select new { ChannelMS1 = spectrumgroup.Key, ChannelSpectrums = spectrumgroup }).ToDictionary(di => di.ChannelMS1, di => di.ChannelSpectrums);
@@ -154,12 +226,16 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
                               PeptideName = peptide.Name,
                               PrecursorIsoform = precursor.IsotopeLabelType,
                               PrecursorMZ = precursor.PrecursorMZ,
-                              Products = precursor.Products
+                              Products = precursor.Products,
+                              ProductsM1 = precursor.ProductsM1,
+                              ProductsM2 = precursor.ProductsM2,
+                              ProductsM3 = precursor.ProductsM3,
+                              ProductsMneg1 = precursor.ProductsMneg1
                           };
             foreach (var Target in Targets)
             {
                 var SpectrumsForChannel = from channel in Channels
-                                          where ProcessRawDataTools.InMZTolerance(channel.Key, Target.PrecursorMZ, tolerance) == true
+                                          where ProcessRawDataTools.InMZTolerance(channel.Key, Target.PrecursorMZ, MS1tolerance) == true
                                           select channel.Value;
                 if (SpectrumsForChannel.Any())
                 {
@@ -171,20 +247,33 @@ namespace WashU.BatemanLab.MassSpec.Tools.ProcessRawData
                                                  mzspectrum.IonIT,
                                                  mzspectrum.TIC,
                                                  SumOfIntensities = mzspectrum.Intensities.Sum(),
-                                                 SumOfPositiveMatch = ProcessRawDataTools.AggIonCounts(mzspectrum.Mzs, mzspectrum.Intensities, Target.Products, tolerance)[0],
-                                                 SumOfNegativeMatch = ProcessRawDataTools.AggIonCounts(mzspectrum.Mzs, mzspectrum.Intensities, Target.Products, tolerance)[1]
+                                                 SumOfMatches = ProcessRawDataTools.AggIonCounts
+                                                                                         (mzspectrum.Mzs, mzspectrum.Intensities, MS2tolerance,
+                                                                                         Target.Products,
+                                                                                         Target.ProductsM1, Target.ProductsM2, Target.ProductsM3, Target.ProductsMneg1)
+                                                 //SumOfPositiveMatch = ProcessRawDataTools.AggIonCounts(mzspectrum.Mzs, mzspectrum.Intensities, Target.Products, tolerance)[0],
+                                                 //SumOfNegativeMatch = ProcessRawDataTools.AggIonCounts(mzspectrum.Mzs, mzspectrum.Intensities, Target.Products, tolerance)[1]
                                              };
-                    _chromatograms.Add(new Chromatogram()
+                    _chromatograms.Add(new Chromatogramm()
                     {
                         Protein = Target.ProteinName,
-                        Peptide = Target.ProteinName,
+                        Peptide = Target.PeptideName,
                         IsotopeLabelType = Target.PrecursorIsoform,
                         PrecursorMZ = Target.PrecursorMZ,
                         RetentionTimes = ExtraChromatograms.Select(ec => ec.RetentionTime.GetValueOrDefault(0)).ToArray(),
+                        TotalIonCurrents = ExtraChromatograms.Select(ec => ec.TIC.GetValueOrDefault(0)).ToArray(),
                         IonInjectionTimes = ExtraChromatograms.Select(ec => ec.IonIT.GetValueOrDefault(0)).ToArray(),
                         SumOfIntensities = ExtraChromatograms.Select(ec => ec.SumOfIntensities).ToArray(),
-                        SumOfPositiveMatch = ExtraChromatograms.Select(ec => ec.SumOfPositiveMatch).ToArray(),
-                        SumOfNegativeMatch = ExtraChromatograms.Select(ec => ec.SumOfNegativeMatch).ToArray()
+
+                        SumOfNegativeMatch =      ExtraChromatograms.Select(ec => ec.SumOfMatches[0]).ToArray(),
+                        SumOfPositiveMatch_M0 =   ExtraChromatograms.Select(ec => ec.SumOfMatches[1]).ToArray(),
+                        SumOfPositiveMatch_M1 =   ExtraChromatograms.Select(ec => ec.SumOfMatches[2]).ToArray(),
+                        SumOfPositiveMatch_M2 =   ExtraChromatograms.Select(ec => ec.SumOfMatches[3]).ToArray(),
+                        SumOfPositiveMatch_M3 =   ExtraChromatograms.Select(ec => ec.SumOfMatches[4]).ToArray(),
+                        SumOfPositiveMatch_Mneg1= ExtraChromatograms.Select(ec => ec.SumOfMatches[5]).ToArray(),
+                        SumOfPositiveMatch =      ExtraChromatograms.Select(ec => ec.SumOfMatches[6]).ToArray(),
+
+                        
                     });
                 }
             }

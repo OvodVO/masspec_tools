@@ -106,12 +106,12 @@ namespace WashU.BatemanLab.Tools.ThermoRawFileReader
             //XRAWFILE2Lib.XRawfile _rawfile = new XRawfile();
 
             _rawfile.Open(RawFileName);
-            _rawfile.SetCurrentController(0, 1);
+            _rawfile.SetCurrentController(5, 0);
 
             int testSTLog = 0, testTuneData = 0, testerror = 0;
             _rawfile.GetNumStatusLog(ref testSTLog); MessageBox.Show("testSTLog - " + testSTLog.ToString());
             _rawfile.GetNumStatusLog(ref testTuneData); MessageBox.Show("testTuneData - " + testTuneData.ToString());
-            _rawfile.GetNumStatusLog(ref testerror); MessageBox.Show("testerror - " + testerror.ToString());
+            _rawfile.GetInletID(ref testerror); MessageBox.Show("GetInletID - " + testerror.ToString());
 
             string pbstrFileName = null, pbstrInstMethod = null;
 
@@ -162,7 +162,7 @@ namespace WashU.BatemanLab.Tools.ThermoRawFileReader
 
                 for (int i = 0; i < pnArraySizeTE; i++)  // all TrailerExtra
                 {
-                    trailerExtra += strTrailerValues[i]; trailerExtra += "; ";
+                    trailerExtra += strTrailerValues[i]; trailerExtra += "; "; MessageBox.Show(strTrailerLabels[i] + " - " + strTrailerValues[i], "TrailerExtra" );
 
                     if (count == 1)
                     {
@@ -173,7 +173,7 @@ namespace WashU.BatemanLab.Tools.ThermoRawFileReader
 
                 for (int i = 0; i < pnArraySizeSL; i++)  // all StatusLog
                 {
-                    statusLog += strStatusValues[i]; statusLog += "; "; MessageBox.Show(strStatusLabels[i] + " - " + strStatusValues[i]);
+                    statusLog += strStatusValues[i]; statusLog += "; "; MessageBox.Show(strStatusLabels[i] + " - " + strStatusValues[i], "StatusValues");
 
                     if (count == 1)
                     {
@@ -220,7 +220,59 @@ namespace WashU.BatemanLab.Tools.ThermoRawFileReader
             //XRAWFILE2Lib.XRawfile _rawfile = new XRawfile();
 
             _rawfile.Open(RawFileName);
-            _rawfile.SetCurrentController(0, 1);
+            _rawfile.SetCurrentController(5, 0);
+
+
+            double start = 0, endt = 0;
+
+            object chropar = null, chrodatasize = null, chrodataar =  null, paekflags = null;
+
+            _rawfile.GetChros(1000, start, endt, chropar, chrodatasize, chrodataar, paekflags);
+
+            int stl = 0;
+            _rawfile.GetNumStatusLog(ref stl);
+            //_rawfile.get .GetNumStatusLog(ref stl);
+            MessageBox.Show(stl.ToString(), "STL");
+
+           // double[] mr = (double[])chrodataar;
+
+           // for (int i = 0; i < 5; i++)
+           // {
+
+               // MessageBox.Show(mr[i].ToString(), i.ToString());
+          // }
+
+
+
+            int cn = 0;
+            _rawfile.GetNumberOfControllers(ref cn);
+
+            int ty = 5, cnot = 0;
+            _rawfile.GetNumberOfControllersOfType(ty, ref cnot);
+
+
+            MessageBox.Show(cnot.ToString(), "etNumberOfControllersOfType");
+            MessageBox.Show(cn.ToString());
+
+            int nc = 0;
+
+            string pbstrInstrumentDesc = null;
+
+            _rawfile.GetInstrumentDescription(pbstrInstrumentDesc);
+            _rawfile.GetInstNumChannelLabels(ref nc);
+
+            string chlab = null; int e = 0;
+
+            _rawfile.GetInstChannelLabel(e, chlab);
+
+            MessageBox.Show(e.ToString(), "GetInstChannelLabel");
+            MessageBox.Show(chlab, "GetInstChannelLabel");
+
+           //_rawfile.GetCreationDate
+
+            MessageBox.Show(pbstrInstrumentDesc);
+            MessageBox.Show(nc.ToString());
+
 
             //_rawfile.GetInstMethod()
             /* 
@@ -247,9 +299,13 @@ namespace WashU.BatemanLab.Tools.ThermoRawFileReader
             DateTime pCreationDate = DateTime.Now;
 
             _rawfile.GetFileName(ref pbstrFileName); 
-            _rawfile.GetInstMethod(0, ref pbstrInstMethod0);  _rawfile.GetInstMethod(1, ref pbstrInstMethod1); 
-            _rawfile.GetCreationDate(ref pCreationDate);
+            _rawfile.GetInstMethod(0, ref pbstrInstMethod0);  _rawfile.GetInstMethod(1, ref pbstrInstMethod1);
 
+
+            string aqu = null;
+            _rawfile.GetAcquisitionDate(ref aqu); /*.GetCreationDate(ref pCreationDate);*/
+
+            MessageBox.Show(aqu);
             
             File.WriteAllText(Path.ChangeExtension(RawFileName, "inm"), pbstrInstMethod0 + pbstrInstMethod1);
 
