@@ -99,6 +99,9 @@
             this.btnSelectTableauFile = new System.Windows.Forms.Button();
             this.tbTableuFileName = new System.Windows.Forms.TextBox();
             this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
+            this.btnPasteFromClipboardToGrid3 = new System.Windows.Forms.Button();
+            this.dgCalcFieldToMake3 = new System.Windows.Forms.DataGridView();
+            this.btnModifyTableauPTau = new System.Windows.Forms.Button();
             this.tabPrepForSkyline.SuspendLayout();
             this.tabTEST.SuspendLayout();
             this.tabSequenceTool.SuspendLayout();
@@ -117,6 +120,7 @@
             this.tabTableauRawCalc.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgCalcFieldToMake2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgCalcFieldToMake)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgCalcFieldToMake3)).BeginInit();
             this.SuspendLayout();
             // 
             // tabPage1
@@ -667,6 +671,9 @@
             // 
             // tabTableauRawCalc
             // 
+            this.tabTableauRawCalc.Controls.Add(this.btnModifyTableauPTau);
+            this.tabTableauRawCalc.Controls.Add(this.dgCalcFieldToMake3);
+            this.tabTableauRawCalc.Controls.Add(this.btnPasteFromClipboardToGrid3);
             this.tabTableauRawCalc.Controls.Add(this.btnModifyTableauLevels);
             this.tabTableauRawCalc.Controls.Add(this.btnPasteFromClipboardToFormulaBox2);
             this.tabTableauRawCalc.Controls.Add(this.btnPasteFromClipboardToGrid2);
@@ -690,7 +697,7 @@
             // 
             // btnModifyTableauLevels
             // 
-            this.btnModifyTableauLevels.Location = new System.Drawing.Point(726, 632);
+            this.btnModifyTableauLevels.Location = new System.Drawing.Point(467, 632);
             this.btnModifyTableauLevels.Name = "btnModifyTableauLevels";
             this.btnModifyTableauLevels.Size = new System.Drawing.Size(195, 23);
             this.btnModifyTableauLevels.TabIndex = 14;
@@ -706,11 +713,12 @@
             this.btnPasteFromClipboardToFormulaBox2.TabIndex = 13;
             this.btnPasteFromClipboardToFormulaBox2.Text = "Paste ....";
             this.btnPasteFromClipboardToFormulaBox2.UseVisualStyleBackColor = true;
+            this.btnPasteFromClipboardToFormulaBox2.Visible = false;
             this.btnPasteFromClipboardToFormulaBox2.Click += new System.EventHandler(this.btnPasteFromClipboardToFormulaBox2_Click);
             // 
             // btnPasteFromClipboardToGrid2
             // 
-            this.btnPasteFromClipboardToGrid2.Location = new System.Drawing.Point(726, 110);
+            this.btnPasteFromClipboardToGrid2.Location = new System.Drawing.Point(467, 110);
             this.btnPasteFromClipboardToGrid2.Name = "btnPasteFromClipboardToGrid2";
             this.btnPasteFromClipboardToGrid2.Size = new System.Drawing.Size(75, 23);
             this.btnPasteFromClipboardToGrid2.TabIndex = 12;
@@ -725,18 +733,19 @@
             this.tbFormulaString2.Name = "tbFormulaString2";
             this.tbFormulaString2.Size = new System.Drawing.Size(287, 477);
             this.tbFormulaString2.TabIndex = 11;
+            this.tbFormulaString2.Visible = false;
             // 
             // dgCalcFieldToMake2
             // 
             this.dgCalcFieldToMake2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgCalcFieldToMake2.Location = new System.Drawing.Point(726, 139);
+            this.dgCalcFieldToMake2.Location = new System.Drawing.Point(467, 139);
             this.dgCalcFieldToMake2.Name = "dgCalcFieldToMake2";
-            this.dgCalcFieldToMake2.Size = new System.Drawing.Size(357, 477);
+            this.dgCalcFieldToMake2.Size = new System.Drawing.Size(212, 477);
             this.dgCalcFieldToMake2.TabIndex = 10;
             // 
             // btnPasteFromClipboardToFormulaBox
             // 
-            this.btnPasteFromClipboardToFormulaBox.Location = new System.Drawing.Point(300, 110);
+            this.btnPasteFromClipboardToFormulaBox.Location = new System.Drawing.Point(223, 110);
             this.btnPasteFromClipboardToFormulaBox.Name = "btnPasteFromClipboardToFormulaBox";
             this.btnPasteFromClipboardToFormulaBox.Size = new System.Drawing.Size(75, 23);
             this.btnPasteFromClipboardToFormulaBox.TabIndex = 9;
@@ -756,10 +765,10 @@
             // 
             // tbFormulaString
             // 
-            this.tbFormulaString.Location = new System.Drawing.Point(300, 139);
+            this.tbFormulaString.Location = new System.Drawing.Point(223, 139);
             this.tbFormulaString.Multiline = true;
             this.tbFormulaString.Name = "tbFormulaString";
-            this.tbFormulaString.Size = new System.Drawing.Size(287, 477);
+            this.tbFormulaString.Size = new System.Drawing.Size(206, 477);
             this.tbFormulaString.TabIndex = 7;
             // 
             // btnPasteFromClipboardToGrid
@@ -777,7 +786,7 @@
             this.dgCalcFieldToMake.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgCalcFieldToMake.Location = new System.Drawing.Point(34, 139);
             this.dgCalcFieldToMake.Name = "dgCalcFieldToMake";
-            this.dgCalcFieldToMake.Size = new System.Drawing.Size(244, 477);
+            this.dgCalcFieldToMake.Size = new System.Drawing.Size(179, 477);
             this.dgCalcFieldToMake.TabIndex = 5;
             // 
             // btnSelectPrecursorNotesCSV
@@ -813,6 +822,34 @@
             this.tbTableuFileName.Name = "tbTableuFileName";
             this.tbTableuFileName.Size = new System.Drawing.Size(874, 20);
             this.tbTableuFileName.TabIndex = 1;
+            // 
+            // btnPasteFromClipboardToGrid3
+            // 
+            this.btnPasteFromClipboardToGrid3.Location = new System.Drawing.Point(705, 110);
+            this.btnPasteFromClipboardToGrid3.Name = "btnPasteFromClipboardToGrid3";
+            this.btnPasteFromClipboardToGrid3.Size = new System.Drawing.Size(75, 23);
+            this.btnPasteFromClipboardToGrid3.TabIndex = 15;
+            this.btnPasteFromClipboardToGrid3.Text = "Paste ....";
+            this.btnPasteFromClipboardToGrid3.UseVisualStyleBackColor = true;
+            this.btnPasteFromClipboardToGrid3.Click += new System.EventHandler(this.btnPasteFromClipboardToGrid3_Click);
+            // 
+            // dgCalcFieldToMake3
+            // 
+            this.dgCalcFieldToMake3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgCalcFieldToMake3.Location = new System.Drawing.Point(705, 139);
+            this.dgCalcFieldToMake3.Name = "dgCalcFieldToMake3";
+            this.dgCalcFieldToMake3.Size = new System.Drawing.Size(815, 477);
+            this.dgCalcFieldToMake3.TabIndex = 16;
+            // 
+            // btnModifyTableauPTau
+            // 
+            this.btnModifyTableauPTau.Location = new System.Drawing.Point(705, 632);
+            this.btnModifyTableauPTau.Name = "btnModifyTableauPTau";
+            this.btnModifyTableauPTau.Size = new System.Drawing.Size(195, 23);
+            this.btnModifyTableauPTau.TabIndex = 17;
+            this.btnModifyTableauPTau.Text = "Create/Modify Tableau Levels...";
+            this.btnModifyTableauPTau.UseVisualStyleBackColor = true;
+            this.btnModifyTableauPTau.Click += new System.EventHandler(this.btnModifyTableauPTau_Click);
             // 
             // MainForm
             // 
@@ -852,6 +889,7 @@
             this.tabTableauRawCalc.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgCalcFieldToMake2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgCalcFieldToMake)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgCalcFieldToMake3)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -927,6 +965,9 @@
         private System.Windows.Forms.TextBox tbFormulaString2;
         private System.Windows.Forms.DataGridView dgCalcFieldToMake2;
         private System.Windows.Forms.Button btnModifyTableauLevels;
+        private System.Windows.Forms.Button btnModifyTableauPTau;
+        private System.Windows.Forms.DataGridView dgCalcFieldToMake3;
+        private System.Windows.Forms.Button btnPasteFromClipboardToGrid3;
     }
 }
 

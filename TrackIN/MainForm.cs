@@ -67,8 +67,8 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             var DocumentLocationName = _toolClient.GetDocumentLocationName();
 
             //MessageBox.Show(DocumentLocation.ToString());
-             Invoke(new Action(() => MessageBox.Show(ReplicateName, "GetReplicateName()")));
-             Invoke(new Action(() => MessageBox.Show(DocumentLocationName, "DocumentLocationName()")));
+            Invoke(new Action(() => MessageBox.Show(ReplicateName, "GetReplicateName()")));
+            Invoke(new Action(() => MessageBox.Show(DocumentLocationName, "DocumentLocationName()")));
         }
 
         private void btnTEST_Click(object sender, EventArgs e)
@@ -145,7 +145,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             openDlg.Multiselect = true;
             if (openDlg.ShowDialog() == DialogResult.OK)
             {
-               await ReadAndAnalyzeSetAsync(openDlg.FileNames);
+                await ReadAndAnalyzeSetAsync(openDlg.FileNames);
             }
         }
 
@@ -167,9 +167,9 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             string[] lines = s.Replace("\n", "").Split('\r');
 
             string[] columns = lines[0].Split('\t');
-            foreach (string column in columns )
+            foreach (string column in columns)
             {
-                dgSampleList.Columns.Add( column, column );
+                dgSampleList.Columns.Add(column, column);
             }
 
             dgSampleList.Rows.Add(lines.Length - 2);
@@ -213,7 +213,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             _sequemce.Add("Bracket Type=4");
             _sequemce.Add("File Name,Comment,Position,Inj Vol,Instrument Method,Path,Sample Type,Sample ID,Sample Name,Dil Factor,Sample Vol,Process Method,Level,Calibration File,Sample Wt,ISTD Amt,L1 Study,L2 Client,L3 Laboratory,L4 Company,L5 Phone,");
 
-            for (int i=1; i<=5; i++)
+            for (int i = 1; i <= 5; i++)
             {
                 string s_prtc = String.Format("{0}_PRTC_VO_B{1},VO {2},\"2:F,7\",4.500,D:\\OTFLumos\\Plasma-Aß\\_methods\\20170202_PRTC_PRM_VO5,D:\\OTFLumos\\_QC_PRTC,Unknown,,,1.000,0.000,,,,0.000,0.000,,,,,,",
                                               f_date,
@@ -241,7 +241,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                                                     row.Cells[1].Value,
                                                     row.Cells[0].Value.ToString().PadLeft(3, '0'),
                                                     "b");
-                    
+
                     string blank_row1 = String.Format("{0},{1},\"{2}\",{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},",
                                                     filename_blank,
                                                     "", //Comment,
@@ -322,12 +322,12 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             }
 
             SaveFileDialog _saveDlg = new SaveFileDialog();
-            if ( _saveDlg.ShowDialog() == DialogResult.OK )
+            if (_saveDlg.ShowDialog() == DialogResult.OK)
             {
-                File.WriteAllLines( _saveDlg.FileName, _sequemce, Encoding.GetEncoding(1250));
+                File.WriteAllLines(_saveDlg.FileName, _sequemce, Encoding.GetEncoding(1250));
             }
 
-            
+
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -350,12 +350,12 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 cblSelectedFiles.Items.AddRange(mzXMLfiles);
 
                 CheckUnprocessedmzXML();
-              
+
 
             }
 
-           
-  
+
+
 
         }
 
@@ -641,7 +641,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                 foreach (ListViewItem itemToSub in lVSubsForSkyline.CheckedItems)
                 {
-                    _mzXMLfile = _mzXMLfile.Replace( itemToSub.SubItems[2].Text, itemToSub.SubItems[3].Text);
+                    _mzXMLfile = _mzXMLfile.Replace(itemToSub.SubItems[2].Text, itemToSub.SubItems[3].Text);
                 }
 
                 string _directoryNameOnly = Path.GetDirectoryName(_fileName);
@@ -653,10 +653,10 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                 string _newFileName = _newDirectoryName + Path.DirectorySeparatorChar + _fileNameOnly;
 
-                File.WriteAllText( _newFileName, _mzXMLfile);
+                File.WriteAllText(_newFileName, _mzXMLfile);
 
                 XDocument _mzXMLdoc;
-                try               
+                try
                 {
                     _mzXMLdoc = XDocument.Load(_newFileName);
                 }
@@ -666,10 +666,10 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                     return;
                 }
 
-                
+
                 var indexOffsetElement = _mzXMLdoc.Root.Descendants().SingleOrDefault(p => p.Name.LocalName == "indexOffset");
                 var indexElement = _mzXMLdoc.Root.Descendants().SingleOrDefault(p => p.Name.LocalName == "index");
-                
+
 
                 indexOffsetElement.Remove();
                 indexElement.Remove();
@@ -689,9 +689,9 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         private void CheckAllmzXML()
         {
             for (int i = 0; i < cblSelectedFiles.Items.Count; i++)
-             {
-                 cblSelectedFiles.SetItemChecked(i, true);
-             }
+            {
+                cblSelectedFiles.SetItemChecked(i, true);
+            }
         }
         private void CheckUnprocessedmzXML()
         {
@@ -732,12 +732,12 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                 var msrun = new MsDataFileImplExtAgg(_fileNameRAW);
 
-               // msrun.MsDataFile.RunStartTime
+                // msrun.MsDataFile.RunStartTime
 
                 MessageBox.Show(msrun.MsDataFile.IsThermoFile.ToString(), "Is Thermo File");
                 MessageBox.Show(msrun.MsDataFile.IsWatersFile.ToString(), "Is Waters File");
 
-                MessageBox.Show(msrun.MsDataFile.RunStartTime.HasValue.ToString(), "RunStartTime.HasValue" );
+                MessageBox.Show(msrun.MsDataFile.RunStartTime.HasValue.ToString(), "RunStartTime.HasValue");
 
                 //MessageBox.Show(msrun.MsDataFile. .HasValue.ToString(), "RunStartTime.HasValue");
 
@@ -787,14 +787,14 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             //  string AquDate = null;
             //_rawfile.GetInstSerialNumber(ref AquDate);
 
-           // _rawfile.GetSeqRowComment(ref AquDate);
-          //  MessageBox.Show(AquDate, "AquDate");
+            // _rawfile.GetSeqRowComment(ref AquDate);
+            //  MessageBox.Show(AquDate, "AquDate");
 
             DateTime pCreationDate = new DateTime();
             _rawfile.GetCreationDate(ref pCreationDate);
 
-           /* string AcquisitionFileName = null;
-            _rawfile.GetAcquisitionFileName(ref AcquisitionFileName); MessageBox.Show(AcquisitionFileName, "AcquisitionFileName()");*/
+            /* string AcquisitionFileName = null;
+             _rawfile.GetAcquisitionFileName(ref AcquisitionFileName); MessageBox.Show(AcquisitionFileName, "AcquisitionFileName()");*/
 
             return pCreationDate;
         }
@@ -819,18 +819,20 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         {
             OpenFileDialog _openDlg = new OpenFileDialog();
             _openDlg.Filter = "TRA/XML |*.tra; *.xml";
-            
+
             _openDlg.Multiselect = false;
 
             if (_openDlg.ShowDialog() == DialogResult.OK)
             {
                 switch (Path.GetExtension(_openDlg.FileName))
                 {
-                    case ".tra": _analysisResults = AnalysisResults.OpenFromBinFile(_openDlg.FileName);
-                                break;
-                    case ".xml": _analysisResults = AnalysisResults.OpenFromXMLFile(_openDlg.FileName);
-                                break;
-                    default: MessageBox.Show("Unknown extention"+ Path.GetExtension(_openDlg.FileName)); break;
+                    case ".tra":
+                        _analysisResults = AnalysisResults.OpenFromBinFile(_openDlg.FileName);
+                        break;
+                    case ".xml":
+                        _analysisResults = AnalysisResults.OpenFromXMLFile(_openDlg.FileName);
+                        break;
+                    default: MessageBox.Show("Unknown extention" + Path.GetExtension(_openDlg.FileName)); break;
                 }
 
                 BuildNoiseAnalysisPlots();
@@ -840,7 +842,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
             //_analysisResults = AnalysisResults.OpenFromXMLFile(@"D:\test.xml");
             //_analysisResults = AnalysisResults.OpenFromBinFile(@"D:\test.tra");
             //MessageBox.Show("Opened");
-            
+
         }
 
         private void btnConvertLCTracerFile_Click(object sender, EventArgs e)
@@ -857,7 +859,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 string[] OriginalLines = File.ReadAllLines(_openDlg.FileName);
                 List<string> ModifiedLines = new List<string>();
 
-                                
+
                 DateTime StartTime = DateTime.Parse(OriginalLines[0].Split(_delimiter)[0].Split('=')[1]);
                 DateTime EndTime = StartTime;
 
@@ -879,32 +881,32 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                         string ModifiedLine = EndTime.ToString();
 
-                        for (byte j=1; j < Fields.Length; j++)
+                        for (byte j = 1; j < Fields.Length; j++)
                         {
                             ModifiedLine += "," + _lcTracers[j];
                         }
-                                                                                               
+
                         ModifiedLines.Add(ModifiedLine);
-                        
+
                     }
                 }
 
 
-                
+
                 string _targetPath = Path.GetDirectoryName(_openDlg.FileName);
 
-                if (cbUseTargetDir.Checked && lbTargetDir.Text != "" )
+                if (cbUseTargetDir.Checked && lbTargetDir.Text != "")
                 {
                     _targetPath = lbTargetDir.Text;
                 }
 
-                string ModifiedFileName = _targetPath + Path.DirectorySeparatorChar 
+                string ModifiedFileName = _targetPath + Path.DirectorySeparatorChar
                     + "Lumos_LC_Tracers_" + StartTime.ToString("yyyy-MM-dd HH^mm") + "--" + EndTime.ToString("yyyy-MM-dd HH^mm") + ".csv";
 
-                File.WriteAllLines( ModifiedFileName, ModifiedLines.ToArray());
+                File.WriteAllLines(ModifiedFileName, ModifiedLines.ToArray());
 
                 MessageBox.Show("Done");
-                
+
             }
 
         }
@@ -913,7 +915,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         {
             FolderBrowserDialog _folderBrowserDlg = new FolderBrowserDialog();
 
-           // _folderBrowserDlg.RootFolder = Environment.SpecialFolder. @"r:\_Projects\Aß\Plasma\Clinical Studies\BioFINDER\LC Data source BF-1";
+            // _folderBrowserDlg.RootFolder = Environment.SpecialFolder. @"r:\_Projects\Aß\Plasma\Clinical Studies\BioFINDER\LC Data source BF-1";
 
             _folderBrowserDlg.SelectedPath = @"r:\_Projects\Aß\Plasma\Clinical Studies\BioFINDER\LC Data source BF-1";
 
@@ -1023,15 +1025,15 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
         private void btnModifyTableau_Click(object sender, EventArgs e)
         {
-  
 
-           // MessageBox.Show(GetCalcFieldNameByCaption(_dsMS_DataUnion, "Technical replicate ID"), "Technical replicate ID");
 
-           // MessageBox.Show(GetCalcFieldNameByCaption(_dsMS_DataUnion, "Technical replicate ID5"), "Technical replicate ID5");
+            // MessageBox.Show(GetCalcFieldNameByCaption(_dsMS_DataUnion, "Technical replicate ID"), "Technical replicate ID");
 
-           // MessageBox.Show(GetParameterNameByCaption(_dsParameters, "p 13C15N 2N4R Amount, ng"), "p 13C15N 2N4R Amount, ng");
+            // MessageBox.Show(GetCalcFieldNameByCaption(_dsMS_DataUnion, "Technical replicate ID5"), "Technical replicate ID5");
 
-           // MessageBox.Show(GetParameterNameByCaption(_dsParameters, "p 13C15N 2N4R Amount, ng5"), "p 13C15N 2N4R Amount, ng5");
+            // MessageBox.Show(GetParameterNameByCaption(_dsParameters, "p 13C15N 2N4R Amount, ng"), "p 13C15N 2N4R Amount, ng");
+
+            // MessageBox.Show(GetParameterNameByCaption(_dsParameters, "p 13C15N 2N4R Amount, ng5"), "p 13C15N 2N4R Amount, ng5");
 
 
 
@@ -1050,10 +1052,10 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 String _caption_Param = String.Format("p Skyline Inx (prec): {0}", row.Cells[0].Value);
                 String _caption_CalcF = String.Format("Area: {1} {2}({0}, ToUse)", arrPrecursorAttrs[0], arrPrecursorAttrs[1].Trim(' '), ifPreclongName ? arrPrecursorAttrs[2].Trim(' ') : null);
 
-               // MessageBox.Show(_caption_CalcF);
+                // MessageBox.Show(_caption_CalcF);
 
 
-                XElement _foundParameter = _dsParameters.Descendants("column").SingleOrDefault(p => (string)p.Attribute("caption").Value == _caption_Param);
+                XElement _foundParameter = _dsParameters.Descendants("column").Where(p => p.Attribute("caption") != null).SingleOrDefault(p => (string)p.Attribute("caption").Value == _caption_Param);
 
                 String _curParameterName = String.Format("[Parameter {0}]", i);
 
@@ -1062,7 +1064,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 if (_foundParameter == null)
                 {
                     //MessageBox.Show("Not Found " + _caption + " parameter");
-                
+
 
                     XElement _newParameter = new XElement("column",
                                                           new XAttribute("caption", _caption_Param),
@@ -1091,11 +1093,22 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                     _foundParameter.Element("range").Attribute("min").Value = "0";
                     _foundParameter.Attribute("value").Value = paramvalue;
-                   // MessageBox.Show("Found " + _caption + " parameter");
-                   // MessageBox.Show(_foundParameter.ToString());
+                    // MessageBox.Show("Found " + _caption + " parameter");
+                    // MessageBox.Show(_foundParameter.ToString());
                 }
 
-                XElement _foundCalcField = _dsMS_DataUnion.Elements("column").SingleOrDefault(p => (string)p.Attribute("caption").Value == _caption_CalcF);
+
+                
+                XElement _foundCalcField = _dsMS_DataUnion.Elements("column").Where(p => p.Attribute("caption") != null).SingleOrDefault(p => (string)p.Attribute("caption").Value == _caption_CalcF);
+
+                
+
+                string _techreplicate_fieldname = GetCalcFieldNameByCaption(_dsMS_DataUnion, "Technical replicate ID");
+                string _skylineInx_fieldname = GetCalcFieldNameByCaption(_dsMS_DataUnion, "Skyline File Inx");
+                string _ifPassedQCprec_fieldname = GetCalcFieldNameByCaption(_dsMS_DataUnion, "if Passed QC (prec)");
+
+                string _showfailed_paramname = GetParameterNameByCaption(_dsParameters, "p If Show FAILED QC");
+
                 if (_foundCalcField == null)
                 {
                     XElement _newCalcField = new XElement("column",
@@ -1106,7 +1119,14 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                                                           new XAttribute("type", "quantitative"),
                                                           new XElement("calculation",
                                                                           new XAttribute("class", "tableau"),
-                                                                          new XAttribute("formula", @String.Format(@tbFormulaString.Text, row.Cells[0].Value, _curParameterName)))
+                                                                          new XAttribute("formula", @String.Format(@tbFormulaString.Text,
+                                                                                                                            row.Cells[0].Value,
+                                                                                                                            _curParameterName,
+                                                                                                                            _techreplicate_fieldname,
+                                                                                                                            _skylineInx_fieldname,
+                                                                                                                            _ifPassedQCprec_fieldname,
+                                                                                                                            _showfailed_paramname
+                                                                                                                                         )))
                                                          );
 
                     _dsMS_DataUnion.Elements("column").Last().AddAfterSelf(_newCalcField);
@@ -1116,8 +1136,14 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                 }
                 else
                 {
-                   // MessageBox.Show(_caption_CalcF + " already exists");
-                    _foundCalcField.Element("calculation").Attribute("formula").Value = @String.Format(@tbFormulaString.Text, row.Cells[0].Value, _curParameterName);
+                    // MessageBox.Show(_caption_CalcF + " already exists");
+                    _foundCalcField.Element("calculation").Attribute("formula").Value = @String.Format(@tbFormulaString.Text,
+                                                                                                                row.Cells[0].Value,
+                                                                                                                _curParameterName,
+                                                                                                                _techreplicate_fieldname,
+                                                                                                                _skylineInx_fieldname,
+                                                                                                                _ifPassedQCprec_fieldname,
+                                                                                                                _showfailed_paramname);
                 }
 
             }
@@ -1223,10 +1249,10 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                     continue;
                 }
 
-                XElement _foundCalcField_AreaRatio = _dsMS_DataUnion.Elements("column").SingleOrDefault(p => (string)p.Attribute("caption").Value == _caption_CalcField_AreaRatio);
+                XElement _foundCalcField_AreaRatio = _dsMS_DataUnion.Elements("column").Where(p => p.Attribute("caption") != null).SingleOrDefault(p => (string)p.Attribute("caption").Value == _caption_CalcField_AreaRatio);
                 if (_foundCalcField_AreaRatio == null)
                 {
-                  
+
 
                     XElement _newCalcField_AreaRatio = new XElement("column",
                                                           new XAttribute("caption", _caption_CalcField_AreaRatio),
@@ -1272,7 +1298,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
 
                 }
 
-                    if (arearatio_fieldname == "Not Found")
+                if (arearatio_fieldname == "Not Found")
                 {
                     MessageBox.Show(String.Format("Either {0} or {1} not exists. Not possible to create formula for {2}.",
                                                    _caption_CalcField_AreaRatio,
@@ -1281,7 +1307,7 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                     continue;
                 }
 
-                XElement _foundCalcField_Level = _dsMS_DataUnion.Elements("column").SingleOrDefault(p => (string)p.Attribute("caption").Value == _caption_CalcField_Level);
+                XElement _foundCalcField_Level = _dsMS_DataUnion.Elements("column").Where(p => p.Attribute("caption") != null).SingleOrDefault(p => (string)p.Attribute("caption").Value == _caption_CalcField_Level);
                 if (_foundCalcField_Level == null)
                 {
 
@@ -1307,6 +1333,55 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
                     _foundCalcField_Level.Element("calculation").Attribute("formula").Value = @String.Format("{0} * {1}", arearatio_fieldname, isamount_fieldname);
                 }
 
+                string level_fieldname = GetCalcFieldNameByCaption(_dsMS_DataUnion, _caption_CalcField_Level);
+
+                string samplevolume_fieldname = GetCalcFieldNameByCaption(_dsMS_DataUnion, "Sample Volume");
+
+                if (samplevolume_fieldname == "Not Found")
+                {
+                    XElement _newCalcField_SampleVolume = new XElement("column",
+                                                         new XAttribute("caption", "Sample Volume"),
+                                                         new XAttribute("datatype", "real"),
+                                                         new XAttribute("name", String.Format("[Calculation_VO{0}]", j)),
+                                                         new XAttribute("role", "measure"),
+                                                         new XAttribute("type", "quantitative"),
+                                                         new XElement("calculation",
+                                                                         new XAttribute("class", "tableau"),
+                                                                         new XAttribute("formula", @String.Format("[Volume]")))
+                                                        );
+
+                    samplevolume_fieldname = String.Format("[Calculation_VO{0}]", j);
+
+                    _dsMS_DataUnion.Elements("column").Last().AddAfterSelf(_newCalcField_SampleVolume);
+
+                }
+
+                XElement _foundCalcField_Conc = _dsMS_DataUnion.Elements("column").Where(p => p.Attribute("caption") != null).SingleOrDefault(p => (string)p.Attribute("caption").Value == _caption_CalcField_Conc);
+                if (_foundCalcField_Conc == null)
+                {
+
+
+                    XElement _newCalcField_Conc = new XElement("column",
+                                                          new XAttribute("caption", _caption_CalcField_Conc),
+                                                          new XAttribute("datatype", "real"),
+                                                          new XAttribute("name", String.Format("[Calculation_CO{0}]", j)),
+                                                          new XAttribute("role", "measure"),
+                                                          new XAttribute("type", "quantitative"),
+                                                          new XElement("calculation",
+                                                                          new XAttribute("class", "tableau"),
+                                                                          new XAttribute("formula", @String.Format("{0} / {1}", level_fieldname, samplevolume_fieldname)))
+                                                         );
+
+                    _dsMS_DataUnion.Elements("column").Last().AddAfterSelf(_newCalcField_Conc);
+
+                    j++;
+
+                }
+                else
+                {
+                    _foundCalcField_Conc.Element("calculation").Attribute("formula").Value = @String.Format("{0} / {1}", level_fieldname, samplevolume_fieldname);
+                }
+
             }
 
             string _NewFileName = tbTableuFileName.Text.Replace(Path.GetFileNameWithoutExtension(@tbTableuFileName.Text), Path.GetFileNameWithoutExtension(@tbTableuFileName.Text) + "_new");
@@ -1319,19 +1394,238 @@ namespace WashU.BatemanLab.MassSpec.TrackIN
         public static string GetCalcFieldNameByCaption(XElement datasource, string caption)
         {
 
-            XElement _foundElement = datasource.Elements("column").SingleOrDefault(p => (string)p.Attribute("caption").Value == caption);
+            XElement _foundElement = datasource.Elements("column").Where(p => p.Attribute("caption") != null).SingleOrDefault(p => (string)p.Attribute("caption").Value == caption);
 
             return (_foundElement != null) ? _foundElement.Attribute("name").Value.ToString() : "Not Found";
-            
+
         }
         public static string GetParameterNameByCaption(XElement datasource, string caption)
         {
 
-            XElement _foundElement = datasource.Elements("column").SingleOrDefault(p => (string)p.Attribute("caption").Value == caption);
+            XElement _foundElement = datasource.Elements("column").Where(p => p.Attribute("caption") != null).SingleOrDefault(p => (string)p.Attribute("caption").Value == caption);
 
             return (_foundElement != null) ? "[Parameters]." + _foundElement.Attribute("name").Value.ToString() : "Not Found";
 
         }
+
+        private void btnPasteFromClipboardToGrid3_Click(object sender, EventArgs e)
+        {
+            dgCalcFieldToMake3.Rows.Clear();
+            dgCalcFieldToMake3.Columns.Clear();
+
+            string s = Clipboard.GetText();
+
+            string[] lines = s.Replace("\n", "").Split('\r');
+
+            lines = lines.Take(lines.Count() - 1).ToArray();
+
+
+            string[] columns = lines[0].Split('\t');
+            foreach (string column in columns)
+            {
+                dgCalcFieldToMake3.Columns.Add(column, column);
+            }
+
+
+            dgCalcFieldToMake3.Rows.Add(lines.Length - 2);
+            string[] fields;
+            int row = 0;
+            int col = 0;
+
+            foreach (string item in lines.Skip(1))
+            {
+
+                fields = item.Split('\t');
+                foreach (string f in fields)
+                {
+
+                    dgCalcFieldToMake3[col, row].Value = f;
+                    col++;
+                }
+                row++;
+                col = 0;
+            }
+
+            dgCalcFieldToMake3.AutoResizeColumns();
+            //MessageBox.Show(dgCalcFieldToMake.RowCount.ToString());
+        }
+
+        private void btnModifyTableauPTau_Click(object sender, EventArgs e)
+        {
+
+            int i = 0; int j = 10;
+
+            string _caption_Param_pTautau_Aqua_ratio = "p ptau/tau AQUA ratio";
+            string _name_Param_pTautau_Aqua_ratio = String.Format("[Parameter G{0}]", 1);
+            string paramvalue = "0.1";
+
+            XElement _foundParameter_pTautau_Aqua_ratio = _dsParameters.Descendants("column").Where(p => p.Attribute("caption") != null).SingleOrDefault(p => (string)p.Attribute("caption").Value == _caption_Param_pTautau_Aqua_ratio);
+
+            if (_foundParameter_pTautau_Aqua_ratio == null)
+            {
+
+                XElement _newParameter_pTautau_Aqua_ratio = new XElement("column",
+                                                      new XAttribute("caption", _caption_Param_pTautau_Aqua_ratio),
+                                                      new XAttribute("datatype", "integer"),
+                                                      new XAttribute("name", _name_Param_pTautau_Aqua_ratio),
+                                                      new XAttribute("param-domain-type", "range"),
+                                                      new XAttribute("role", "measure"),
+                                                      new XAttribute("type", "quantitative"),
+                                                      new XAttribute("value", paramvalue),
+                                                      new XElement("calculation",
+                                                                      new XAttribute("class", "tableau"),
+                                                                      new XAttribute("formula", "1")),
+                                                      new XElement("range",
+                                                                      new XAttribute("granularity", "1"),
+                                                                      new XAttribute("max", "3"),
+                                                                      new XAttribute("min", "0"))
+                                                     );
+
+                _dsParameters.Descendants("column").Last().AddAfterSelf(_newParameter_pTautau_Aqua_ratio);
+
+                i++;
+            }
+            else
+            {
+                _name_Param_pTautau_Aqua_ratio = _foundParameter_pTautau_Aqua_ratio.Attribute("name").Value.ToString();
+
+                _foundParameter_pTautau_Aqua_ratio.Element("range").Attribute("min").Value = "0";
+                _foundParameter_pTautau_Aqua_ratio.Attribute("value").Value = paramvalue;
+                // MessageBox.Show("Found " + _caption + " parameter");
+                // MessageBox.Show(_foundParameter.ToString());
+            }
+
+            foreach (DataGridViewRow row in dgCalcFieldToMake3.Rows)
+            {
+                i++;
+                String[] arrPrecursor1Attrs = row.Cells[5].Value.ToString().Split(' ');
+                String[] arrPrecursor2Attrs = row.Cells[10].Value.ToString().Split(' ');
+                String[] arrPrecursor3Attrs = row.Cells[22].Value.ToString().Split(' ');
+                String[] arrPrecursor4Attrs = row.Cells[27].Value.ToString().Split(' ');
+
+
+                bool ifPrec1longName = false;
+                bool ifPrec2longName = false;
+                bool ifPrec3longName = false;
+                bool ifPrec4longName = false;
+
+                if (arrPrecursor1Attrs.Length > 2) { ifPrec1longName = true; }
+                if (arrPrecursor2Attrs.Length > 2) { ifPrec2longName = true; }
+                if (arrPrecursor3Attrs.Length > 2) { ifPrec3longName = true; }
+                if (arrPrecursor4Attrs.Length > 2) { ifPrec4longName = true; }
+
+
+                String _caption_Precursor1 = String.Format("Area: {1} {2}({0}, ToUse)", arrPrecursor1Attrs[0], arrPrecursor1Attrs[1].Trim(' '), ifPrec1longName ? arrPrecursor1Attrs[2].Trim(' ') : null);
+                String _caption_Precursor2 = String.Format("Area: {1} {2}({0}, ToUse)", arrPrecursor2Attrs[0], arrPrecursor2Attrs[1].Trim(' '), ifPrec2longName ? arrPrecursor2Attrs[2].Trim(' ') : null);
+                String _caption_Precursor3 = String.Format("Area: {1} {2}({0}, ToUse)", arrPrecursor3Attrs[0], arrPrecursor3Attrs[1].Trim(' '), ifPrec3longName ? arrPrecursor3Attrs[2].Trim(' ') : null);
+                String _caption_Precursor4 = String.Format("Area: {1} {2}({0}, ToUse)", arrPrecursor4Attrs[0], arrPrecursor4Attrs[1].Trim(' '), ifPrec4longName ? arrPrecursor4Attrs[2].Trim(' ') : null);
+
+                string precursor1_fieldname = GetCalcFieldNameByCaption(_dsMS_DataUnion, _caption_Precursor1);
+
+                string precursor2_fieldname = GetCalcFieldNameByCaption(_dsMS_DataUnion, _caption_Precursor2);
+
+                string precursor3_fieldname = GetCalcFieldNameByCaption(_dsMS_DataUnion, _caption_Precursor3);
+
+                string precursor4_fieldname = GetCalcFieldNameByCaption(_dsMS_DataUnion, _caption_Precursor4);
+
+                /*
+                MessageBox.Show(String.Format("i: {2}; Prec1: {0}; Prec2: {1}", _caption_Precursor1, _caption_Precursor2, i), "Caption pTau");
+                MessageBox.Show(String.Format("i: {2}; Prec3: {0}; Prec4: {1}", _caption_Precursor3, _caption_Precursor4, i), "Caption pTau Norm");
+
+                MessageBox.Show(String.Format("i: {2}; Prec1: {0}; Prec2: {1}", precursor1_fieldname, precursor2_fieldname, i), "Field pTau");
+                MessageBox.Show(String.Format("i: {2}; Prec3: {0}; Prec4: {1}", precursor3_fieldname, precursor4_fieldname, i), "Field pTau Norm");
+                */
+
+                               
+                                string _analyte = row.Cells[1].Value.ToString().Replace("R ", "");
+                                
+                                String _caption_CalcField_pTautau = String.Format("pTauTau: {0} (Area Ratio)", _analyte, row.Cells[0].Value);
+                                String _caption_CalcField_pTautauNorm = String.Format("pTauTau: {0} (Norm Ratio)", _analyte, row.Cells[0].Value);
+
+
+                                if (precursor1_fieldname == "Not Found" || precursor2_fieldname == "Not Found" || precursor3_fieldname == "Not Found" || precursor4_fieldname == "Not Found")
+                                {
+                                    MessageBox.Show(String.Format("Either {0} or {1} or {2} or {3} not exists. Not possible to create formula for {4}.",
+                                                                   _caption_Precursor1,
+                                                                   _caption_Precursor2,
+                                                                   _caption_Precursor3,
+                                                                   _caption_Precursor4,
+                                                                   _analyte), "Warning");
+                                    continue;
+                                }
+
+                                XElement _foundCalcField_pTautau = _dsMS_DataUnion.Elements("column").Where(p => p.Attribute("caption") != null).SingleOrDefault(p => (string)p.Attribute("caption").Value == _caption_CalcField_pTautau);
+                                if (_foundCalcField_pTautau == null)
+                                {
+
+
+                                    XElement _newCalcField_pTautau = new XElement("column",
+                                                                          new XAttribute("caption", _caption_CalcField_pTautau),
+                                                                          new XAttribute("datatype", "real"),
+                                                                          new XAttribute("name", String.Format("[Calculation_pT{0}]", j)),
+                                                                          new XAttribute("role", "measure"),
+                                                                          new XAttribute("type", "quantitative"),
+                                                                          new XElement("calculation",
+                                                                                          new XAttribute("class", "tableau"),
+                                                                                          new XAttribute("formula", @String.Format("{0} / {1}", precursor1_fieldname, precursor2_fieldname)))
+                                                                         );
+
+                                    _dsMS_DataUnion.Elements("column").Last().AddAfterSelf(_newCalcField_pTautau);
+
+                                    j++;
+
+                                }
+                                else
+                                {
+                                   _foundCalcField_pTautau.Element("calculation").Attribute("formula").Value = @String.Format("{0} / {1}", precursor1_fieldname, precursor2_fieldname);
+                                }
+
+
+                                string pTautau_fieldname = GetCalcFieldNameByCaption(_dsMS_DataUnion, _caption_CalcField_pTautau);
+
+
+                                XElement _foundCalcField_pTautauNorm = _dsMS_DataUnion.Elements("column").Where(p => p.Attribute("caption") != null).SingleOrDefault(p => (string)p.Attribute("caption").Value == _caption_CalcField_pTautauNorm);
+                                if (_foundCalcField_pTautauNorm == null)
+                                {
+
+
+                                    XElement _newCalcField_pTautauNorm = new XElement("column",
+                                                                          new XAttribute("caption", _caption_CalcField_pTautauNorm),
+                                                                          new XAttribute("datatype", "real"),
+                                                                          new XAttribute("name", String.Format("[Calculation_pTN{0}]", j)),
+                                                                          new XAttribute("role", "measure"),
+                                                                          new XAttribute("type", "quantitative"),
+                                                                          new XElement("calculation",
+                                                                                          new XAttribute("class", "tableau"),
+                                                                                          new XAttribute("formula", @String.Format("{0} * {1} / {2} * [Parameters].{3}", pTautau_fieldname,
+                                                                                                                                                      precursor3_fieldname,
+                                                                                                                                                      precursor4_fieldname,
+                                                                                                                                                      _name_Param_pTautau_Aqua_ratio)))
+                                                                         );
+
+                                    _dsMS_DataUnion.Elements("column").Last().AddAfterSelf(_newCalcField_pTautauNorm);
+
+                                    j++;
+
+                                }
+                                else
+                                {
+                                    _foundCalcField_pTautauNorm.Element("calculation").Attribute("formula").Value = @String.Format("{0} * {1} / {2} * [Parameters].{3}", pTautau_fieldname,
+                                                                                                                                                      precursor3_fieldname,
+                                                                                                                                                      precursor4_fieldname,
+                                                                                                                                                      _name_Param_pTautau_Aqua_ratio);
+                                }
+
+            }
+
+
+                        string _NewFileName = tbTableuFileName.Text.Replace(Path.GetFileNameWithoutExtension(@tbTableuFileName.Text), Path.GetFileNameWithoutExtension(@tbTableuFileName.Text) +"_"+ DateTime.Today.ToLongDateString() );
+
+                        _twbXdoc.Save(@_NewFileName); 
+
+
+        }
+                
     }
 }
   
